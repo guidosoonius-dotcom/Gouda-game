@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "bpy": {
+      "command": "bash",
+      "args": [
+        "-c",
+        "python3 -c 'import bpy' 2>/dev/null || pip install --break-system-packages -q bpy 'mcp<2'; exec python3 bpy-mcp/server.py"
+      ],
+      "env": { "BLENDER_MCP_WORKDIR": "bpy-mcp/output" }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+# bpy-mcp: uitvoer niet committen, behalve .blend-bestanden
+bpy-mcp/output/*
+!bpy-mcp/output/
+!bpy-mcp/output/*.blend
+!bpy-mcp/output/.gitkeep
