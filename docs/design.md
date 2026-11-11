@@ -47,7 +47,18 @@
 - **Spiegel:** "Jouw verhaal" (fictie, zo gelabeld) naast "Wat echt gebeurde" (bronnen).
 - **Koerierstas:** verzamelde bronnen, brieven en de vlaggen van je keuzes.
 
-Visuele richting: kies uit A (Het Archief), B (De Illegale Pers) of C (Nachtlicht) op de canvas.
+Visuele richting: **v2 · gecombineerd** (zie de canvas): filmische scènes (Nachtlicht) met
+papieren archiefkaarten en briefjes (Archief) en de Spiegel als krant (Illegale Pers).
+- **Kaart:** de plattegrond van Joan Blaeu (1649/1652, publiek domein, `docs/concept/kaart/`) als
+  nachtversie; een dwalende lantaarn toont de kleurversie rond het actieve adres. Pins zijn lakzegels.
+  Het station ligt buiten de kaart van 1649 en krijgt een randmarkering. In de app georefereren
+  met controlepunten (de kaart is niet op het noorden gericht).
+- **Typografie:** IM Fell DW Pica (titels, 17e-eeuwse Hollandse types), Newsreader (lopende tekst),
+  Archivo Narrow (labels/knoppen), Special Elite (getypte berichten), Stardos Stencil (stempels).
+  Geen afgeronde pillen: rechthoekige knoppen, tabs met onderstreping, kaartjes en strookjes.
+- **Beweging:** traag en betekenisvol (lantaarn, zoeklicht, mist, typecursor, stempel); alles uit
+  bij `prefers-reduced-motion`.
+
 Kleurtokens v1 blijven geldig (`night-slate #14181D`, `canal-deep #1C252C`, `parchment #EAE3D2`,
 `stamp-ink #23272A`, `wax-red #9E2A2B`, `ochre #D99B26`).
 

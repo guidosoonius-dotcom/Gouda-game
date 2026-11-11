@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Minigame Nachtvaart, HUD</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica:ital@0;1&amp;family=Archivo+Narrow:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#E2A93A}a:hover{color:#F0C060}
+.scene{background-image:url(/_blob/c83ff64c8cdd0aaa807764e8fb4afc5b);background-size:cover;background-position:50% 50%;animation:bob 6s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:scale(1.04) translateY(0)}50%{transform:scale(1.04) translateY(-3px)}}
+.ring{transform-box:fill-box;transform-origin:center;animation:ring 3.6s ease-out infinite}
+.r2{animation-delay:1.2s}.r3{animation-delay:2.4s}
+@keyframes ring{0%{transform:scale(.3);opacity:.7}100%{transform:scale(2.4);opacity:0}}
+.lamp{animation:lamp 4s ease-in-out infinite}
+@keyframes lamp{0%,100%{opacity:.55}40%{opacity:.85}55%{opacity:.6}}
+.count{animation:count 12s linear infinite}
+@keyframes count{from{stroke-dashoffset:0}to{stroke-dashoffset:113}}
+.seg{animation:seg 1.4s steps(1,end) infinite}
+@keyframes seg{50%{opacity:.25}}
+.fog{animation:fog 24s linear infinite alternate}
+@keyframes fog{from{transform:translateX(-40px)}to{transform:translateX(40px)}}
+@media (prefers-reduced-motion: reduce){.scene,.ring,.lamp,.count,.seg,.fog{animation:none}}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #0A0D11; color: #EDE6D6; font-family: 'Archivo Narrow', sans-serif">
+  <div class="scene" style="position: absolute; inset: 0"></div>
+  <div class="lamp" style="position: absolute; left: 150px; top: 180px; width: 160px; height: 160px; background: radial-gradient(circle, rgba(255,214,120,.5), rgba(255,214,120,0) 65%); mix-blend-mode: screen"></div>
+  <div class="fog" style="position: absolute; left: -60px; top: 330px; width: 520px; height: 180px; background: radial-gradient(ellipse at 50% 50%, rgba(170,185,195,.22), rgba(170,185,195,0) 70%); filter: blur(8px)"></div>
+  <svg width="390" height="844" viewBox="0 0 390 844" style="position: absolute; left: 0; top: 0" aria-hidden="true">
+    <ellipse class="ring" cx="118" cy="742" rx="46" ry="16" fill="none" stroke="#DDE6EA" stroke-width="1.4"/>
+    <ellipse class="ring r2" cx="118" cy="742" rx="46" ry="16" fill="none" stroke="#DDE6EA" stroke-width="1.4"/>
+    <ellipse class="ring r3" cx="118" cy="742" rx="46" ry="16" fill="none" stroke="#DDE6EA" stroke-width="1.4"/>
+  </svg>
+  <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,13,17,.85) 0%, rgba(10,13,17,0) 20%, rgba(10,13,17,0) 72%, rgba(10,13,17,.7) 100%)"></div>
+
+  <div style="position: absolute; left: 20px; right: 20px; top: 48px; display: flex; justify-content: space-between; align-items: flex-start">
+    <div style="display: flex; flex-direction: column; gap: 7px">
+      <span style="font: 700 10.5px 'Archivo Narrow', sans-serif; letter-spacing: 2.4px; color: #C9BFA8">LAWAAI</span>
+      <div style="display: flex; gap: 3px; align-items: flex-end" role="img" aria-label="Lawaai 40 procent">
+        <span style="width: 11px; height: 8px; background: #E2A93A"></span><span style="width: 11px; height: 9px; background: #E2A93A"></span><span style="width: 11px; height: 10px; background: #E2A93A"></span><span style="width: 11px; height: 11px; background: #E2A93A"></span><span class="seg" style="width: 11px; height: 12px; background: #E2A93A"></span><span style="width: 11px; height: 13px; background: rgba(237,230,214,.2)"></span><span style="width: 11px; height: 14px; background: rgba(237,230,214,.2)"></span><span style="width: 11px; height: 15px; background: rgba(237,230,214,.2)"></span><span style="width: 11px; height: 16px; background: rgba(226,91,74,.35)"></span><span style="width: 11px; height: 17px; background: rgba(226,91,74,.35)"></span>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px">
+      <span style="font: 400 34px/1 'IM Fell DW Pica', serif">19:58</span>
+      <span style="font: 700 10.5px 'Archivo Narrow', sans-serif; letter-spacing: 2.4px; color: #C9BFA8">OKT 1944</span>
+    </div>
+  </div>
+
+  <div style="position: absolute; left: 20px; right: 20px; top: 118px; display: flex; align-items: center; gap: 10px; font: 600 12px 'Archivo Narrow', sans-serif; letter-spacing: 1.6px; color: #EDE6D6">
+    <span>NAAR DE SLUIS</span><span style="flex: 1; height: 1px; background: rgba(237,230,214,.3)"></span><span style="font: 400 17px 'IM Fell DW Pica', serif; letter-spacing: 0">140 m</span>
+  </div>
+
+  <div style="position: absolute; left: 214px; top: 160px; display: flex; align-items: center; gap: 6px; padding: 4px 8px; background: rgba(10,13,17,.65); border-left: 2px solid #E25B4A; font: 700 10px 'Archivo Narrow', sans-serif; letter-spacing: 1.8px; color: #F2C1B8">WACHTPOST · KIJKT LINKS</div>
+
+  <div style="position: absolute; left: 20px; top: 470px; display: flex; align-items: center; gap: 12px; padding: 10px 14px 10px 10px; background: rgba(10,13,17,.62); border: 1px solid rgba(237,230,214,.18)">
+    <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true">
+      <circle cx="22" cy="22" r="18" fill="none" stroke="rgba(237,230,214,.18)" stroke-width="2"/>
+      <circle class="count" cx="22" cy="22" r="18" fill="none" stroke="#E2A93A" stroke-width="2" stroke-dasharray="113" transform="rotate(-90 22 22)"/>
+      <path d="M16 27h12 M17.5 27v-5a4.5 4.5 0 0 1 9 0v5 M22 15.5v2 M21 29.5h2" fill="none" stroke="#EDE6D6" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <div style="display: flex; flex-direction: column; gap: 2px">
+      <span style="font: 700 12px 'Archivo Narrow', sans-serif; letter-spacing: 1.6px">SINT-JAN SLAAT OVER 12 S</span>
+      <span style="font: italic 400 14px 'IM Fell DW Pica', serif; color: #C9BFA8">Roei door terwijl de klokken luiden.</span>
+    </div>
+  </div>
+
+  <button type="button" aria-label="Roei links" style="position: absolute; left: -70px; bottom: -70px; width: 240px; height: 240px; border-radius: 50%; border: 1px solid rgba(237,230,214,.35); background: rgba(10,13,17,.42); padding: 0">
+    <span style="position: absolute; left: 92px; top: 66px; display: flex; flex-direction: column; align-items: center; gap: 6px">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><path d="M6 28 L24 10 M22 6 l7 7 -4 4 -7 -7z" fill="none" stroke="#EDE6D6" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <span style="font: 700 12px 'Archivo Narrow', sans-serif; letter-spacing: 2.4px; color: #EDE6D6">LINKS</span>
+    </span>
+  </button>
+  <button type="button" aria-label="Roei rechts" style="position: absolute; right: -70px; bottom: -70px; width: 240px; height: 240px; border-radius: 50%; border: 1px solid rgba(237,230,214,.35); background: rgba(10,13,17,.42); padding: 0">
+    <span style="position: absolute; left: 80px; top: 66px; display: flex; flex-direction: column; align-items: center; gap: 6px">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><path d="M28 28 L10 10 M12 6 l-7 7 4 4 7 -7z" fill="none" stroke="#EDE6D6" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <span style="font: 700 12px 'Archivo Narrow', sans-serif; letter-spacing: 2.4px; color: #EDE6D6">RECHTS</span>
+    </span>
+  </button>
+  <span style="position: absolute; left: 0; right: 0; bottom: 30px; text-align: center; font: italic 400 13px 'IM Fell DW Pica', serif; color: #C9BFA8">beide vast:<br>stil liggen</span>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

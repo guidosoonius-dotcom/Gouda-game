@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Titelscherm</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica:ital@0;1&amp;family=Archivo+Narrow:wght@500;600;700&amp;family=Special+Elite&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#E2A93A}a:hover{color:#F0C060}
+.scene{background-image:url(/_blob/dc11e7f7940fdce59bf1ff2af509435d);background-size:cover;background-position:50% 20%;animation:kb 26s ease-in-out infinite alternate}
+@keyframes kb{from{transform:scale(1.02) translate(0,0)}to{transform:scale(1.1) translate(-8px,-14px)}}
+.beam{transform-origin:6% 50%;animation:sweep 9s ease-in-out infinite alternate}
+@keyframes sweep{from{transform:rotate(-7deg);opacity:.55}50%{opacity:.85}to{transform:rotate(9deg);opacity:.5}}
+.fog{animation:fog 30s linear infinite alternate}
+@keyframes fog{from{transform:translateX(-30px)}to{transform:translateX(40px)}}
+.caret{animation:blink 1.05s steps(1,end) infinite}
+@keyframes blink{50%{opacity:0}}
+.rise{animation:rise 1.4s cubic-bezier(.2,.7,.2,1) both}
+.rise2{animation:rise 1.4s .25s cubic-bezier(.2,.7,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.scene,.beam,.fog,.caret,.rise,.rise2{animation:none}}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #0A0D11; color: #EDE6D6; font-family: 'Archivo Narrow', sans-serif">
+  <div class="scene" style="position: absolute; inset: -20px"></div>
+  <div class="beam" style="position: absolute; left: 40px; top: 150px; width: 520px; height: 120px; background: linear-gradient(90deg, rgba(255,226,150,.34), rgba(255,226,150,.08) 55%, rgba(255,226,150,0)); clip-path: polygon(0 46%, 100% 0, 100% 100%, 0 54%); filter: blur(10px); mix-blend-mode: screen"></div>
+  <div class="fog" style="position: absolute; left: -80px; top: 300px; width: 560px; height: 220px; background: radial-gradient(ellipse at 50% 50%, rgba(150,165,180,.28), rgba(150,165,180,0) 70%); filter: blur(10px)"></div>
+  <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,13,17,.82) 0%, rgba(10,13,17,0) 22%, rgba(10,13,17,0) 38%, rgba(10,13,17,.86) 60%, #0A0D11 80%)"></div>
+
+  <div style="position: absolute; left: 24px; right: 24px; top: 54px; display: flex; align-items: center; gap: 12px">
+    <span style="font: 700 11px 'Archivo Narrow', sans-serif; letter-spacing: 3px; color: #C9BFA8">VIJF AVONDEN IN GOUDA</span>
+    <span style="flex: 1; height: 1px; background: rgba(201,191,168,.4)"></span>
+    <span style="font: 700 11px 'Archivo Narrow', sans-serif; letter-spacing: 3px; color: #C9BFA8">1940—1945</span>
+  </div>
+
+  <div style="position: absolute; left: 24px; right: 24px; bottom: 34px; display: flex; flex-direction: column; gap: 22px">
+    <div class="rise" style="display: flex; flex-direction: column">
+      <span style="font: 400 76px/0.86 'IM Fell DW Pica', serif; letter-spacing: -1.5px">Koerier</span>
+      <span style="font: italic 400 36px/1.1 'IM Fell DW Pica', serif; color: #E2A93A; padding-left: 4px">aan de Gouwe</span>
+    </div>
+    <p class="rise2" style="margin: 0; font: 400 15px/1.55 'Special Elite', monospace; color: #D8D0BE; max-width: 310px">Gouda, november 1942. Acht minuten voor spertijd. De straten zijn afgezet, de daken niet.<span class="caret" style="color: #E2A93A">▍</span></p>
+
+    <div class="rise2" style="display: flex; flex-direction: column; gap: 10px">
+      <a href="V2-Kaart.dc.html" style="display: flex; align-items: center; justify-content: space-between; min-height: 64px; padding: 0 18px; background: #E2A93A; color: #14181D; text-decoration: none">
+        <span style="display: flex; flex-direction: column; gap: 3px"><span style="font: 700 15px 'Archivo Narrow', sans-serif; letter-spacing: 2.4px">SPEEL OP LOCATIE</span><span style="font: 500 12.5px 'Archivo Narrow', sans-serif; letter-spacing: .3px; color: #3A2E14">Een wandeling door de binnenstad · [duur te meten]</span></span>
+        <svg width="22" height="12" viewBox="0 0 22 12" aria-hidden="true"><path d="M0 6h20 M15 1l5 5-5 5" fill="none" stroke="#14181D" stroke-width="1.6"/></svg>
+      </a>
+      <a href="V2-Kaart.dc.html" style="display: flex; align-items: center; justify-content: space-between; min-height: 64px; padding: 0 18px; border: 1px solid rgba(237,230,214,.45); color: #EDE6D6; text-decoration: none; background: rgba(10,13,17,.35)">
+        <span style="display: flex; flex-direction: column; gap: 3px"><span style="font: 700 15px 'Archivo Narrow', sans-serif; letter-spacing: 2.4px">SPEEL THUIS</span><span style="font: 500 12.5px 'Archivo Narrow', sans-serif; letter-spacing: .3px; color: #A9A396">Met de kaart, de foto’s en een koptelefoon</span></span>
+        <svg width="22" height="12" viewBox="0 0 22 12" aria-hidden="true"><path d="M0 6h20 M15 1l5 5-5 5" fill="none" stroke="#EDE6D6" stroke-width="1.6"/></svg>
+      </a>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; font: 600 11px 'Archivo Narrow', sans-serif; letter-spacing: 1.6px; color: #8F989F">
+      <span style="display: flex; align-items: center; gap: 8px">
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15v-3a8 8 0 0 1 16 0v3 M4 15h3v5H4z M17 15h3v5h-3z" fill="none" stroke="#8F989F" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        KOPTELEFOON AANBEVOLEN
+      </span>
+      <span>12+</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
