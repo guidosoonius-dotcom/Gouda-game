@@ -3,3 +3,11 @@ bpy-mcp/output/*
 !bpy-mcp/output/
 !bpy-mcp/output/*.blend
 !bpy-mcp/output/.gitkeep
+
+# app
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+test-results/

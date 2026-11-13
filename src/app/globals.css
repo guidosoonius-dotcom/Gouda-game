@@ -1,0 +1,215 @@
+@import "tailwindcss";
+@import "@fontsource/im-fell-dw-pica/latin-400.css";
+@import "@fontsource/im-fell-dw-pica/latin-400-italic.css";
+@import "@fontsource-variable/newsreader/opsz.css";
+@import "@fontsource-variable/newsreader/opsz-italic.css";
+@import "@fontsource/archivo-narrow/latin-500.css";
+@import "@fontsource/archivo-narrow/latin-600.css";
+@import "@fontsource/archivo-narrow/latin-700.css";
+@import "@fontsource/special-elite/latin-400.css";
+@import "@fontsource/stardos-stencil/latin-700.css";
+
+@theme {
+  --color-night: #0a0d11;
+  --color-slate: #14181d;
+  --color-dusk: #0e1114;
+  --color-canal: #1c252c;
+  --color-parchment: #ede6d6;
+  --color-paper: #ece5d3;
+  --color-ink: #1d2124;
+  --color-press: #1a1b1c;
+  --color-wax: #9e2a2b;
+  --color-wax-dark: #7e1f20;
+  --color-ochre: #e2a93a;
+  --color-bone: #c9bfa8;
+  --color-ash: #8f989f;
+  --color-ash-dim: #6f7880;
+  --color-rule: #2e353c;
+  --color-alarm: #e25b4a;
+
+  --font-fell: "IM Fell DW Pica", "Iowan Old Style", Georgia, serif;
+  --font-news: "Newsreader Variable", Georgia, serif;
+  --font-label: "Archivo Narrow", "Arial Narrow", sans-serif;
+  --font-type: "Special Elite", "Courier New", monospace;
+  --font-stamp: "Stardos Stencil", Impact, serif;
+}
+
+@layer base {
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    background: #050608;
+    color: var(--color-parchment);
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior: none;
+  }
+
+  body {
+    font-family: var(--font-news);
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ochre);
+    outline-offset: 2px;
+  }
+}
+
+/* Small-caps label used all over the archive UI */
+.label {
+  font-family: var(--font-label);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* Unverified fact marker (dev builds) */
+.tbc {
+  border-bottom: 1.5px dotted var(--color-wax);
+  color: var(--color-wax-dark);
+}
+.tbc-dark {
+  border-bottom: 1.5px dotted #e58d80;
+  color: #f0b5aa;
+}
+
+/* ---------- motion ---------- */
+@keyframes kenburns {
+  from { transform: scale(1.02) translate(0, 0); }
+  to { transform: scale(1.1) translate(-8px, -14px); }
+}
+@keyframes sweep {
+  from { transform: rotate(-7deg); opacity: 0.55; }
+  50% { opacity: 0.85; }
+  to { transform: rotate(9deg); opacity: 0.5; }
+}
+@keyframes fog {
+  from { transform: translateX(-30px); }
+  to { transform: translateX(40px); }
+}
+@keyframes blink { 50% { opacity: 0; } }
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  33% { transform: translate(-14px, 9px); }
+  66% { transform: translate(10px, -12px); }
+  100% { transform: translate(0, 0); }
+}
+@keyframes drift {
+  0% { transform: translate(0, 0); }
+  35% { transform: translate(12px, -9px); }
+  70% { transform: translate(-9px, 7px); }
+  100% { transform: translate(0, 0); }
+}
+@keyframes drift-inv {
+  0% { transform: translate(0, 0); }
+  35% { transform: translate(-12px, 9px); }
+  70% { transform: translate(9px, -7px); }
+  100% { transform: translate(0, 0); }
+}
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  46% { opacity: 0.94; }
+  50% { opacity: 0.84; }
+  53% { opacity: 0.97; }
+  78% { opacity: 0.9; }
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+@keyframes halo {
+  0%, 100% { opacity: 0.25; transform: scale(0.9); }
+  50% { opacity: 0.6; transform: scale(1.15); }
+}
+@keyframes march { to { stroke-dashoffset: -22; } }
+@keyframes ping {
+  0% { transform: scale(0.6); opacity: 0.8; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+@keyframes slam {
+  from { opacity: 0; transform: scale(1.8) rotate(-14deg); }
+  to { opacity: 0.88; transform: scale(1) rotate(-9deg); }
+}
+@keyframes print {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+@keyframes tremble {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  20% { transform: translate(-1.5px, 1px) rotate(-0.4deg); }
+  40% { transform: translate(1.5px, -1px) rotate(0.4deg); }
+  60% { transform: translate(-1px, -1.5px) rotate(-0.3deg); }
+  80% { transform: translate(1px, 1.5px) rotate(0.3deg); }
+}
+@keyframes dust {
+  from { transform: translateY(0); opacity: 0; }
+  15% { opacity: 0.7; }
+  to { transform: translateY(46px); opacity: 0; }
+}
+
+.anim-kenburns { animation: kenburns 26s ease-in-out infinite alternate; }
+.anim-sweep { transform-origin: 6% 50%; animation: sweep 9s ease-in-out infinite alternate; }
+.anim-fog { animation: fog 30s linear infinite alternate; }
+.anim-caret { animation: blink 1.05s steps(1, end) infinite; }
+.anim-grain { animation: grain 0.5s steps(3) infinite; }
+.anim-lantern { animation: drift 14s ease-in-out infinite, flicker 5s steps(1, end) infinite; }
+.anim-lantern-inv { animation: drift-inv 14s ease-in-out infinite; }
+.anim-seal { transform-box: fill-box; transform-origin: center; animation: breathe 3.2s ease-in-out infinite; }
+.anim-halo { transform-box: fill-box; transform-origin: center; animation: halo 3.2s ease-in-out infinite; }
+.anim-route { animation: march 1.6s linear infinite; }
+.anim-ping { transform-box: fill-box; transform-origin: center; animation: ping 2.4s ease-out infinite; }
+.anim-slam { animation: slam 0.55s 0.9s cubic-bezier(0.3, 1.6, 0.5, 1) both; }
+.anim-print { animation: print 1.3s 0.2s cubic-bezier(0.4, 0, 0.2, 1) both; }
+.anim-print-late { animation: print 1.3s 0.6s cubic-bezier(0.4, 0, 0.2, 1) both; }
+.anim-tremble { animation: tremble 0.32s linear 3; }
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-kenburns, .anim-sweep, .anim-fog, .anim-caret, .anim-grain, .anim-lantern,
+  .anim-lantern-inv, .anim-seal, .anim-halo, .anim-route, .anim-ping, .anim-slam,
+  .anim-print, .anim-print-late, .anim-tremble {
+    animation: none;
+  }
+  .anim-slam { opacity: 0.88; transform: rotate(-9deg); }
+}
+
+/* ---------- map lantern ---------- */
+@property --mx { syntax: "<length-percentage>"; inherits: false; initial-value: 50%; }
+@property --my { syntax: "<length-percentage>"; inherits: false; initial-value: 50%; }
+.map-lantern {
+  -webkit-mask-image: radial-gradient(circle closest-side, #000 42%, rgba(0, 0, 0, 0.55) 72%, transparent 100%);
+  mask-image: radial-gradient(circle closest-side, #000 42%, rgba(0, 0, 0, 0.55) 72%, transparent 100%);
+  -webkit-mask-size: var(--ms) var(--ms);
+  mask-size: var(--ms) var(--ms);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: var(--mx) var(--my);
+  mask-position: var(--mx) var(--my);
+  /* --mx/--my are registered, so a change of focus glides while the drift keeps running. */
+  transition: --mx 1.5s cubic-bezier(0.3, 0.1, 0.2, 1), --my 1.5s cubic-bezier(0.3, 0.1, 0.2, 1);
+  animation: lantern-drift 14s ease-in-out infinite, flicker 5s steps(1, end) infinite;
+}
+@keyframes lantern-drift {
+  0%, 100% { -webkit-mask-position: var(--mx) var(--my); mask-position: var(--mx) var(--my); }
+  35% {
+    -webkit-mask-position: calc(var(--mx) + 14px) calc(var(--my) - 10px);
+    mask-position: calc(var(--mx) + 14px) calc(var(--my) - 10px);
+  }
+  70% {
+    -webkit-mask-position: calc(var(--mx) - 10px) calc(var(--my) + 8px);
+    mask-position: calc(var(--mx) - 10px) calc(var(--my) + 8px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .map-lantern { animation: none; transition: none; }
+}
