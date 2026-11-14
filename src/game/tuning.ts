@@ -1,5 +1,14 @@
 /** Every gameplay number lives here (CLAUDE.md #6). Tune after playtests, never inline. */
 export const TUNING = {
+  /** Graphics switches: turn these off first if a phone cannot hold 60 fps. */
+  gfx: {
+    /** Moonlight casts soft shadows (one 1024 map that follows the player). */
+    shadows: true,
+    /** Searchlights cast shadows too (one extra map per light). */
+    spotShadows: true,
+    /** Procedural brick, tile, wood and stone detail in the shader. */
+    detail: true,
+  },
   packing: {
     /** Seconds between distant shock waves. */
     rumbleInterval: 30,

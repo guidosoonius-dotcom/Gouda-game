@@ -3,6 +3,7 @@
 import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { TUNING } from "@/game/tuning";
 import { useModel } from "./Kit";
 import { HW } from "./layout";
 import { COURSE, type Sim } from "./sim";
@@ -154,7 +155,7 @@ export function CanalGuards({ sim }: { sim: SimRef }) {
       <Patrol sim={sim} />
 
       <primitive object={target} />
-      <spotLight ref={spot} position={lensA} target={target} color="#ffd27a" angle={0.2} penumbra={0.55} distance={75} decay={1.6} />
+      <spotLight ref={spot} position={lensA} target={target} color="#ffd27a" angle={0.2} penumbra={0.55} distance={75} decay={1.6} castShadow={TUNING.gfx.spotShadows} shadow-mapSize={[1024, 1024]} shadow-bias={-0.0004} />
       <pointLight ref={point} color="#ffd27a" intensity={40} distance={9} decay={1.8} />
       {[lensA, lensB].map((p, i) => (
         <sprite key={i} position={p} scale={1.25}>

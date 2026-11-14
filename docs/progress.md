@@ -36,6 +36,10 @@ Kies "Speel thuis". Hoofdstuk 1 t/m 4 zijn volledig.
   gedenkblad in plaats van een krant: feiten uit het bronnenregister, lege stenen tot de namen
   zijn gecontroleerd, en "houd vast voor een moment stilte".
 
+- **Visuele verfijning (sessie 2):** alle rekwisieten en personages afgerond en glad, schaduwen
+  van maan en zoeklichten, weerspiegelend water, procedurele texturen, vignet en filmkorrel.
+  21 modellen, samen ongeveer 560 KB.
+
 ## Half af
 - Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).
 - Hoofdstuk 5: alleen kaartgegevens en keuzes/echo's als data. De epiloog ontbreekt.

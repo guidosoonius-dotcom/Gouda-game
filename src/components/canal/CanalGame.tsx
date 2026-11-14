@@ -12,6 +12,7 @@ import { CanalHud, HUD_START, type HudState } from "./CanalHud";
 import { CanalGuards } from "./CanalGuards";
 import { CanalLife } from "./CanalLife";
 import { CanalWorld } from "./CanalWorld";
+import { Cinema, Night } from "./Night";
 import { COURSE, createSim, step, type Outcome, type Side, type Sim } from "./sim";
 
 interface Input {
@@ -158,17 +159,15 @@ export function CanalGame() {
   return (
     <div className="absolute inset-0 touch-none overflow-hidden bg-night">
       <Canvas
+        shadows="soft"
         dpr={[1, 2]}
+        style={{ filter: "contrast(1.07) saturate(1.1)" }}
         camera={{ fov: 64, near: 0.5, far: 220, position: [0, 11.5, 13] }}
         gl={{ antialias: true, powerPreference: "high-performance" }}
       >
-        <color attach="background" args={["#0e1926"]} />
-        <fogExp2 attach="fog" args={["#0e1926", 0.0115]} />
-        <ambientLight color="#6a82a8" intensity={1.5} />
-        <hemisphereLight args={["#7f9cc6", "#0b1016", 2.4]} />
-        <directionalLight color="#b4c9ea" intensity={2.8} position={[-10, 24, 16]} />
-        {/* fill from the other side, so the facades on both banks catch some moonlight */}
-        <directionalLight color="#8fa9d2" intensity={1.5} position={[12, 12, 10]} />
+        <color attach="background" args={["#0d1826"]} />
+        <fogExp2 attach="fog" args={["#0d1826", 0.013]} />
+        <Night moon={[-14, 26, 12]} focus={(out) => out.set(sim.current.x * 0.3, 0, sim.current.z - 12)} extent={32} />
         <CanalWorld />
         <CanalLife sim={sim} />
         <CanalGuards sim={sim} />
@@ -176,6 +175,7 @@ export function CanalGame() {
         <Loop sim={sim} fx={fx} input={input} onHud={setHud} onEvent={onEvent} />
       </Canvas>
 
+      <Cinema />
       {phase !== "intro" && phase !== "done" && <CanalHud hud={hud} onDown={down} onUp={up} />}
 
       <AnimatePresence>

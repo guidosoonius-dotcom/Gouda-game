@@ -10,6 +10,7 @@ import { Arrow } from "@/components/ui/icons";
 import { RoofActors } from "./RoofActors";
 import { RoofHud, ROOF_HUD_START, type RoofHudState } from "./RoofHud";
 import { RoofWorld } from "./RoofWorld";
+import { Cinema, Night } from "@/components/canal/Night";
 import { ridgeAt } from "./layout";
 import { ROOF, createRoof, dashIsSafe, stepRoof, type RoofOutcome, type RoofSim } from "./sim";
 
@@ -109,18 +110,16 @@ export function RoofGame() {
   const x0 = ROOF.covers[startCover];
   return (
     <div className="absolute inset-0 touch-none overflow-hidden bg-night">
-      <Canvas dpr={[1, 2]} camera={{ fov: 58, near: 0.5, far: 420, position: [x0 - 12, ridgeAt(x0) + 5.2, 4.2] }} gl={{ antialias: true, powerPreference: "high-performance" }}>
-        <color attach="background" args={["#0f1b2a"]} />
-        <fogExp2 attach="fog" args={["#0f1b2a", 0.0075]} />
-        <ambientLight color="#6a82a8" intensity={1.3} />
-        <hemisphereLight args={["#7f9cc6", "#0b1016", 2.2]} />
-        <directionalLight color="#b4c9ea" intensity={2.6} position={[-14, 26, 18]} />
-        <directionalLight color="#8fa9d2" intensity={1.0} position={[20, 10, -6]} />
+      <Canvas shadows="soft" dpr={[1, 2]} style={{ filter: "contrast(1.07) saturate(1.1)" }} camera={{ fov: 58, near: 0.5, far: 420, position: [x0 - 12, ridgeAt(x0) + 5.2, 4.2] }} gl={{ antialias: true, powerPreference: "high-performance" }}>
+        <color attach="background" args={["#0e1a2a"]} />
+        <fogExp2 attach="fog" args={["#0e1a2a", 0.0085]} />
+        <Night moon={[-9, 24, -15]} focus={(out) => out.set(sim.current.x + 9, ridgeAt(sim.current.x), 0)} subject={(out) => out.set(sim.current.x - 0.6, ridgeAt(sim.current.x), 1.6)} extent={34} />
         <RoofWorld sim={sim} />
         <RoofActors sim={sim} />
         <Loop sim={sim} input={input} onHud={setHud} onEvent={onEvent} />
       </Canvas>
 
+      <Cinema />
       {(phase === "play" || phase === "caught") && <RoofHud hud={hud} onDown={down} onUp={up} />}
 
       <AnimatePresence>

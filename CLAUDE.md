@@ -16,10 +16,14 @@ Read only the section you need; do not load whole documents by default.
 3. 3D assets come only from Blender scripts in this repo (`assets/blender/*.py`, run headless via
    `bpy` or the `bpy` MCP server) and are exported to `public/models/*.glb`.
    No third-party model downloads. Budget: <= 250 KB per GLB after `gltf-transform optimize`,
-   <= 1.5 MB of 3D per minigame. Keep materials simple (base color / vertex color);
-   lighting is designed in R3F, not in Blender.
+   <= 1.5 MB of 3D per minigame. Keep materials simple (base color only; no image textures):
+   `canal/Kit.tsx` bakes them to vertex colours and adds brick, tile, wood and stone detail
+   procedurally in the shader. Props and characters use `build(bevel=...)` for rounded, smooth
+   edges; big architecture stays unbevelled. Lighting is designed in R3F, not in Blender.
 4. Mount `<Canvas>` only in the minigame view; dispose on exit. Preload the minigame chunk
-   while the dossier is open. Cap DPR at 2. No realtime shadows on mobile; use baked AO / blob shadows.
+   while the dossier is open. Cap DPR at 2. Shadows: one 1024 moon map that follows the player
+   plus one per searchlight, all switchable in `TUNING.gfx`; no post-processing passes (the film
+   look is CSS: vignette, grain, colour filter).
 5. All movement and damping is frame-rate independent (`1 - Math.exp(-k * dt)`), never per-frame factors.
 6. Gameplay numbers live in `src/game/tuning.ts`, never inline.
 7. History: never present fiction as fact. Every factual claim and real name lives in

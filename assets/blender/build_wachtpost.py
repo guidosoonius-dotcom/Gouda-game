@@ -15,6 +15,6 @@ for row, count in enumerate((5, 4, 3)):
     for i in range(count):
         y = (i - (count - 1) / 2) * 0.62
         b.box((0.34, 0.58, 0.2), (-1.5 + random.random() * 0.05, y, 0.1 + row * 0.19), "Sand", rot=(0, 0, (random.random() - 0.5) * 0.12))
-b.build()
+b.build(bevel=0.035)
 export("wachtpost")
 preview("wachtpost", view=(-1.0, -0.8, 0.6))

@@ -89,6 +89,14 @@ Formaat: beslissing · waarom · alternatief.
     naam van een slachtoffer verzonnen (een test bewaakt dat de lijst leeg blijft zolang de
     feiten niet geverifieerd zijn) en er is op deze plek geen gegenereerd beeld.
 
+29. **Filmische afwerking zonder zware techniek.** Afgeronde en gladde modellen (bevel en
+    gewogen normalen in Blender), maanlicht met zachte schaduwen, een nachthemel als
+    omgevingslicht zodat water en helmen iets weerspiegelen, glanzend water met rimpels, en
+    baksteen, dakpannen, hout en keien als procedureel patroon in de shader (geen afbeeldingen,
+    geen downloads). Vignet, korrel en kleur zijn CSS. De eerdere regel "geen realtime schaduwen"
+    is daarmee vervangen door schakelaars in `TUNING.gfx`: zet die uit als een telefoon de 60
+    beelden per seconde niet haalt. Dat is nog niet op een echt toestel gemeten.
+
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.
 - Blaeu-kaart: pin-posities zijn op het oog geplaatst. Georefereren met controlepunten in M8.

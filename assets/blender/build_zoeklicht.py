@@ -15,13 +15,13 @@ b.cyl(0.05, 0.05, 0.5, (0, 0, PIVOT - 0.3), "Metal", segs=6)
 for s in (-1, 1):
     b.box((0.04, 0.06, 0.5), (s * 0.34, 0, PIVOT - 0.02), "Metal")
 b.box((0.72, 0.06, 0.04), (0, 0, PIVOT - 0.27), "Metal")
-stand = b.build()
+stand = b.build(bevel=0.008)
 
 h = Builder("Head")
-h.cyl(0.3, 0.26, 0.42, (0, 0.02, 0), "Metal", segs=10, rot=(math.pi / 2, 0, 0))
-h.cyl(0.27, 0.27, 0.03, (0, -0.2, 0), "Lamp", segs=10, rot=(math.pi / 2, 0, 0))
+h.cyl(0.3, 0.26, 0.42, (0, 0.02, 0), "Metal", segs=18, rot=(math.pi / 2, 0, 0))
+h.cyl(0.27, 0.27, 0.03, (0, -0.2, 0), "Lamp", segs=18, rot=(math.pi / 2, 0, 0))
 h.box((0.06, 0.14, 0.2), (0, 0.26, 0.2), "Metal")
-head = h.build()
+head = h.build(bevel=0.02)
 head.location = (0, 0, PIVOT)
 head.parent = stand
 export("zoeklicht")

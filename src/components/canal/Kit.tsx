@@ -5,6 +5,7 @@ import { useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
+import { TUNING } from "@/game/tuning";
 
 /** GLBs built by `npm run assets` from assets/blender/build_*.py. */
 const NAMES = [
@@ -46,8 +47,86 @@ function swayMaterial(strength: number) {
   return m;
 }
 
+/** Surface families for the procedural detail shader, stored per vertex as `kind`. */
+const SURFACE: Record<string, number> = {
+  Brick: 1, BrickDark: 1, Roof: 2, Wood: 3, WoodDark: 3, WoodWhite: 3, Bark: 3, Stone: 4, Cobble: 4, Sand: 4,
+};
+
+/**
+ * Vertex colours carry the base colour; this adds what a texture would: brick courses, roof
+ * tiles, wood grain, cobbles and a little weathering, computed from world position so nothing
+ * needs UVs or image files. The patterns fade out with distance, so they never shimmer.
+ */
+function detailMaterial() {
+  const m = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.86, metalness: 0.02 });
+  if (!TUNING.gfx.detail) return m;
+  m.onBeforeCompile = (shader) => {
+    shader.vertexShader = shader.vertexShader
+      .replace("#include <common>", "#include <common>\nattribute float kind;\nvarying float vKind;\nvarying vec3 vWPos;\nvarying vec3 vWNor;")
+      .replace(
+        "#include <begin_vertex>",
+        `#include <begin_vertex>
+        vKind = kind;
+        vec4 wp = vec4(transformed, 1.0);
+        vec3 wn = objectNormal;
+        #ifdef USE_INSTANCING
+          wp = instanceMatrix * wp;
+          wn = mat3(instanceMatrix) * wn;
+        #endif
+        vWPos = (modelMatrix * wp).xyz;
+        vWNor = normalize(mat3(modelMatrix) * wn);`,
+      );
+    shader.fragmentShader = shader.fragmentShader
+      .replace(
+        "#include <common>",
+        `#include <common>
+        varying float vKind;
+        varying vec3 vWPos;
+        varying vec3 vWNor;
+        float h21(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+        float vnoise(vec2 p) {
+          vec2 i = floor(p), f = fract(p);
+          f = f * f * (3.0 - 2.0 * f);
+          return mix(mix(h21(i), h21(i + vec2(1.0, 0.0)), f.x), mix(h21(i + vec2(0.0, 1.0)), h21(i + vec2(1.0, 1.0)), f.x), f.y);
+        }`,
+      )
+      .replace(
+        "#include <color_fragment>",
+        `#include <color_fragment>
+        {
+          vec3 an = abs(vWNor);
+          vec2 uv = an.y > 0.6 ? vWPos.xz : (an.x > an.z ? vWPos.zy : vWPos.xy);
+          float fade = smoothstep(75.0, 12.0, length(vWPos - cameraPosition));
+          float grain = 0.5 * vnoise(uv * 9.0) + 0.5 * vnoise(uv * 2.3);
+          float detail = 0.95 + 0.1 * grain;
+          if (vKind > 0.5 && vKind < 1.5) {
+            vec2 b = uv / vec2(0.44, 0.15);
+            b.x += 0.5 * mod(floor(b.y), 2.0);
+            vec2 f = fract(b);
+            float face = smoothstep(0.0, 0.07, f.x) * smoothstep(0.0, 0.16, f.y);
+            detail = mix(0.6, 0.8 + 0.4 * h21(floor(b)), face);
+          } else if (vKind > 1.5 && vKind < 2.5) {
+            vec2 t = uv / vec2(0.3, 0.36);
+            t.x += 0.5 * mod(floor(t.y), 2.0);
+            vec2 f = fract(t);
+            detail = (0.78 + 0.34 * h21(floor(t))) * (0.7 + 0.3 * smoothstep(0.0, 0.55, f.y)) * (0.86 + 0.14 * smoothstep(0.0, 0.12, f.x));
+          } else if (vKind > 2.5 && vKind < 3.5) {
+            detail = 0.8 + 0.2 * vnoise(uv * vec2(3.0, 34.0)) + 0.2 * vnoise(uv * vec2(34.0, 3.0));
+          } else if (vKind > 3.5 && vKind < 4.5) {
+            vec2 c = uv * 3.1;
+            vec2 f = abs(fract(c) - 0.5);
+            detail = mix(0.58, 0.8 + 0.38 * h21(floor(c)), smoothstep(0.5, 0.38, max(f.x, f.y)));
+          }
+          detail *= 0.92 + 0.16 * grain;
+          diffuseColor.rgb *= mix(1.0, detail, fade);
+        }`,
+      );
+  };
+  return m;
+}
+
 const MATERIALS = {
-  flat: new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.9 }),
+  flat: detailMaterial(),
   reed: swayMaterial(1),
   leaf: swayMaterial(0.07),
   lamp: new THREE.MeshStandardMaterial({ color: "#ffd98a", emissive: "#ffd27a", emissiveIntensity: 2.4, toneMapped: false }),
@@ -80,6 +159,7 @@ function flatten(root: THREE.Object3D) {
     const colors = new Float32Array(count * 3);
     for (let i = 0; i < colors.length; i += 3) colors.set([c.r, c.g, c.b], i);
     g.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+    g.setAttribute("kind", new THREE.BufferAttribute(new Float32Array(count).fill(SURFACE[(mesh.material as THREE.Material).name] ?? 0), 1));
     if (src.index) g.setIndex(Array.from(src.index.array));
     return g;
   };
@@ -97,11 +177,16 @@ function flatten(root: THREE.Object3D) {
     } else {
       mesh.geometry = bake(mesh);
       mesh.material = MATERIALS[kind];
+      mesh.castShadow = kind !== "lamp";
+      mesh.receiveShadow = kind === "flat";
     }
   }
   for (const [parent, groups] of merged) {
     for (const [kind, geoms] of Object.entries(groups) as [Kind, THREE.BufferGeometry[]][]) {
-      parent.add(new THREE.Mesh(mergeGeometries(geoms, false), MATERIALS[kind]));
+      const mesh = new THREE.Mesh(mergeGeometries(geoms, false), MATERIALS[kind]);
+      mesh.castShadow = kind !== "lamp";
+      mesh.receiveShadow = kind === "flat";
+      parent.add(mesh);
     }
   }
   return root;
@@ -142,7 +227,7 @@ function Part({ mesh, placements, tints, live }: { mesh: THREE.Mesh; placements:
     live(clock.elapsedTime, placements);
     write();
   });
-  return <instancedMesh ref={ref} args={[mesh.geometry, mesh.material, placements.length]} frustumCulled={false} />;
+  return <instancedMesh ref={ref} args={[mesh.geometry, mesh.material, placements.length]} frustumCulled={false} castShadow={mesh.castShadow} receiveShadow={mesh.receiveShadow} />;
 }
 
 /** Many copies of one kit model: one draw call per material kind. `only` keeps a single named node. */

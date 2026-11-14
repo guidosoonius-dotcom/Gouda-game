@@ -16,6 +16,6 @@ for sx in (-1, 1):
     b.box((4.0, 0.06, 0.06), (0, sx * 2.0, H + 1.25), "Metal")
 for z in (4, 8, 12):
     b.box((0.7, 0.06, 1.2), (0, -1.62, z), "WindowDark")
-b.build()
+b.build(bevel=0.04)
 export("uitkijk")
 preview("uitkijk")

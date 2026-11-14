@@ -31,25 +31,53 @@ function useGlints() {
   }, []);
 }
 
+/** Dark, glossy canal water: reflects the night sky, with small ripples that bend the highlights. */
+function useWater() {
+  return useMemo(() => {
+    const time = { value: 0 };
+    const m = new THREE.MeshStandardMaterial({ color: "#0c2230", metalness: 0.6, roughness: 0.16, emissive: "#040d13" });
+    m.onBeforeCompile = (shader) => {
+      shader.uniforms.uTime = time;
+      shader.vertexShader = shader.vertexShader
+        .replace("#include <common>", "#include <common>\nvarying vec3 vWater;")
+        .replace("#include <begin_vertex>", "#include <begin_vertex>\nvWater = (modelMatrix * vec4(transformed, 1.0)).xyz;");
+      shader.fragmentShader = shader.fragmentShader
+        .replace("#include <common>", "#include <common>\nvarying vec3 vWater;\nuniform float uTime;")
+        .replace(
+          "#include <normal_fragment_maps>",
+          `#include <normal_fragment_maps>
+          vec2 w = vWater.xz;
+          vec2 rip = vec2(
+            sin(w.x * 2.1 + w.y * 0.7 + uTime * 1.3) + 0.6 * sin(w.x * 5.3 - w.y * 2.9 - uTime * 2.1),
+            sin(w.y * 1.7 - w.x * 0.9 + uTime * 1.1) + 0.6 * sin(w.y * 4.7 + w.x * 3.3 + uTime * 1.7));
+          normal = normalize(normal + (viewMatrix * vec4(rip.x, 0.0, rip.y, 0.0)).xyz * 0.045);`,
+        );
+    };
+    return { material: m, time };
+  }, []);
+}
+
 function Water() {
   const glints = useGlints();
+  const { material: water, time } = useWater();
   useFrame((_, dt) => {
     glints.offset.y += dt * 0.012;
     glints.offset.x += dt * 0.004;
+    time.value += dt;
   });
   return (
     <group position={[0, 0, -LEN / 2 + 20]}>
-      <mesh rotation-x={-Math.PI / 2}>
+      <mesh rotation-x={-Math.PI / 2} receiveShadow>
         <planeGeometry args={[HW * 2 + 1, LEN]} />
-        <meshStandardMaterial color="#12303d" metalness={0.15} roughness={0.42} emissive="#06141b" />
+        <primitive object={water} attach="material" />
       </mesh>
       <mesh rotation-x={-Math.PI / 2} position={[0, 0.012, 0]}>
         <planeGeometry args={[HW * 2, LEN]} />
-        <meshBasicMaterial map={glints} transparent opacity={0.34} depthWrite={false} blending={THREE.AdditiveBlending} />
+        <meshBasicMaterial map={glints} transparent opacity={0.22} depthWrite={false} blending={THREE.AdditiveBlending} />
       </mesh>
       {/* cobbled streets behind the quay strips, under the houses */}
       {[-1, 1].map((side) => (
-        <mesh key={side} rotation-x={-Math.PI / 2} position={[side * (HW + 9), QUAY - 0.02, 0]}>
+        <mesh key={side} rotation-x={-Math.PI / 2} position={[side * (HW + 9), QUAY - 0.02, 0]} receiveShadow>
           <planeGeometry args={[12.2, LEN]} />
           <meshStandardMaterial color="#4a4743" roughness={1} />
         </mesh>

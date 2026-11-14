@@ -7,6 +7,7 @@ import { Post } from "@/components/canal/CanalGuards";
 import { Instanced, Model, place, preload, type ModelName } from "@/components/canal/Kit";
 import { rng } from "@/components/canal/layout";
 import { beamTexture, radialTexture } from "@/components/canal/textures";
+import { TUNING } from "@/game/tuning";
 import { HOUSES, TOWERS, TOWER_TOP, ridgeAt } from "./layout";
 import { ROOF, beamX, type RoofSim } from "./sim";
 
@@ -47,7 +48,7 @@ function Town() {
         <Instanced key={name} name={name} placements={p.back[i]} />
       ))}
       <Model name="sintjan" position={[178, -6, -62]} rotation-y={0.25} scale={1.25} />
-      <mesh rotation-x={-Math.PI / 2} position={[60, 0, 0]}>
+      <mesh rotation-x={-Math.PI / 2} position={[60, 0, 0]} receiveShadow>
         <planeGeometry args={[400, 240]} />
         <meshStandardMaterial color="#1a2029" roughness={1} />
       </mesh>
@@ -92,7 +93,7 @@ function Lights({ sim }: { sim: React.RefObject<RoofSim> }) {
         <group key={i}>
           <Post foot={feet[i]} aim={aimRefs[i]} />
           <primitive object={targets[i]} />
-          <spotLight position={[feet[i].x, TOWER_TOP + 1.35, feet[i].z]} target={targets[i]} color="#ffd27a" intensity={900} angle={0.13} penumbra={0.5} distance={90} decay={1.5} />
+          <spotLight position={[feet[i].x, TOWER_TOP + 1.35, feet[i].z]} target={targets[i]} color="#ffd27a" intensity={900} angle={0.13} penumbra={0.5} distance={90} decay={1.5} castShadow={TUNING.gfx.spotShadows} shadow-mapSize={[1024, 1024]} shadow-bias={-0.0004} />
           <sprite position={[feet[i].x, TOWER_TOP + 1.35, feet[i].z]} scale={1.6}>
             <spriteMaterial map={pool} {...glow} opacity={0.7} />
           </sprite>

@@ -94,9 +94,9 @@ class Builder:
         geom = bmesh.ops.create_cone(self.bm, cap_ends=True, segments=segs, radius1=r1, radius2=r2, depth=h, matrix=m)
         self._paint(geom["verts"], mat)
 
-    def ico(self, radius, loc, mat, scale=(1, 1, 1)):
+    def ico(self, radius, loc, mat, scale=(1, 1, 1), subdiv=2):
         m = Matrix.Translation(loc) @ Matrix.Diagonal((*scale, 1))
-        geom = bmesh.ops.create_icosphere(self.bm, subdivisions=1, radius=radius, matrix=m)
+        geom = bmesh.ops.create_icosphere(self.bm, subdivisions=subdiv, radius=radius, matrix=m)
         self._paint(geom["verts"], mat)
 
     def poly(self, pts, mat):
@@ -118,7 +118,9 @@ class Builder:
         if cap_last:
             self.bm.faces.new(vs[-1]).material_index = idx
 
-    def build(self, recalc=True):
+    def build(self, recalc=True, bevel=0.0):
+        """`bevel` (metres) rounds every hard edge and shades the object smooth: edges catch the
+        light instead of ending in a knife line. Large flat architecture keeps bevel=0."""
         if recalc:
             bmesh.ops.recalc_face_normals(self.bm, faces=self.bm.faces)
         mesh = bpy.data.meshes.new(self.name)
@@ -128,6 +130,14 @@ class Builder:
             mesh.materials.append(material(m))
         obj = bpy.data.objects.new(self.name, mesh)
         bpy.context.scene.collection.objects.link(obj)
+        if bevel > 0:
+            for poly in mesh.polygons:
+                poly.use_smooth = True
+            mod = obj.modifiers.new("Bevel", "BEVEL")
+            mod.width, mod.segments, mod.limit_method, mod.angle_limit = bevel, 2, "ANGLE", math.radians(38)
+            # keeps big faces flat while the bevels roll the light around the edge
+            normals = obj.modifiers.new("Normals", "WEIGHTED_NORMAL")
+            normals.keep_sharp, normals.weight = False, 70
         return obj
 
 

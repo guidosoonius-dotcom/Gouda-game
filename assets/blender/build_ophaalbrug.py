@@ -29,6 +29,6 @@ b.box((1.5, WIDTH + 0.3, 0.7), (GATE_X + 3.2, 0, DECK + GATE_H - 0.3), "WoodDark
 # brick abutments on both banks
 for s in (-1, 1):
     b.box((1.2, WIDTH + 0.8, DECK + 0.9), (s * (HALF + 0.6), 0, (DECK - 1.0) / 2 - 0.1), "Brick")
-b.build()
+b.build(bevel=0.02)
 export("ophaalbrug")
 preview("ophaalbrug", view=(-0.7, -1.3, 0.75))

@@ -24,6 +24,6 @@ for s in (-1, 1):
     # stone lock head with coping
     b.box((2.4, 5.0, HIGH - LOW - 0.6), (s * (HALF + 1.2), 0.6, (HIGH - 0.6 + LOW) / 2), "Stone")
     b.box((2.6, 5.2, 0.2), (s * (HALF + 1.2), 0.6, HIGH - 0.5), "Cobble")
-b.build()
+b.build(bevel=0.03)
 export("sluisdeur")
 preview("sluisdeur", view=(0.5, -1.3, 0.9))
