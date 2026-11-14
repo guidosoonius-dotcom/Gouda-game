@@ -12,13 +12,24 @@ ontworpen. Materiaal `Lamp` krijgt in het spel een gloed.
 
 | Asset | Afmetingen | Oorsprong en richting | Nodes |
 |-------|------------|-----------------------|-------|
-| `schouw` | 4,2 × 1,4 m | waterlijn midscheeps; boeg naar −Z | `Hull`, `Crew`, `OarL`, `OarR` (riemen draaien om hun dol) |
+| `schouw` | 4,2 × 1,4 m | waterlijn midscheeps; boeg naar −Z | `Hull`, `Rower`, `Passenger`, `OarL`, `OarR` (riemen draaien om hun dol) |
 | `riet` | ø 1,4 m, 2,2 m hoog | waterlijn, midden van de pol | `Riet` |
 | `kade` | 10 m lang, 3 m diep, y −1 … 1,2 | waterlijn, midden van het segment; muur op x = 0, land naar +X | `Kade` |
 | `ophaalbrug` | overspanning 10,4 m, dek 3 m breed, dek op y = 1,3 | midden van de gracht, waterlijn; hameipoort op +X | `Ophaalbrug` |
 | `sluisdeur` | 10,4 m breed, y −1 … 2 | midden van de gracht, waterlijn; punt van de deuren naar −Z | `Sluisdeur` |
-| `wacht` | 1,8 m | voeten; kijkt naar +Z | `Wacht`, `Lamp` (leeg object bij de handlamp) |
-| `lantaarn` | 3,4 m | voet | `Lantaarn`, `Light` (leeg object bij de lamp) |
+| `gevel_trap`, `gevel_klok`, `gevel_tuit` | 5,0–6,2 m breed, 8 m diep, 11–13 m hoog | maaiveld, midden van de gevel; gevel kijkt naar −X | `Gevel` |
+| `soldaat` | 1,8 m | voeten; kijkt naar +Z | `Soldaat`, `LegL`, `LegR` (benen draaien om de heup) |
+| `zoeklicht` | 1,65 m | voet van het statief | `Zoeklicht`, `Head` (draaipunt op 1,35 m; lens kijkt naar +Z) |
+| `wachtpost` | huisje 1,1 × 1,1 × 2,5 m met zandzakken | maaiveld, midden van het huisje; opening naar −X | `Wachtpost` |
+| `boom` | ± 7 m | voet van de stam | `Boom` |
+| `fiets` | 1,8 m lang | grond, tussen de wielen | `Fiets` |
+| `meerpaal` | 2,5 m, waarvan 1,65 m boven water | waterlijn | `Meerpaal` |
+| `vracht` | twee kisten en een ton | grond | `Vracht` |
+| `lantaarn` | 3,4 m, gedoofd (verduistering) | voet | `Lantaarn`, `Light` |
+
+In het spel (`src/components/canal/Kit.tsx`) worden de materiaalkleuren naar vertexkleuren gebakken
+en de onderdelen per node samengevoegd: één draw call per model. Uitzonderingen op naam:
+`Lamp` gloeit, `Reed`/`ReedPlume` en `Leaf` wuiven in de wind.
 
 Een nieuwe asset: kopieer een `build_*.py`, gebruik `Builder` uit `_lib.py` (dozen, cilinders,
 polygonen, loft), sluit af met `export(naam)` en `preview(naam)`.

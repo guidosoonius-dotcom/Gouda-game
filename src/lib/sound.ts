@@ -142,3 +142,40 @@ export const sfx = {
     tone({ freq: 990, dur: 0.6, gain: 0.05 }, 0.09);
   },
 };
+
+let bed: { src: AudioBufferSourceNode; lfo: OscillatorNode; gain: GainNode } | null = null;
+
+/** Night on the canal: water lapping against the quay, slowly swelling and fading. */
+export const ambience = {
+  start() {
+    const c = ac();
+    if (!c || !master || bed) return;
+    const src = c.createBufferSource();
+    src.buffer = noiseBuffer(c, 4);
+    src.loop = true;
+    const filter = c.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.value = 340;
+    const gain = c.createGain();
+    gain.gain.setValueAtTime(0.0001, c.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.11, c.currentTime + 2.5);
+    const lfo = c.createOscillator();
+    lfo.frequency.value = 0.17;
+    const depth = c.createGain();
+    depth.gain.value = 0.05;
+    lfo.connect(depth).connect(gain.gain);
+    src.connect(filter).connect(gain).connect(master);
+    src.start();
+    lfo.start();
+    bed = { src, lfo, gain };
+  },
+  stop() {
+    if (!bed || !ctx) return;
+    const { src, lfo, gain } = bed;
+    bed = null;
+    gain.gain.cancelScheduledValues(ctx.currentTime);
+    gain.gain.setTargetAtTime(0.0001, ctx.currentTime, 0.3);
+    src.stop(ctx.currentTime + 1.2);
+    lfo.stop(ctx.currentTime + 1.2);
+  },
+};

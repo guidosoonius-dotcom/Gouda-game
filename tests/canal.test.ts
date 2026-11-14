@@ -134,3 +134,23 @@ describe("Nachtvaart course", () => {
     expect(s.noise).toBeGreaterThan(0.15);
   });
 });
+
+describe("Nachtvaart layout", () => {
+  it("lines both banks with houses, keeps the bridge clear and lets a little light escape the blackout", async () => {
+    const { LAYOUT, HW } = await import("@/components/canal/layout");
+    expect(LAYOUT.houses.length).toBeGreaterThan(40);
+    for (const side of [-1, 1]) expect(LAYOUT.houses.filter((h) => h.side === side).length).toBeGreaterThan(20);
+    expect(LAYOUT.houses.every((h) => Math.abs(h.z - COURSE.bridgeZ) >= 6.5)).toBe(true);
+    expect(LAYOUT.slivers.length).toBeGreaterThanOrEqual(6);
+    expect(LAYOUT.slivers.length).toBeLessThan(LAYOUT.houses.length / 2);
+    expect(LAYOUT.trees.every((t) => Math.abs(t.x) > HW)).toBe(true);
+    process.stderr.write(`layout: ${LAYOUT.houses.length} houses, ${LAYOUT.slivers.length} slivers, ${LAYOUT.trees.length} trees\n`);
+  });
+
+  it("moored boats never block a hiding place or the middle of the canal", () => {
+    for (const m of COURSE.moored) {
+      expect(Math.abs(m.x)).toBeGreaterThan(3.5);
+      for (const reed of COURSE.reeds) expect(Math.hypot(m.x - reed.x, m.z - reed.z)).toBeGreaterThan(reed.r + 2.2);
+    }
+  });
+});

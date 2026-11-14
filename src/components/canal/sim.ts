@@ -21,6 +21,12 @@ export const COURSE = {
   beam: { zNear: -31, zFar: -57, radius: 3.0, alertFrom: -22, alertTo: -66 },
   /** Hazard B: a lamp on the lock sweeps a full-width band up and down this stretch. */
   band: { zNear: -84, zFar: -128, half: 2.6, alertFrom: -78, alertTo: -132 },
+  /** Moored boats along the quay: obstacles to steer around (centre of a 2.4 m long hull). */
+  moored: [
+    { x: 4.05, z: -21 },
+    { x: -4.05, z: -86.5 },
+    { x: 4.05, z: -106.5 },
+  ],
   reeds: [
     { x: -3.4, z: -14, r: 2.4 },
     { x: -3.4, z: -29, r: 2.4 },
@@ -213,6 +219,20 @@ export function step(s: Sim, input: SimInput, dt: number): SimEvent[] {
     }
     s.heading *= 0.5;
     s.yawRate = 0;
+  }
+  for (const m of COURSE.moored) {
+    const dz = Math.max(-1.2, Math.min(1.2, s.z - m.z));
+    const dx = s.x - m.x;
+    const dist = Math.hypot(dx, s.z - (m.z + dz));
+    if (dist < 1.45 && dist > 0.001) {
+      // Slide off the moored hull; a hard knock is heard.
+      s.x += (dx / dist) * (1.45 - dist);
+      if (s.v > 1.2) {
+        s.noise = Math.min(1, s.noise + T.bumpNoise);
+        s.v *= 0.5;
+        ev.push({ type: "bump" });
+      }
+    }
   }
   s.noise = Math.max(0, s.noise - T.noiseDecay * dt);
 

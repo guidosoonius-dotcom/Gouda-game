@@ -51,6 +51,21 @@ Formaat: beslissing · waarom · alternatief.
 15. **Proefvaart bereikbaar via zegel 4**, met stempel "PROEFVAART". Ze telt niet als voltooid
     hoofdstuk; de afloop wordt wel al als vlag bewaard (`ch4.task`).
 
+16. **Nachtvaart: camera lager en dichterbij.** Je kijkt nu de gracht in in plaats van er recht
+    bovenop: de huizenrijen, de brug en het zoeklicht in de verte horen bij het beeld. De
+    klokmelding is daarom een klein vakje bovenin geworden en Marie spreekt als ondertitel.
+17. **Verduistering als sfeer én als regel.** Straatlantaarns zijn gedoofd en ramen donker; alleen
+    hier en daar ontsnapt licht langs een luik of gordijn. Daardoor is het zoeklicht hét licht in
+    beeld. Dit is scène-fictie; of en hoe Gouda in oktober 1944 verduisterd was, staat nog niet in
+    het bronnenregister en wordt nergens als feit gepresenteerd.
+18. **Soldaten zonder insignes.** Drie schildwachten in jas en helm: één loopt wacht op de brug
+    (blijft staan, kijkt over de reling, rookt), twee bedienen een zoeklicht op statief en stappen
+    mee als het licht zwenkt. Hoort de wacht riemen, dan draait hij zich naar de boot.
+19. **Eén draw call per model.** Kleuren worden bij het laden naar vertexkleuren gebakken en
+    samengevoegd; riet en bladeren wuiven via een kleine vertex-shader die ook op de boot reageert.
+20. **Aangemeerde bootjes zijn obstakels.** Drie lege schouwen liggen aan meerpalen; je glijdt
+    erlangs af, een harde klap maakt lawaai. Ze liggen nooit bij een rietkraag (getest).
+
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.
 - Blaeu-kaart: pin-posities zijn op het oog geplaatst. Georefereren met controlepunten in M8.

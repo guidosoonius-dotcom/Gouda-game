@@ -1,4 +1,4 @@
-"""Schouw: flat-bottomed Dutch rowboat with crew and two separately animated oars.
+"""Schouw: flat-bottomed Dutch rowboat with `Rower`, `Passenger` and two separately animated oars.
 4.2 m long, 1.4 m beam, bow toward +Y (game -Z), origin at the waterline amidships."""
 import os, sys
 sys.path.insert(0, os.path.dirname(__file__))
@@ -45,10 +45,13 @@ for y in (-1.35, -0.4, 0.95):
     hull.box((1.18, 0.24, 0.04), (0, y, 0.26), "Wood")
 hull.build()
 
-crew = Builder("Crew")
-figure(crew, -0.4, 0.08, -1)
-figure(crew, 0.95, 0.2, 1)
-crew.build()
+# Two separate figures so the game can make the rower pull and the passenger duck.
+# Each has its origin at the seat, so it can lean from the hips.
+for name, seat, lean, facing in (("Rower", -0.4, 0.08, -1), ("Passenger", 0.95, 0.2, 1)):
+    fig = Builder(name)
+    figure(fig, 0.0, lean, facing)
+    obj = fig.build()
+    obj.location = (0, seat, 0.0)
 oar("OarL", -1)
 oar("OarR", 1)
 

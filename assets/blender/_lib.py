@@ -32,6 +32,15 @@ MATERIALS = {
     "Skin": ("#b89478", False),
     "Metal": ("#3a3d42", False),
     "Lamp": ("#ffd98a", False),
+    "Roof": ("#4a3d3a", False),
+    "WindowDark": ("#1c2530", False),
+    "Shutter": ("#3d4a3a", False),
+    "Uniform": ("#5b6257", False),
+    "Helmet": ("#3f463d", False),
+    "Boot": ("#1d1d1f", False),
+    "Sand": ("#8d7f5f", False),
+    "Bark": ("#3b2f26", False),
+    "Leaf": ("#6a6232", True),
 }
 
 
@@ -83,6 +92,11 @@ class Builder:
     def cyl(self, r1, r2, h, loc, mat, segs=8, rot=(0, 0, 0)):
         m = Matrix.Translation(loc) @ Euler(rot).to_matrix().to_4x4()
         geom = bmesh.ops.create_cone(self.bm, cap_ends=True, segments=segs, radius1=r1, radius2=r2, depth=h, matrix=m)
+        self._paint(geom["verts"], mat)
+
+    def ico(self, radius, loc, mat, scale=(1, 1, 1)):
+        m = Matrix.Translation(loc) @ Matrix.Diagonal((*scale, 1))
+        geom = bmesh.ops.create_icosphere(self.bm, subdivisions=1, radius=radius, matrix=m)
         self._paint(geom["verts"], mat)
 
     def poly(self, pts, mat):

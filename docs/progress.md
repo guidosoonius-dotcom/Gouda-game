@@ -11,8 +11,11 @@ Kies "Speel thuis". Hoofdstuk 1 is volledig; tik op zegel 4 voor de proefvaart.
   dilemma → krant "De Koerier" → koerierstas met herstelcode.
 - **M2 Keuzesysteem:** `src/game/choices.ts` (keuzes, uitkomsten, echo's), herstelcode
   (`src/game/save.ts`), unittests.
-- **M3 Blender-pijplijn:** `npm run assets` bouwt 7 modellen (schouw, riet, kade, ophaalbrug,
-  sluisdeur, wacht, lantaarn), samen 120 KB. Zie `assets/blender/README.md`.
+- **M3 Blender-pijplijn:** `npm run assets` bouwt de modellen uit `assets/blender/build_*.py`. Zie `assets/blender/README.md`.
+- **Nachtvaart aangekleed (sessie 2):** lagere camera de gracht in, 59 grachtenhuizen in drie
+  geveltypes, bomen, meerpalen, aangemeerde bootjes, fietsen, vracht, wachtpost; drie soldaten met
+  twee zoeklichten; wuivend riet, mist, drijvende bladeren, lichtkieren achter verduisterde ramen,
+  kielzog, roeier en passagier die bewegen en wegduiken, omgevingsgeluid. 16 modellen, 254 KB.
 - **M4 Nachtvaart, prototype:** pure simulatie (`src/components/canal/sim.ts`) met roeien, lawaai,
   zoeklicht, lichtband, riet en klokken; R3F-scène met de kit; HUD volgens ontwerp; drie aflopen
   (stil, gezien, omweg), geen game over. Een testbot vaart het parcours ongezien in 68 s.
@@ -25,7 +28,7 @@ Kies "Speel thuis". Hoofdstuk 1 is volledig; tik op zegel 4 voor de proefvaart.
 - Alle historische feiten staan op `verified: false` (`src/data/sources.ts`).
 
 ## Controle
-- `npm run build` · `npm test` (26 tests) · `npm run test:e2e` (speelt hoofdstuk 1 door op 390×844,
+- `npm run build` · `npm test` (28 tests) · `npm run test:e2e` (speelt hoofdstuk 1 door op 390×844,
   start de proefvaart en zet screenshots in `test-results/`) · `npm run assets`.
 - Ontwikkelhulp: `/?z=-60` start de proefvaart verderop (alleen in dev).
   `node scripts/canal-shots.cjs` maakt screenshots van de vaart.

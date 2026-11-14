@@ -5,10 +5,12 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { AnimatePresence, motion } from "motion/react";
 import { TUNING } from "@/game/tuning";
 import { useGameStore } from "@/store/useGameStore";
-import { sfx, unlockAudio } from "@/lib/sound";
+import { ambience, sfx, unlockAudio } from "@/lib/sound";
 import { Arrow } from "@/components/ui/icons";
 import { CanalActors, type Fx } from "./CanalActors";
 import { CanalHud, HUD_START, type HudState } from "./CanalHud";
+import { CanalGuards } from "./CanalGuards";
+import { CanalLife } from "./CanalLife";
 import { CanalWorld } from "./CanalWorld";
 import { COURSE, createSim, step, type Outcome, type Side, type Sim } from "./sim";
 
@@ -124,9 +126,12 @@ export function CanalGame() {
     return () => (window.removeEventListener("keydown", kd), window.removeEventListener("keyup", ku));
   }, [down, up]);
 
+  useEffect(() => () => ambience.stop(), []);
+
   const start = () => {
     unlockAudio();
     sfx.paper();
+    ambience.start();
     sim.current = createSim();
     sim.current.status = "play";
     // Dev aid: /?z=-60 starts further down the canal (ignored in production builds).
@@ -153,15 +158,19 @@ export function CanalGame() {
     <div className="absolute inset-0 touch-none overflow-hidden bg-night">
       <Canvas
         dpr={[1, 2]}
-        camera={{ fov: 60, near: 0.5, far: 130, position: [0, 22, 10.5] }}
+        camera={{ fov: 64, near: 0.5, far: 220, position: [0, 11.5, 13] }}
         gl={{ antialias: true, powerPreference: "high-performance" }}
       >
-        <color attach="background" args={["#0a1119"]} />
-        <fogExp2 attach="fog" args={["#0a1119", 0.017]} />
-        <ambientLight color="#5f7699" intensity={1.1} />
+        <color attach="background" args={["#0e1926"]} />
+        <fogExp2 attach="fog" args={["#0e1926", 0.0115]} />
+        <ambientLight color="#6a82a8" intensity={1.5} />
         <hemisphereLight args={["#7f9cc6", "#0b1016", 2.4]} />
         <directionalLight color="#b4c9ea" intensity={2.8} position={[-10, 24, 16]} />
+        {/* fill from the other side, so the facades on both banks catch some moonlight */}
+        <directionalLight color="#8fa9d2" intensity={1.5} position={[12, 12, 10]} />
         <CanalWorld />
+        <CanalLife sim={sim} />
+        <CanalGuards sim={sim} />
         <CanalActors sim={sim} fx={fx} />
         <Loop sim={sim} fx={fx} input={input} onHud={setHud} onEvent={onEvent} />
       </Canvas>
