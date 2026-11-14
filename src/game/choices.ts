@@ -61,7 +61,7 @@ export const CHOICES = [
     question: "Waar ga jij",
     questionAccent: "heen?",
     A: { value: "zoeken", title: "Ik help de man zoeken", sub: "Gerrit brengt de groep alleen. Het duurt langer." },
-    B: { value: "groep", title: "Ik breng de groep eerst", sub: "Zes mensen veilig. De man blijft achter." },
+    B: { value: "groep", title: "Ik breng de groep eerst", sub: "De groep is veilig. De man blijft achter." },
   },
 ] as const satisfies readonly ChoiceDef[];
 
@@ -73,6 +73,7 @@ export const OUTCOMES = {
   "ch4.task": ["stil", "gezien", "omweg"],
   // Appended, not inserted: the recovery code stores outcomes in this order.
   "ch2.task": ["ongezien", "gezien", "telaat"],
+  "ch5.task": ["allen", "enkelen", "telaat"],
 } as const;
 export type OutcomeId = keyof typeof OUTCOMES;
 
@@ -136,6 +137,34 @@ export const ECHOES: readonly Echo[] = [
     slot: "cast",
     when: { flag: "ch2.kees", is: "alleen" },
     text: "Kees kijkt je nauwelijks aan. Toch is hij de eerste die de verbandkist pakt.",
+  },
+  {
+    id: "kees-mee-papers",
+    chapter: EPILOGUE,
+    slot: "epilogue",
+    when: { flag: "ch2.kees", is: "mee" },
+    text: "Kees wringt zich door de menigte met een stapel kranten onder zijn arm. De eerste die niet verstopt hoeft.",
+  },
+  {
+    id: "kees-alleen-nod",
+    chapter: EPILOGUE,
+    slot: "epilogue",
+    when: { flag: "ch2.kees", is: "alleen" },
+    text: "Aan de overkant staat Kees. Hij knikt naar je. Het is geen vergeving, maar hij knikt.",
+  },
+  {
+    id: "pass-student-card",
+    chapter: EPILOGUE,
+    slot: "epilogue",
+    when: { flag: "ch1.pass", is: "student" },
+    text: "Willem geeft je een kaart die weken onderweg is geweest. Geen afzender. ‘De fiets staat er nog.’",
+  },
+  {
+    id: "pass-glazen-crates",
+    chapter: EPILOGUE,
+    slot: "epilogue",
+    when: { flag: "ch1.pass", is: "glazen" },
+    text: "Willem zegt dat de kisten nog dicht zijn. Hij heeft ze elke week geteld.",
   },
   {
     id: "broer-mee-square",

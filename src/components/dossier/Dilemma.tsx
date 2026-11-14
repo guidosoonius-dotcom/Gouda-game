@@ -7,7 +7,7 @@ import { useGameStore } from "@/store/useGameStore";
 import { sfx } from "@/lib/sound";
 
 /** Two paper strips with a stamped A and B. There is no right answer. */
-export function Dilemma({ id, ready }: { id: ChoiceId; ready: boolean }) {
+export function Dilemma({ id, ready, onPick }: { id: ChoiceId; ready: boolean; onPick?: (key: "A" | "B") => void }) {
   const def = choiceById(id)!;
   const choose = useGameStore((s) => s.choose);
   const [picked, setPicked] = useState<"A" | "B" | null>(null);
@@ -16,7 +16,7 @@ export function Dilemma({ id, ready }: { id: ChoiceId; ready: boolean }) {
     if (picked) return;
     setPicked(key);
     sfx.stamp();
-    window.setTimeout(() => choose(id, key), 1150);
+    window.setTimeout(() => (onPick ? onPick(key) : choose(id, key)), 1150);
   };
 
   return (

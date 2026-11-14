@@ -174,6 +174,43 @@ async function packCrate(page, crateNo) {
     await expectText("NAAR DE SLUIS");
     await shot("09b-nachtvaart");
 
+    // Chapter 5 and the epilogue: the bicycle run mounts; with all five chapters done the Markt opens.
+    await page.goto(base);
+    await page.evaluate(() => {
+      const raw = JSON.parse(localStorage.getItem("koerier-aan-de-gouwe"));
+      raw.state.completed = [1, 2, 3, 4];
+      localStorage.setItem("koerier-aan-de-gouwe", JSON.stringify(raw));
+    });
+    await page.goto(base);
+    await page.getByRole("button", { name: /thuis/i }).click();
+    await expectText("Vluchtspoor bij het Station");
+    await page.getByRole("button", { name: /Open het dossier/i }).click();
+    await expectText("Dossier 05");
+    await page.waitForTimeout(6000);
+    await page.getByRole("button", { name: /Verder/i }).click();
+    await page.getByRole("button", { name: /Op de fiets/i }).click();
+    await expectText("Stuur met links en rechts");
+    await page.getByRole("button", { name: /Op de fiets/i }).click();
+    await page.waitForSelector("canvas");
+    await page.keyboard.press("Space");
+    await expectText("Luchtalarm");
+    await shot("10-vluchtspoor");
+    await page.evaluate(() => {
+      const raw = JSON.parse(localStorage.getItem("koerier-aan-de-gouwe"));
+      raw.state.completed = [1, 2, 3, 4, 5];
+      raw.state.flags["ch5.puin"] = "zoeken";
+      localStorage.setItem("koerier-aan-de-gouwe", JSON.stringify(raw));
+    });
+    await page.goto(base);
+    await page.getByRole("button", { name: /thuis/i }).click();
+    await page.getByRole("button", { name: /naar de Markt/i }).click();
+    await expectText("Het is licht");
+    await expectText("Wie er staan");
+    await page.getByLabel("Brief aan later").fill("Vergeet niet hoe gewoon de mensen waren.");
+    await shot("11-epiloog");
+    await page.getByRole("button", { name: /Sluit het dossier/i }).click();
+    await expectText("HERLEES DE EPILOOG");
+
     if (errors.length) {
       failed = true;
       console.error("Console errors:\n" + errors.join("\n"));

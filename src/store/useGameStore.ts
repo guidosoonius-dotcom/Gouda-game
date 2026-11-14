@@ -6,7 +6,7 @@ import { applyChoice, applyOutcome, type ChoiceId, type Flags, type OutcomeId, O
 import { CHAPTERS } from "@/data/chapters";
 import type { Progress } from "@/game/save";
 
-export type View = "title" | "map" | "dossier" | "task" | "mirror";
+export type View = "title" | "map" | "dossier" | "task" | "mirror" | "epilogue";
 export type Mode = "location" | "home";
 
 interface GameState {
@@ -18,6 +18,8 @@ interface GameState {
   completed: number[];
   flags: Flags;
   muted: boolean;
+  /** The player's "letter to later", written in the epilogue. Stays on this device. */
+  letter: string;
   /** True when the mirror is re-read from the satchel (no progress change on close). */
   rereading: boolean;
 
@@ -30,8 +32,11 @@ interface GameState {
   /** After a dilemma or task: the next dossier page, or the mirror when the dossier is finished. */
   advance: () => void;
   choose: (id: ChoiceId, option: "A" | "B") => void;
+  /** Record a choice made in the middle of a task, without leaving the task. */
+  decide: (id: ChoiceId, option: "A" | "B") => void;
   finishTask: <K extends OutcomeId>(id: K, value: (typeof OUTCOMES)[K][number]) => void;
   completeChapter: () => void;
+  finishEpilogue: (letter: string) => void;
   rereadMirror: (id: number) => void;
   toggleMute: () => void;
   restore: (p: Progress) => void;
@@ -53,6 +58,7 @@ export const useGameStore = create<GameState>()(
       completed: [],
       flags: {},
       muted: false,
+      letter: "",
       rereading: false,
 
       start: (mode) => set({ mode, view: "map" }),
@@ -70,6 +76,7 @@ export const useGameStore = create<GameState>()(
         set((s) => ({ flags: applyChoice(s.flags, id, option) }));
         get().advance();
       },
+      decide: (id, option) => set((s) => ({ flags: applyChoice(s.flags, id, option) })),
       finishTask: (id, value) => set((s) => ({ flags: applyOutcome(s.flags, id, value) })),
       completeChapter: () => {
         const { chapter, completed, rereading } = get();
@@ -79,15 +86,17 @@ export const useGameStore = create<GameState>()(
           view: "map",
         });
       },
+      finishEpilogue: (letter) =>
+        set((s) => ({ letter, completed: s.completed.includes(6) ? s.completed : [...s.completed, 6], view: "map" })),
       rereadMirror: (id) => set({ chapter: id, view: "mirror", rereading: true }),
       toggleMute: () => set((s) => ({ muted: !s.muted })),
       restore: (p) => set({ completed: p.completed, flags: p.flags, view: "map" }),
-      reset: () => set({ completed: [], flags: {}, chapter: 1, page: 0, view: "title", rereading: false }),
+      reset: () => set({ completed: [], flags: {}, letter: "", chapter: 1, page: 0, view: "title", rereading: false }),
     }),
     {
       name: "koerier-aan-de-gouwe",
       version: 1,
-      partialize: (s) => ({ mode: s.mode, completed: s.completed, flags: s.flags, muted: s.muted }),
+      partialize: (s) => ({ mode: s.mode, completed: s.completed, flags: s.flags, muted: s.muted, letter: s.letter }),
     },
   ),
 );

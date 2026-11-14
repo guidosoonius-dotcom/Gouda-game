@@ -41,6 +41,8 @@ MATERIALS = {
     "Sand": ("#8d7f5f", False),
     "Bark": ("#3b2f26", False),
     "Leaf": ("#6a6232", True),
+    "Scarf": ("#8a5a4a", False),
+    "CoatBrown": ("#5a4a3e", False),
 }
 
 

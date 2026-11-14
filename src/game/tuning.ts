@@ -21,6 +21,21 @@ export const TUNING = {
     /** A drop snaps when the panel is within this many cells of a valid slot. */
     snapCells: 0.6,
   },
+  bike: {
+    /** Seconds until the raid is over and Gerrit takes over. */
+    time: 95,
+    /** Riding alone, and walking pace with people behind you (m/s). */
+    rideSpeed: 5.0,
+    walkSpeed: 2.7,
+    /** Sideways steering speed (m/s). */
+    steer: 3.4,
+    /** People within this distance come along when the bell rings (m). */
+    bellRange: 6.5,
+    /** Seconds between falling bombs, the warning before each, and how far people scatter from it. */
+    bombEvery: 7.5,
+    bombWarn: 2.6,
+    bombRadius: 4.6,
+  },
   rooftop: {
     /** Seconds until curfew (19:52 to 20:00 on the clock). */
     time: 80,

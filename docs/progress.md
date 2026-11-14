@@ -1,7 +1,7 @@
 # Voortgang
 
-Laatste update: sessie 2 (hoofdstuk 1 t/m 4 speelbaar). Start: `npm install && npm run dev` → http://localhost:3000.
-Kies "Speel thuis". Hoofdstuk 1 t/m 4 zijn volledig.
+Laatste update: sessie 3 (alle vijf hoofdstukken en de epiloog speelbaar). Start: `npm install && npm run dev` → http://localhost:3000.
+Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
 
 ## Af
 - **M0 Fundament:** Next.js 16 (App Router, TS), Tailwind v4-tokens, zelf-gehoste fonts, Zustand-store
@@ -40,9 +40,17 @@ Kies "Speel thuis". Hoofdstuk 1 t/m 4 zijn volledig.
   van maan en zoeklichten, weerspiegelend water, procedurele texturen, vignet en filmkorrel.
   21 modellen, samen ongeveer 560 KB.
 
+- **Hoofdstuk 5 compleet (sessie 3):** Vluchtspoor. Je fietst door een straat bij het station
+  tijdens een luchtaanval: sturen om het puin, bellen zodat mensen achter je aan lopen, en weg
+  blijven van het rode vlak waar een bom gaat vallen (anders stuift iedereen uiteen; niemand
+  raakt in beeld gewond). Het dilemma komt midden in de rit: help je de man zoeken of breng je
+  de groep eerst? Krant No. 5 met zes varianten. Kees fietst mee als je hem in hoofdstuk 2 meenam.
+- **Epiloog (sessie 3):** mei 1945 op de Markt. Wie er staan hangt af van je vier keuzes; daarna
+  je vijf avonden op een rij en een brief aan later (blijft op het toestel). Opent zodra alle
+  vijf hoofdstukken gespeeld zijn.
+
 ## Half af
 - Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).
-- Hoofdstuk 5: alleen kaartgegevens en keuzes/echo's als data. De epiloog ontbreekt.
 - De tekst van hoofdstuk 3 is een voorstel: laat die lezen door iemand van het Joods Monument
   of het Streekarchief voordat hij openbaar wordt.
 - Over de daken en Nachtvaart zijn op de testbot afgesteld, niet op mensen.
@@ -50,13 +58,14 @@ Kies "Speel thuis". Hoofdstuk 1 t/m 4 zijn volledig.
 - Alle historische feiten staan op `verified: false` (`src/data/sources.ts`).
 
 ## Controle
-- `npm run build` · `npm test` (38 tests) · `npm run test:e2e` (speelt hoofdstuk 1 door op 390×844,
+- `npm run build` · `npm test` (45 tests) · `npm run test:e2e` (speelt hoofdstuk 1 door op 390×844,
   speelt het dossier van hoofdstuk 4 tot in de vaart en zet screenshots in `test-results/`) · `npm run assets`.
 - Ontwikkelhulp (alleen in dev): `/?canal=1` opent de vaart direct, `&z=-60` start verderop;
-  `/?roof=1` opent de daken, `&cover=8` start verderop. `node scripts/roof-shots.cjs` maakt screenshots.
+  `/?roof=1` opent de daken, `&cover=8` start verderop; `/?bike=1` opent de fietstocht. `node scripts/roof-shots.cjs` maakt screenshots.
   `node scripts/canal-shots.cjs` maakt screenshots van de vaart.
 
 ## Volgende stap
 1. Speel hoofdstuk 1 en 4 op een iPhone; pas daarna `src/game/tuning.ts` aan.
-2. Hoofdstuk 5 (M6, Vluchtspoor) en de epiloog. Kees (hoofdstuk 2) en Jaap (hoofdstuk 4) komen daar terug; de echo's staan als data klaar.
-3. Laat de feiten van hoofdstuk 1, 2 en 4 verifiëren en vraag de eerste archieffoto's aan.
+2. Locatiemodus afmaken (M8): ankers ter plekke, veiligheidsblokkade tijdens lopen, PWA.
+   Daarna afwerking (M9): stemmen, toegankelijkheidscheck, archieffoto's. Kees (hoofdstuk 2) en Jaap (hoofdstuk 4) komen daar terug; de echo's staan als data klaar.
+3. Laat de feiten van alle hoofdstukken verifiëren en vraag de eerste archieffoto's aan.

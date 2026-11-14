@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { AnimatePresence } from "motion/react";
-import { chapterById } from "@/data/chapters";
+import { CHAPTERS, chapterById } from "@/data/chapters";
 import { currentChapterId, useGameStore, type Mode } from "@/store/useGameStore";
 import { useDistance } from "@/lib/geo";
 import { sfx, unlockAudio } from "@/lib/sound";
 import { BlaeuMap } from "@/components/map/BlaeuMap";
 import { ChapterCard, type CardAction } from "@/components/map/ChapterCard";
 import { SatchelSheet } from "@/components/map/SatchelSheet";
-import { Satchel } from "@/components/ui/icons";
+import { Arrow, Satchel } from "@/components/ui/icons";
 import { satchelItems } from "@/data/satchel";
 
 function ModeTab({ mode, label }: { mode: Mode; label: string }) {
@@ -51,7 +51,8 @@ function Timeline({ at, year }: { at: number; year: string }) {
 }
 
 export function MapScreen() {
-  const { mode, completed, flags, openChapter, rereadMirror } = useGameStore();
+  const { mode, completed, flags, openChapter, rereadMirror, go } = useGameStore();
+  const allDone = CHAPTERS.every((c) => completed.includes(c.id));
   const current = currentChapterId(completed);
   const [selectedId, setSelectedId] = useState(current);
   const [satchelOpen, setSatchelOpen] = useState(false);
@@ -130,6 +131,16 @@ export function MapScreen() {
         <Timeline at={selected.timeline} year={selected.date} />
       </div>
 
+      {allDone && (
+        <button
+          type="button"
+          onClick={press(() => go("epilogue"))}
+          className="mx-3.5 mb-2 flex h-12 flex-none items-center justify-between bg-ochre px-[18px] font-label text-[13px] font-bold tracking-[0.17em] text-slate"
+        >
+          {completed.includes(6) ? "HERLEES DE EPILOOG · MEI 1945" : "MEI 1945 · NAAR DE MARKT"}
+          <Arrow color="#14181d" />
+        </button>
+      )}
       <AnimatePresence mode="popLayout">
         <ChapterCard
           key={selected.id}

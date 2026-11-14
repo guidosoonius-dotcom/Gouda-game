@@ -73,6 +73,24 @@ export const FACTS = {
     todo: "datum, route, aantallen en alle namen",
     verified: false,
   },
+  "station.raid": {
+    claim: "Op 26 november 1944 vielen geallieerde vliegtuigen het spoor bij Gouda aan. Ook huizen en een ziekenhuis in de buurt werden getroffen.",
+    source: UNSOURCED,
+    todo: "tijdstip, aantal toestellen, getroffen gebouwen, aantal en namen van de slachtoffers",
+    verified: false,
+  },
+  "lbd.role": {
+    claim: "De Luchtbeschermingsdienst bracht bij luchtalarm mensen naar schuilkelders en hielp na een inslag bij het redden.",
+    source: "nog te bepalen (NIOD / Streekarchief Midden-Holland)",
+    todo: "organisatie in Gouda, plaats van schuilkelders bij het station",
+    verified: false,
+  },
+  "liberation.gouda": {
+    claim: "In mei 1945 werd Gouda bevrijd.",
+    source: UNSOURCED,
+    todo: "datum en verloop van de bevrijding van Gouda",
+    verified: false,
+  },
   "curfew.hours": {
     claim: "Tijdens de bezetting gold een spertijd: 's avonds mocht niemand zonder vergunning op straat.",
     source: "nog te bepalen (NIOD)",

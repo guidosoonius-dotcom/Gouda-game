@@ -9,6 +9,7 @@ import { chapterById } from "@/data/chapters";
 import { TitleScreen } from "./screens/TitleScreen";
 import { MapScreen } from "./screens/MapScreen";
 import { DossierScreen } from "./screens/DossierScreen";
+import { EpilogueScreen } from "./screens/EpilogueScreen";
 import { MirrorScreen } from "./screens/MirrorScreen";
 import { MemorialScreen, WitnessScreen } from "./screens/WitnessScreen";
 import { PackingGame } from "./packing/PackingGame";
@@ -20,6 +21,11 @@ const CanalGame = dynamic(() => import("./canal/CanalGame").then((m) => m.CanalG
 });
 
 const RoofGame = dynamic(() => import("./rooftop/RoofGame").then((m) => m.RoofGame), {
+  ssr: false,
+  loading: () => <Loading />,
+});
+
+const BikeGame = dynamic(() => import("./bike/BikeGame").then((m) => m.BikeGame), {
   ssr: false,
   loading: () => <Loading />,
 });
@@ -38,6 +44,7 @@ function Task() {
   if (kind === "packing") return <PackingGame />;
   if (kind === "canal") return <CanalGame />;
   if (kind === "rooftop") return <RoofGame />;
+  if (kind === "bicycle") return <BikeGame />;
   if (kind === "witness") return <WitnessScreen />;
   return <Loading />;
 }
@@ -54,6 +61,7 @@ const SCREENS: Record<View, () => React.ReactNode> = {
   dossier: () => <DossierScreen />,
   task: () => <Task />,
   mirror: () => <Mirror />,
+  epilogue: () => <EpilogueScreen />,
 };
 
 export function Game() {
@@ -68,6 +76,7 @@ export function Game() {
       const q = new URLSearchParams(window.location.search);
       if (q.has("canal")) useGameStore.getState().openTask(4);
       if (q.has("roof")) useGameStore.getState().openTask(2);
+      if (q.has("bike")) useGameStore.getState().openTask(5);
     }
   }, []);
   useEffect(() => setMuted(muted), [muted]);

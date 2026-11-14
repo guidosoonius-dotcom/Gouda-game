@@ -69,6 +69,8 @@ export interface Chapter {
   status: "playable" | "soon";
   task: TaskKind;
   pages: DossierPage[];
+  /** A dilemma that comes up in the middle of the task instead of on a dossier page. */
+  taskChoice?: ChoiceId;
   mirror?: Mirror;
   witness?: Witness;
   memorial?: Memorial;
@@ -410,9 +412,67 @@ export const CHAPTERS: Chapter[] = [
     map: { x: 13.6, y: 27.8 },
     offMap: true,
     teaser: "Luchtalarm. Door de rook heen moet een groep mensen de kelder vinden.",
-    status: "soon",
+    status: "playable",
     task: "bicycle",
-    pages: [],
+    taskChoice: "ch5.puin",
+    pages: [
+      {
+        kind: "scene",
+        image: "/img/scenes/vluchtspoor.webp",
+        lines: [
+          "Zondagmiddag, tegen vijven. Boven het spoor hangen vliegtuigen. De eerste inslag doet de ruiten springen.",
+          "Gerrit van de luchtbescherming duwt je een fiets in handen. De banden zijn van hout.",
+        ],
+        quote: "‘Bel zo hard je kunt. Wie je hoort, loopt achter je aan naar de kelder.’",
+      },
+      {
+        kind: "task",
+        image: "/img/scenes/vluchtspoor.webp",
+        title: "Breng ze naar de schuilkelder",
+        brief:
+          "Mensen staan verdwaasd langs de straat. Bel, en ze volgen je. Rijd om het puin heen, en blijf weg van waar het fluiten vandaan komt.",
+        cta: "Op de fiets",
+      },
+    ],
+    mirror: {
+      edition: "No. 5",
+      dateline: "GOUDA · 26 NOVEMBER 1944",
+      story: (flags) => {
+        const search = flags["ch5.puin"] === "zoeken";
+        const run = flags["ch5.task"];
+        return {
+          headline:
+            run === "telaat"
+              ? "Luchtbescherming neemt het over; koerier komt te laat bij de kelder"
+              : search
+                ? "Vrouw levend onder het puin vandaan gehaald"
+                : run === "allen"
+                  ? "Hele straat veilig in de schuilkelder"
+                  : "Schuilkelder vol; niet iedereen heeft de bel gehoord",
+          body:
+            (run === "telaat"
+              ? "Het werd stil boven het spoor voordat je er was. Gerrit heeft de laatsten zelf naar binnen gebracht. "
+              : run === "allen"
+                ? "Niemand bleef achter in de rook. "
+                : "In de rook raakte je mensen kwijt. Gerrit is ze later gaan zoeken. ") +
+            (search
+              ? "Je liet de groep bij Gerrit en reed terug naar het ingestorte huis. De man groef met zijn handen. Jij ook."
+              : "Je bracht de groep eerst. De man bij het ingestorte huis heb je niet meer gezien."),
+        };
+      },
+      factsTitle: "Bommen op het spoor",
+      facts: ["station.raid"],
+      scan: {
+        label: "FOTO · omgeving van het station na 26 november 1944",
+        credit: "Bron volgt: Streekarchief Midden-Holland, inv.nr.",
+      },
+      notice: {
+        title: "Luchtbescherming",
+        fact: "lbd.role",
+        body: "Gerrit en de mensen in deze straat zijn verzonnen. De doden van die dag waren echt; hun namen volgen na controle.",
+      },
+      reward: "De vijfde editie van De Koerier",
+    },
   },
 ];
 

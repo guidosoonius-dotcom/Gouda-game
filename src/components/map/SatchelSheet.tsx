@@ -36,7 +36,7 @@ function Item({ item, onRead }: { item: SatchelItem; onRead?: () => void }) {
 }
 
 export function SatchelSheet({ onClose }: { onClose: () => void }) {
-  const { completed, flags, muted, toggleMute, rereadMirror, restore, reset } = useGameStore();
+  const { completed, flags, muted, letter, toggleMute, rereadMirror, restore, reset } = useGameStore();
   const items = satchelItems(completed, flags);
   const made = CHOICES.filter((c) => flags[c.id]);
   const code = encodeSave({ completed, flags });
@@ -110,6 +110,13 @@ export function SatchelSheet({ onClose }: { onClose: () => void }) {
                   </p>
                 );
               })}
+            </div>
+          )}
+
+          {letter && (
+            <div className="flex flex-col gap-2">
+              <span className="label text-[10.5px] text-bone">Jouw brief aan later</span>
+              <p className="m-0 whitespace-pre-wrap bg-parchment px-3.5 py-3 font-type text-[14px] leading-[1.55] text-ink">{letter}</p>
             </div>
           )}
 

@@ -132,6 +132,17 @@ export const sfx = {
     noise({ dur: 0.34, freq: 900, q: 0.6, gain: 0.08 + loud * 0.2, sweepTo: 300, attack: 0.04 });
     tone({ freq: 110, to: 70, dur: 0.14, gain: 0.08 });
   },
+  /** Bicycle bell: two bright strikes. */
+  ring() {
+    for (const d of [0, 0.13]) {
+      tone({ freq: 2350, dur: 0.5, gain: 0.09 }, d);
+      tone({ freq: 3520, dur: 0.3, gain: 0.05 }, d);
+    }
+  },
+  /** A bomb coming down: the falling whistle that gives you time to get away. */
+  fall() {
+    tone({ freq: 1700, to: 320, dur: 2.5, gain: 0.07, type: "triangle", attack: 0.3 });
+  },
   /** A footstep on roof tiles. */
   step() {
     noise({ dur: 0.05, freq: 1100 + Math.random() * 500, q: 1.4, gain: 0.07 });

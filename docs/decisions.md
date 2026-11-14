@@ -97,6 +97,17 @@ Formaat: beslissing · waarom · alternatief.
     is daarmee vervangen door schakelaars in `TUNING.gfx`: zet die uit als een telefoon de 60
     beelden per seconde niet haalt. Dat is nog niet op een echt toestel gemeten.
 
+30. **Vluchtspoor: niemand raakt in beeld gewond.** Een inslag te dichtbij laat de mensen achter
+    je uiteenstuiven; je belt ze terug. Loopt de tijd af, dan neemt Gerrit het over. De uitkomst
+    zegt wie de kelder haalde, niet wie het niet overleefde. De echte doden van die dag komen
+    alleen in de krant, en pas met naam als de bron is gecontroleerd.
+31. **Het dilemma van hoofdstuk 5 zit in het spel zelf** (`taskChoice`), niet op een dossierblad:
+    de man grijpt je stuur terwijl je rijdt. Kies je zoeken, dan neemt Gerrit je groep over en
+    rijd je alleen door naar het ingestorte huis.
+32. **De epiloog verandert niets en zegt dat ook.** Alle vier keuzes komen terug in wie er op de
+    Markt staat (getest voor elke optie); de speler sluit af met een eigen brief. De bevrijding
+    van Gouda staat als onverifieerd feit in het bronnenregister.
+
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.
 - Blaeu-kaart: pin-posities zijn op het oog geplaatst. Georefereren met controlepunten in M8.

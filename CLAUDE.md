@@ -46,7 +46,8 @@ Read only the section you need; do not load whole documents by default.
 ## Where things are
 - Content: `src/data/chapters.ts`, facts `src/data/sources.ts`, choices and echoes `src/game/choices.ts`.
 - Screens: `src/components/screens/*`; chapter 1 puzzle `src/components/packing/*`;
-  Nachtvaart `src/components/canal/*` and Over de daken `src/components/rooftop/*`
+  Nachtvaart `src/components/canal/*`, Over de daken `src/components/rooftop/*`, Vluchtspoor
+  `src/components/bike/*`
   (each a pure `sim.ts` tested by a bot; shared model helpers in `canal/Kit.tsx`).
 - State of the work: `docs/progress.md`; why things are the way they are: `docs/decisions.md`.
 

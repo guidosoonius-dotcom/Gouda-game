@@ -79,10 +79,19 @@ describe("choice system", () => {
     expect(variants.size).toBe(6);
   });
 
+  it("every choice, whichever way it went, is remembered on the Markt in May 1945", () => {
+    for (const c of CHOICES) {
+      for (const key of ["A", "B"] as const) {
+        const flags = applyChoice({}, c.id, key);
+        expect(echoesFor(EPILOGUE, flags, "epilogue").length, `${c.id}=${c[key].value}`).toBe(1);
+      }
+    }
+  });
+
   it("a playable chapter is complete: a scene, one dilemma, a task and a newspaper", () => {
     for (const ch of CHAPTERS.filter((c) => c.status === "playable" && c.task !== "witness")) {
       expect(ch.pages[0]?.kind, ch.title).toBe("scene");
-      expect(ch.pages.filter((p) => p.kind === "dilemma").length, ch.title).toBe(1);
+      expect(ch.pages.filter((p) => p.kind === "dilemma").length + (ch.taskChoice ? 1 : 0), ch.title).toBe(1);
       expect(ch.pages.filter((p) => p.kind === "task").length, ch.title).toBe(1);
       expect(ch.mirror, ch.title).toBeDefined();
     }

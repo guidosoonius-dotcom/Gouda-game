@@ -11,7 +11,7 @@ import { TUNING } from "@/game/tuning";
 const NAMES = [
   "kade", "riet", "schouw", "ophaalbrug", "sluisdeur", "soldaat", "zoeklicht", "lantaarn", "boom", "fiets",
   "meerpaal", "wachtpost", "vracht", "gevel_trap", "gevel_klok", "gevel_tuit",
-  "dakhuis", "schoorsteen", "koerier", "sintjan", "uitkijk",
+  "dakhuis", "schoorsteen", "koerier", "sintjan", "uitkijk", "man", "vrouw", "puin", "ruine", "schuilkelder",
 ] as const;
 export type ModelName = (typeof NAMES)[number];
 export const url = (name: ModelName) => `/models/${name}.glb`;

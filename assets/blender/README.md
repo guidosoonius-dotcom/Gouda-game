@@ -30,6 +30,10 @@ ontworpen. Materiaal `Lamp` krijgt in het spel een gloed.
 | `koerier` | 1,7 m | voeten; kijkt naar +Z | `Koerier`, `LegL`, `LegR` |
 | `uitkijk` | 3,2 m vierkant, platform op 14,3 m | maaiveld | `Uitkijk` |
 | `sintjan` | ± 60 m lang, toren 52 m; alleen als silhouet | maaiveld, midden van het schip | `SintJan` |
+| `man`, `vrouw` | 1,6–1,7 m; burgers, naar niemand gemodelleerd | voeten; kijken naar +Z | `Burger`, `LegL`, `LegR` |
+| `puin` | hoop van ± 3 m | grond | `Puin` |
+| `ruine` | 5,6 m breed, ingestort huis | maaiveld, midden van de gevel; gevel naar −X | `Ruine` |
+| `schuilkelder` | 7 m breed, ingang met zandzakken | maaiveld, midden van de voorkant; voorkant naar −X | `Schuilkelder` |
 | `lantaarn` | 3,4 m, gedoofd (verduistering) | voet | `Lantaarn`, `Light` |
 
 In het spel (`src/components/canal/Kit.tsx`) worden de materiaalkleuren naar vertexkleuren gebakken
