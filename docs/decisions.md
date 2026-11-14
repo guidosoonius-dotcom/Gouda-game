@@ -48,8 +48,7 @@ Formaat: beslissing · waarom · alternatief.
     donkere blokken (twee draw calls). De kit bevat wat je wel ziet: schouw, riet, kade, brug,
     sluisdeuren, wacht, lantaarn. De subagent voor de kit liep vast op een gebruikslimiet; de kit is
     daarna in de hoofdsessie gebouwd.
-15. **Proefvaart bereikbaar via zegel 4**, met stempel "PROEFVAART". Ze telt niet als voltooid
-    hoofdstuk; de afloop wordt wel al als vlag bewaard (`ch4.task`).
+15. (Vervallen in sessie 2: de proefvaart is hoofdstuk 4 geworden, zie 21.)
 
 16. **Nachtvaart: camera lager en dichterbij.** Je kijkt nu de gracht in in plaats van er recht
     bovenop: de huizenrijen, de brug en het zoeklicht in de verte horen bij het beeld. De
@@ -65,6 +64,13 @@ Formaat: beslissing · waarom · alternatief.
     samengevoegd; riet en bladeren wuiven via een kleine vertex-shader die ook op de boot reageert.
 20. **Aangemeerde bootjes zijn obstakels.** Drie lege schouwen liggen aan meerpalen; je glijdt
     erlangs af, een harde klap maakt lawaai. Ze liggen nooit bij een rietkraag (getest).
+
+21. **Het dilemma van hoofdstuk 4 komt vóór de vaart.** Zo bepaalt de keuze het spel: met Jaap
+    aan boord is elke slag luider en de boot trager, maar in de maat roeien levert veel meer op.
+    De store kent daarvoor één regel (`advance`): na een dilemma of opdracht volgt het volgende
+    blad, en na het laatste blad de krant. Een testbot vaart beide varianten ongezien uit.
+22. **Speelbare hoofdstukken zijn los te openen** zolang de tussenliggende nog gebouwd worden.
+    Als alle vijf er zijn, kan de volgorde weer worden afgedwongen (één regel in `MapScreen`).
 
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.

@@ -96,8 +96,9 @@ function Loop({ sim, fx, input, onHud, onEvent }: {
 }
 
 export function CanalGame() {
-  const { go, finishTask } = useGameStore();
-  const sim = useRef<Sim>(createSim());
+  const { go, finishTask, advance } = useGameStore();
+  const crew = useGameStore((s) => (s.flags["ch4.broer"] === "mee" ? 3 : 2));
+  const sim = useRef<Sim>(createSim(crew));
   const fx = useRef<Fx>({ rings: [], oar: { L: -9, R: -9 } });
   const input = useRef<Input>({ strokes: [], held: { L: 0, R: 0 } });
   const [phase, setPhase] = useState<"intro" | "play" | "caught" | "done">("intro");
@@ -132,7 +133,7 @@ export function CanalGame() {
     unlockAudio();
     sfx.paper();
     ambience.start();
-    sim.current = createSim();
+    sim.current = createSim(crew);
     sim.current.status = "play";
     // Dev aid: /?z=-60 starts further down the canal (ignored in production builds).
     const z = process.env.NODE_ENV !== "production" ? Number(new URLSearchParams(window.location.search).get("z")) : 0;
@@ -204,7 +205,7 @@ export function CanalGame() {
             exit={{ opacity: 0 }}
           >
             <div className="flex flex-col gap-2">
-              <span className="label text-[10.5px] text-bone">{phase === "intro" ? "Proefvaart · oktober 1944" : "Bij de sluis"}</span>
+              <span className="label text-[10.5px] text-bone">{phase === "intro" ? "Oktober 1944 · 19:45" : "Bij de sluis"}</span>
               <h1 className="m-0 font-fell text-[32px] font-normal leading-[1.06] text-parchment">
                 {phase === "intro" ? (
                   <>
@@ -222,18 +223,19 @@ export function CanalGame() {
                   <li>Elke slag maakt lawaai. Wordt de meter rood, dan komt het licht naar je toe.</li>
                   <li>In het riet en onder de brug ben je onzichtbaar.</li>
                   <li>Slaat de Sint-Jan, dan hoort niemand je riemen.</li>
+                  {crew === 3 && <li>Jaap roeit mee: zwaarder en luider, maar in de maat gaat het hard.</li>}
                 </ul>
               ) : (
                 <p className="m-0 font-news text-[16.5px] leading-[1.5]">{ENDINGS[outcome].body}</p>
               )}
             </div>
             <div className="flex flex-col gap-2.5">
-              <button type="button" onClick={start} className="flex h-[54px] items-center justify-between bg-ochre px-[18px] font-label text-[14px] font-bold tracking-[0.17em] text-slate">
-                {phase === "intro" ? "AFVAREN" : "NOG EEN KEER VAREN"}
+              <button type="button" onClick={phase === "intro" ? start : () => (sfx.paper(), advance())} className="flex h-[54px] items-center justify-between bg-ochre px-[18px] font-label text-[14px] font-bold tracking-[0.17em] text-slate">
+                {phase === "intro" ? "AFVAREN" : "LEES DE KRANT"}
                 <Arrow color="#14181d" />
               </button>
-              <button type="button" onClick={() => go("map")} className="flex h-12 items-center justify-between border border-parchment/45 px-[18px] font-label text-[13px] font-bold tracking-[0.17em] text-parchment">
-                TERUG NAAR DE KAART
+              <button type="button" onClick={phase === "intro" ? () => go("dossier") : start} className="flex h-12 items-center justify-between border border-parchment/45 px-[18px] font-label text-[13px] font-bold tracking-[0.17em] text-parchment">
+                {phase === "intro" ? "TERUG NAAR HET DOSSIER" : "NOG EEN KEER VAREN"}
                 <Arrow color="#ede6d6" />
               </button>
             </div>

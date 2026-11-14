@@ -38,7 +38,7 @@ export function ChapterCard({
   primary: CardAction;
   secondary?: CardAction;
 }) {
-  const stamp = state === "done" ? "VOLBRACHT" : chapter.status === "soon" ? "IN DE MAAK" : chapter.status === "prototype" ? "PROEFVAART" : "GEHEIM";
+  const stamp = state === "done" ? "VOLBRACHT" : chapter.status === "soon" ? "IN DE MAAK" : "GEHEIM";
   let distance: React.ReactNode = chapter.time;
   let distanceLabel = "TIJD";
   if (location) {

@@ -27,6 +27,8 @@ interface GameState {
   openChapter: (id: number) => void;
   openTask: (id: number) => void;
   nextPage: () => void;
+  /** After a dilemma or task: the next dossier page, or the mirror when the dossier is finished. */
+  advance: () => void;
   choose: (id: ChoiceId, option: "A" | "B") => void;
   finishTask: <K extends OutcomeId>(id: K, value: (typeof OUTCOMES)[K][number]) => void;
   completeChapter: () => void;
@@ -59,7 +61,15 @@ export const useGameStore = create<GameState>()(
       openChapter: (id) => set({ chapter: id, page: 0, view: "dossier", rereading: false }),
       openTask: (id) => set({ chapter: id, view: "task", rereading: false }),
       nextPage: () => set((s) => ({ page: s.page + 1 })),
-      choose: (id, option) => set((s) => ({ flags: applyChoice(s.flags, id, option), view: "mirror" })),
+      advance: () => {
+        const { chapter, page } = get();
+        const pages = CHAPTERS.find((c) => c.id === chapter)!.pages;
+        set(page + 1 < pages.length ? { page: page + 1, view: "dossier" } : { view: "mirror" });
+      },
+      choose: (id, option) => {
+        set((s) => ({ flags: applyChoice(s.flags, id, option) }));
+        get().advance();
+      },
       finishTask: (id, value) => set((s) => ({ flags: applyOutcome(s.flags, id, value) })),
       completeChapter: () => {
         const { chapter, completed, rereading } = get();

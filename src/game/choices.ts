@@ -50,7 +50,7 @@ export const CHOICES = [
   {
     id: "ch4.broer",
     chapter: 4,
-    question: "Mag haar broer",
+    question: "Mag Jaap",
     questionAccent: "mee in de boot?",
     A: { value: "mee", title: "Hij vaart mee", sub: "Zwaarder en luider. Wel een tweede roeier." },
     B: { value: "achter", title: "Hij blijft achter", sub: "De boot blijft stil. Hij moet zelf een adres vinden." },
@@ -92,6 +92,13 @@ export const ECHOES: readonly Echo[] = [
     slot: "satchel",
     when: { flag: "ch1.pass", is: "student" },
     text: "Via de lijn komt een briefje zonder afzender: ‘De fiets heeft de kust gehaald.’",
+  },
+  {
+    id: "pass-glazen-marie",
+    chapter: 4,
+    slot: "scene",
+    when: { flag: "ch1.pass", is: "glazen" },
+    text: "Marie kent je van de kisten in de Sint-Jan. ‘Jij bent die van het glas. Jou vertrouw ik.’",
   },
   {
     id: "pass-glazen-key",

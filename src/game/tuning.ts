@@ -36,6 +36,8 @@ export const TUNING = {
     maxSpeed: 4.2,
     /** Noise added per stroke (0..1). */
     strokeNoise: 0.17,
+    /** Multipliers when Marie's brother is aboard (chapter 4, choice "mee"). */
+    brother: { impulse: 0.88, rhythm: 2.4, noise: 1.25 },
     /** Sideways speed (m/s) above which hitting the quay counts as a knock, and its noise. */
     bumpSpeed: 1.4,
     bumpNoise: 0.12,

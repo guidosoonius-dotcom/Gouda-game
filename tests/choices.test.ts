@@ -51,7 +51,7 @@ describe("choice system", () => {
     const flags = applyOutcome(applyChoice({}, "ch1.pass", "B"), "ch1.task", "willem");
     expect(echoesFor(2, flags).map((e) => e.id).sort()).toEqual(["pass-glazen-key", "task-willem-tease"]);
     expect(echoesFor(2, flags, "route").map((e) => e.id)).toEqual(["pass-glazen-key"]);
-    expect(echoesFor(4, flags)).toEqual([]);
+    expect(echoesFor(4, flags).map((e) => e.id)).toEqual(["pass-glazen-marie"]);
     expect(echoesFor(4, applyChoice({}, "ch1.pass", "A")).map((e) => e.id)).toEqual(["pass-student-note"]);
   });
 
@@ -65,6 +65,27 @@ describe("choice system", () => {
       }
     }
     expect(variants.size).toBe(4);
+  });
+
+  it("the brother's choice and the outcome of the crossing give six different newspapers", () => {
+    const ch4 = CHAPTERS.find((c) => c.id === 4)!.mirror!;
+    const variants = new Set<string>();
+    for (const task of OUTCOMES["ch4.task"]) {
+      for (const broer of ["mee", "achter"]) {
+        const story = ch4.story({ "ch4.task": task, "ch4.broer": broer });
+        variants.add(story.headline + story.body);
+      }
+    }
+    expect(variants.size).toBe(6);
+  });
+
+  it("a playable chapter is complete: a scene, one dilemma, a task and a newspaper", () => {
+    for (const ch of CHAPTERS.filter((c) => c.status === "playable")) {
+      expect(ch.pages[0]?.kind, ch.title).toBe("scene");
+      expect(ch.pages.filter((p) => p.kind === "dilemma").length, ch.title).toBe(1);
+      expect(ch.pages.filter((p) => p.kind === "task").length, ch.title).toBe(1);
+      expect(ch.mirror, ch.title).toBeDefined();
+    }
   });
 
   it("every dilemma on a dossier page is a registered choice of that chapter", () => {

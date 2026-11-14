@@ -51,7 +51,7 @@ function Timeline({ at, year }: { at: number; year: string }) {
 }
 
 export function MapScreen() {
-  const { mode, completed, flags, openChapter, openTask, rereadMirror } = useGameStore();
+  const { mode, completed, flags, openChapter, rereadMirror } = useGameStore();
   const current = currentChapterId(completed);
   const [selectedId, setSelectedId] = useState(current);
   const [satchelOpen, setSatchelOpen] = useState(false);
@@ -61,7 +61,7 @@ export function MapScreen() {
   const geo = useDistance(selected.coords, location && measuring);
   const items = satchelItems(completed, flags);
   const done = completed.includes(selected.id);
-  const state = done ? "done" : selected.id === current ? "open" : "sealed";
+  const state = done ? "done" : selected.status === "playable" ? "open" : "sealed";
 
   const press = (fn: () => void) => () => {
     unlockAudio();
@@ -74,10 +74,8 @@ export function MapScreen() {
   if (done) {
     primary = { label: "Herlees de krant", onPress: press(() => rereadMirror(selected.id)) };
     secondary = { label: "Speel dit hoofdstuk opnieuw", onPress: press(() => openChapter(selected.id)) };
-  } else if (selected.status === "playable" && selected.id === current) {
+  } else if (selected.status === "playable") {
     primary = { label: location ? "Ik ben er · open het dossier" : "Open het dossier", onPress: press(() => openChapter(selected.id)) };
-  } else if (selected.status === "prototype") {
-    primary = { label: "Proefvaart · speel het prototype", onPress: press(() => openTask(selected.id)) };
   } else if (selected.status === "soon") {
     primary = { label: "Nog in de maak", onPress: () => {}, disabled: true };
   } else {

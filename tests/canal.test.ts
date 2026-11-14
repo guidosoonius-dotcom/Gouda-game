@@ -4,8 +4,8 @@ import { TUNING } from "@/game/tuning";
 
 const DT = 1 / 60;
 
-function started(): Sim {
-  const s = createSim();
+function started(crew: 2 | 3 = 2): Sim {
+  const s = createSim(crew);
   s.status = "play";
   return s;
 }
@@ -27,8 +27,9 @@ function dashIsSafe(s: Sim, tx: number, tz: number, speed: number): boolean {
 }
 
 /** A cautious player: waits in cover, dashes to the next cover when the lights are elsewhere. */
-function runBot(maxSeconds: number) {
-  const s = started();
+function runBot(maxSeconds: number, crew: 2 | 3 = 2) {
+  const s = started(crew);
+  const perStroke = TUNING.canal.strokeNoise * (crew === 3 ? TUNING.canal.brother.noise : 1);
   const stops = [...COURSE.reeds.map((r) => ({ x: Math.sign(r.x) * 1.9, z: r.z })), { x: 0, z: COURSE.bridgeZ }, { x: 0, z: COURSE.lockZ }].sort(
     (a, b) => b.z - a.z,
   );
@@ -58,8 +59,8 @@ function runBot(maxSeconds: number) {
           let desired = Math.max(-0.6, Math.min(0.6, Math.atan2(target.x - s.x, -(target.z - s.z))));
           if (Math.abs(s.x) > 3.3) desired = -Math.sign(s.x) * 0.4;
           const err = desired - (s.heading + s.yawRate / TUNING.canal.yawDamping);
-          const wantsSpeed = s.v < 3.0 && s.noise < 0.38;
-          const wantsTurn = Math.abs(err) > 0.3 && s.noise < 0.5;
+          const wantsSpeed = s.v < 3.0 && s.noise + perStroke < 0.56;
+          const wantsTurn = Math.abs(err) > 0.3 && s.noise + perStroke < 0.68;
           if (s.t - lastStrokeAt >= 0.46 && (wantsSpeed || wantsTurn)) {
             const side: Side = err > 0.07 ? "R" : err < -0.07 ? "L" : lastSide === "L" ? "R" : "L";
             strokes.push(side);
@@ -89,6 +90,25 @@ describe("Nachtvaart course", () => {
     expect(run.outcome).toBe("stil");
     expect(run.time).toBeLessThan(300);
     process.stderr.write(`bot: ${run.time.toFixed(0)} s, caught ${run.caught}, alerts ${run.alerts}\n`);
+  });
+
+  it("can also be completed unseen with Jaap aboard (heavier and louder)", () => {
+    const run = runBot(600, 3);
+    expect(run.outcome).toBe("stil");
+    process.stderr.write(`bot with Jaap: ${run.time.toFixed(0)} s, caught ${run.caught}, alerts ${run.alerts}\n`);
+  });
+
+  it("with Jaap, rowing in rhythm is faster and every stroke is louder", () => {
+    const pull = (crew: 2 | 3) => {
+      const s = started(crew);
+      s.bell.next = 999;
+      step(s, { strokes: ["L"], holdBoth: false }, DT);
+      for (let i = 0; i < 30; i++) step(s, { strokes: [], holdBoth: false }, DT);
+      step(s, { strokes: ["R"], holdBoth: false }, DT);
+      return { v: s.v, noise: s.noise };
+    };
+    expect(pull(3).v).toBeGreaterThan(pull(2).v);
+    expect(pull(3).noise).toBeGreaterThan(pull(2).noise);
   });
 
   it("rowing flat out through the lights gets you seen, but never stuck", () => {

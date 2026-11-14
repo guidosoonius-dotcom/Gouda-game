@@ -56,7 +56,11 @@ async function packCrate(page, crateNo) {
   let server;
   let base = process.env.BASE_URL;
   if (!base) {
-    server = spawn("npx", ["next", "start", "-p", String(PORT)], { cwd: path.join(__dirname, ".."), stdio: "ignore" });
+    // Start next directly (not through npx), so that kill() really stops the server afterwards.
+    server = spawn(process.execPath, [require.resolve("next/dist/bin/next"), "start", "-p", String(PORT)], {
+      cwd: path.join(__dirname, ".."),
+      stdio: "ignore",
+    });
     base = `http://localhost:${PORT}`;
   }
   const browser = await chromium.launch({ args: ["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
@@ -125,10 +129,20 @@ async function packCrate(page, crateNo) {
     await page.waitForTimeout(600);
     await shot("08-koerierstas");
 
-    // Nachtvaart prototype: the WebGL canvas mounts, takes input and unmounts again.
+    // Chapter 4: dossier, the dilemma about Jaap, then the WebGL crossing mounts and takes input.
     await page.getByRole("button", { name: /Sluit/i }).click();
     await page.getByRole("button", { name: /Hoofdstuk 4/i }).click();
-    await page.getByRole("button", { name: /Proefvaart/i }).click();
+    await page.getByRole("button", { name: /Open het dossier/i }).click();
+    await expectText("Dossier 04");
+    await page.waitForTimeout(5500);
+    await shot("09a-dossier-4");
+    await page.getByRole("button", { name: /Verder/i }).click();
+    await expectText("Mag Jaap");
+    await page.waitForTimeout(6500);
+    await page.getByRole("button", { name: /Hij vaart mee/i }).click();
+    await expectText("Roei naar de sluis");
+    await page.getByRole("button", { name: /Naar de boot/i }).click();
+    await expectText("Jaap roeit mee");
     await page.getByRole("button", { name: /Afvaren/i }).click();
     await page.waitForSelector("canvas");
     for (const key of ["ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight"]) {
@@ -136,7 +150,7 @@ async function packCrate(page, crateNo) {
       await page.waitForTimeout(450);
     }
     await expectText("NAAR DE SLUIS");
-    await shot("09-nachtvaart");
+    await shot("09b-nachtvaart");
 
     if (errors.length) {
       failed = true;

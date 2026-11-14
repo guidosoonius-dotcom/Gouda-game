@@ -13,14 +13,14 @@ const OUT = path.join(__dirname, "..", "test-results");
   const errors = [];
   page.on("pageerror", (e) => errors.push(String(e)));
   page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
-  await page.goto(process.env.BASE_URL || "http://localhost:3000");
-  await page.getByRole("button", { name: /Speel thuis/i }).click();
-  await page.getByRole("button", { name: /Hoofdstuk 4/i }).click();
-  await page.waitForTimeout(1800);
-  await page.screenshot({ path: path.join(OUT, "10-kaart-hoofdstuk-4.png") });
-  await page.getByRole("button", { name: /Proefvaart/i }).click();
-  await page.getByRole("button", { name: /Afvaren/i }).waitFor({ timeout: 20000 });
-  await page.waitForTimeout(2500);
+  const base = process.env.BASE_URL || "http://localhost:3000";
+  const open = async (query) => {
+    // dev-only shortcuts: ?canal=1 opens the crossing, ?z= starts further down the canal
+    await page.goto(`${base}/?canal=1${query}`);
+    await page.getByRole("button", { name: /Afvaren/i }).waitFor({ timeout: 30000 });
+    await page.waitForTimeout(2500);
+  };
+  await open("");
   await page.screenshot({ path: path.join(OUT, "11-nachtvaart-intro.png") });
   await page.getByRole("button", { name: /Afvaren/i }).click();
   const row = async (keys, gap) => {
@@ -40,10 +40,7 @@ const OUT = path.join(__dirname, "..", "test-results");
   await page.screenshot({ path: path.join(OUT, "15-nachtvaart-later.png") });
   // Later stretches, using the dev-only ?z= start offset.
   for (const [z, name, keys] of [[-58, "16-nachtvaart-brug", "LRLR"], [-124, "17-nachtvaart-sluis", "LRLRL"]]) {
-    await page.goto((process.env.BASE_URL || "http://localhost:3000") + `/?z=${z}`);
-    await page.getByRole("button", { name: /Ga verder thuis|Speel thuis/i }).click();
-    await page.getByRole("button", { name: /Hoofdstuk 4/i }).click();
-    await page.getByRole("button", { name: /Proefvaart/i }).click();
+    await open(`&z=${z}`);
     await page.getByRole("button", { name: /Afvaren/i }).click();
     await page.waitForTimeout(1500);
     await row(keys, 520);

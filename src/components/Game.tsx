@@ -47,7 +47,13 @@ export function Game() {
   const muted = useGameStore((s) => s.muted);
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setMounted(true);
+    // Dev aid: /?canal=1 opens the Nachtvaart directly (ignored in production builds).
+    if (process.env.NODE_ENV !== "production" && new URLSearchParams(window.location.search).has("canal")) {
+      useGameStore.getState().openTask(4);
+    }
+  }, []);
   useEffect(() => setMuted(muted), [muted]);
 
   return (

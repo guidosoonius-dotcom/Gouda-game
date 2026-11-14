@@ -1,7 +1,7 @@
 # Voortgang
 
-Laatste update: sessie 1 (M0 t/m M4). Start: `npm install && npm run dev` → http://localhost:3000.
-Kies "Speel thuis". Hoofdstuk 1 is volledig; tik op zegel 4 voor de proefvaart.
+Laatste update: sessie 2 (hoofdstuk 1 en 4 speelbaar). Start: `npm install && npm run dev` → http://localhost:3000.
+Kies "Speel thuis". Hoofdstuk 1 en 4 zijn volledig; tik op zegel 4 voor de Nachtvaart.
 
 ## Af
 - **M0 Fundament:** Next.js 16 (App Router, TS), Tailwind v4-tokens, zelf-gehoste fonts, Zustand-store
@@ -20,21 +20,25 @@ Kies "Speel thuis". Hoofdstuk 1 is volledig; tik op zegel 4 voor de proefvaart.
   zoeklicht, lichtband, riet en klokken; R3F-scène met de kit; HUD volgens ontwerp; drie aflopen
   (stil, gezien, omweg), geen game over. Een testbot vaart het parcours ongezien in 68 s.
 
+- **Hoofdstuk 4 compleet (sessie 2):** dossier met echo van hoofdstuk 1, het dilemma over Jaap
+  (vóór de vaart: neem je hem mee, dan roeit hij mee en is de boot zwaarder en luider), de vaart
+  en krant No. 4 met zes varianten. Speelbare hoofdstukken mag je in elke volgorde openen zolang
+  2, 3 en 5 nog in de maak zijn.
+
 ## Half af
-- Nachtvaart is een **proefvaart**: nog zonder dossier, dilemma (Marie's broer) en krant, en nog
-  niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).
+- Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).
 - Hoofdstuk 2, 3 en 5: alleen kaartgegevens en keuzes/echo's als data.
 - Locatiemodus: afstand via GPS en "Ik ben er" werken; ankers, veiligheidsblokkade en PWA niet.
 - Alle historische feiten staan op `verified: false` (`src/data/sources.ts`).
 
 ## Controle
-- `npm run build` · `npm test` (28 tests) · `npm run test:e2e` (speelt hoofdstuk 1 door op 390×844,
-  start de proefvaart en zet screenshots in `test-results/`) · `npm run assets`.
-- Ontwikkelhulp: `/?z=-60` start de proefvaart verderop (alleen in dev).
+- `npm run build` · `npm test` (32 tests) · `npm run test:e2e` (speelt hoofdstuk 1 door op 390×844,
+  speelt het dossier van hoofdstuk 4 tot in de vaart en zet screenshots in `test-results/`) · `npm run assets`.
+- Ontwikkelhulp (alleen in dev): `/?canal=1` opent de vaart direct, `&z=-60` start verderop.
   `node scripts/canal-shots.cjs` maakt screenshots van de vaart.
 
 ## Volgende stap
-1. Speel hoofdstuk 1 en de proefvaart op een iPhone; pas daarna `src/game/tuning.ts` aan.
-2. Maak hoofdstuk 4 af (dossier, dilemma, krant, echo van hoofdstuk 1) of begin aan hoofdstuk 2
-   (M5, Over de daken); de pijplijn en de schermen zijn herbruikbaar.
-3. Laat de feiten van hoofdstuk 1 verifiëren en vraag de eerste archieffoto aan.
+1. Speel hoofdstuk 1 en 4 op een iPhone; pas daarna `src/game/tuning.ts` aan.
+2. Hoofdstuk 2 (M5, Over de daken): de keuzes en echo's staan al als data klaar; de kit
+   (gevels, soldaat, zoeklicht) is herbruikbaar voor de daken.
+3. Laat de feiten van hoofdstuk 1 en 4 verifiëren en vraag de eerste archieffoto's aan.

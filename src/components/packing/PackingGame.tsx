@@ -25,7 +25,7 @@ function willemSays(phase: string, rumbles: number, moves: number, helped: boole
 }
 
 export function PackingGame() {
-  const { finishTask, nextPage, go } = useGameStore();
+  const { finishTask, advance, go } = useGameStore();
   const stage = useRef<HTMLDivElement>(null);
   const crate = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ w: 390, h: 844 });
@@ -57,8 +57,7 @@ export function PackingGame() {
   const finish = () => {
     sfx.paper();
     finishTask("ch1.task", g.helped ? "willem" : "alleen");
-    nextPage();
-    go("dossier");
+    advance();
   };
 
   return (

@@ -28,6 +28,14 @@ export function CanalActors({ sim, fx }: { sim: React.RefObject<Sim>; fx: React.
     }),
     [schouw],
   );
+  // Jaap, when he comes along: a second rower on the stern thwart.
+  const jaap = useMemo(() => {
+    const figure = part.rower.clone(true);
+    figure.position.z += 0.95;
+    figure.scale.setScalar(0.93);
+    schouw.add(figure);
+    return figure;
+  }, [schouw, part]);
   const rings = useRef<(THREE.Mesh | null)[]>([]);
   const ringState = useRef(Array.from({ length: RINGS }, () => ({ age: 9, loud: 0 })));
   const ringNext = useRef(0);
@@ -56,6 +64,8 @@ export function CanalActors({ sim, fx }: { sim: React.RefObject<Sim>; fx: React.
     const hiding = s.hidden || s.underBridge || s.lit || s.status === "caught" ? 1 : 0;
     duck.current += (hiding - duck.current) * (1 - Math.exp(-6 * dt));
     part.rower.rotation.x = lean + duck.current * 0.35;
+    jaap.visible = s.crew === 3;
+    jaap.rotation.x = lean * 0.8 + duck.current * 0.35;
     part.rower.scale.y = 1 - duck.current * 0.12;
     part.passenger.rotation.x = -(0.08 + duck.current * 0.5) + Math.sin(t * 0.9) * 0.02;
     part.passenger.scale.y = 1 - duck.current * 0.2;

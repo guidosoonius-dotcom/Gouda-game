@@ -32,7 +32,7 @@ export function DossierScreen() {
   const [typedPage, setTypedPage] = useState(-1);
   const typed = typedPage === pageIndex;
   const markTyped = () => setTypedPage(pageIndex);
-  const echo = pageIndex === 0 ? echoesFor(chapter.id, flags, "scene")[0]?.text : undefined;
+  const echo = pageIndex === 0 ? echoesFor(chapter.id, flags).find((e) => e.slot === "scene" || e.slot === "satchel")?.text : undefined;
 
   const advance = () => {
     sfx.paper();

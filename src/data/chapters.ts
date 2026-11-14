@@ -50,7 +50,7 @@ export interface Chapter {
   /** The railway station did not exist in 1649: shown as an edge marker. */
   offMap?: boolean;
   teaser: string;
-  status: "playable" | "prototype" | "soon";
+  status: "playable" | "soon";
   task: TaskKind;
   pages: DossierPage[];
   mirror?: Mirror;
@@ -190,9 +190,74 @@ export const CHAPTERS: Chapter[] = [
     coords: { lat: 52.0082, lng: 4.7125 },
     map: { x: 82, y: 80.5 },
     teaser: "Marie wacht bij de sluis. Er moet iemand weg, vannacht nog.",
-    status: "prototype",
+    status: "playable",
     task: "canal",
-    pages: [],
+    pages: [
+      {
+        kind: "scene",
+        image: "/img/scenes/nachtvaart.webp",
+        lines: [
+          "Oktober, kwart voor acht. De gracht ligt zwart en glad.",
+          "Bij de kade wacht Marie met een schouw. Onder een zeil zit een man die vannacht de stad uit moet.",
+        ],
+        quote: "‘Geen woord op het water. Geluid draagt ver.’",
+      },
+      {
+        kind: "dilemma",
+        image: "/img/scenes/nachtvaart.webp",
+        lines: [
+          "Op de kade staat Jaap, de broer van Marie. Zeventien, een plunjezak over zijn schouder.",
+          "Hij is opgeroepen om in Duitsland te gaan werken en is niet gegaan. Thuis kan hij niet blijven.",
+        ],
+        quote: "‘Ik kan roeien. Laat me hier niet staan.’",
+        choice: "ch4.broer",
+      },
+      {
+        kind: "task",
+        image: "/img/scenes/nachtvaart.webp",
+        title: "Roei naar de sluis",
+        brief:
+          "Honderdveertig meter gracht. Een brug met een wacht en een zoeklicht, en aan het eind de sluis. Blijf uit het licht, en maak geen lawaai.",
+        cta: "Naar de boot",
+      },
+    ],
+    mirror: {
+      edition: "No. 4",
+      dateline: "GOUDA · OKTOBER 1944",
+      story: (flags) => {
+        const jaap = flags["ch4.broer"] === "mee";
+        const run = flags["ch4.task"];
+        return {
+          headline:
+            run === "omweg"
+              ? "Schouw keert om; onderduiker ontkomt langs een achtersloot"
+              : run === "gezien"
+                ? "Fluit en geschreeuw bij de brug, maar de schouw haalt de sluis"
+                : "Ongezien langs de wacht: schouw bereikt de sluis",
+          body:
+            (run === "omweg"
+              ? "Drie keer vond het licht jullie. Toen stuurde Marie de boot een sloot in die op geen kaart staat. "
+              : run === "gezien"
+                ? "Eén keer lag de boot vol in het licht. Het riet heeft jullie gered. "
+                : "Niemand op de brug heeft iets gehoord. De sluisdeur ging op een kier. ") +
+            (jaap
+              ? "Jaap roeide mee tot zijn handen open lagen. Hij is niet teruggegaan."
+              : "Jaap bleef op de kade staan. Marie heeft niet meer omgekeken."),
+        };
+      },
+      factsTitle: "Over water de stad uit",
+      facts: ["locks.route"],
+      scan: {
+        label: "KAART · sluizen en plassen rond Gouda, 1944",
+        credit: "Bron volgt: Streekarchief Midden-Holland, inv.nr.",
+      },
+      notice: {
+        title: "Na acht uur",
+        fact: "curfew.hours",
+        body: "Marie, Jaap en de man onder het zeil zijn verzonnen. Wie hier echt voer, zoeken we nog uit.",
+      },
+      reward: "De vierde editie van De Koerier",
+    },
   },
   {
     id: 5,

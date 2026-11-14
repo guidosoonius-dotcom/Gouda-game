@@ -58,6 +58,8 @@ export type SimEvent =
 
 export interface Sim {
   status: Status;
+  /** People aboard: 2 (Marie and the passenger) or 3 (her brother rows along). */
+  crew: 2 | 3;
   t: number;
   x: number;
   z: number;
@@ -92,9 +94,10 @@ export interface SimInput {
   holdBoth: boolean;
 }
 
-export function createSim(): Sim {
+export function createSim(crew: 2 | 3 = 2): Sim {
   return {
     status: "ready",
+    crew,
     t: 0,
     x: 0,
     z: 0,
@@ -194,10 +197,12 @@ export function step(s: Sim, input: SimInput, dt: number): SimEvent[] {
     s.cooldown[side] = 0.3;
     const rhythm = !!s.lastStroke && s.lastStroke.side !== side && s.t - s.lastStroke.t < T.rhythmWindow;
     s.lastStroke = { side, t: s.t };
-    s.v = Math.min(T.maxSpeed, s.v + T.strokeImpulse + (rhythm ? T.rhythmBonus : 0));
+    // A third person makes the boat heavier and louder, but two rowers in rhythm pull harder.
+    const extra = s.crew === 3 ? T.brother : { impulse: 1, rhythm: 1, noise: 1 };
+    s.v = Math.min(T.maxSpeed, s.v + T.strokeImpulse * extra.impulse + (rhythm ? T.rhythmBonus * extra.rhythm : 0));
     // "L" steers left: the heading decreases (toward -X).
     s.yawRate += (side === "R" ? 1 : -1) * T.strokeYaw * T.yawDamping;
-    if (!bell.active) s.noise = Math.min(1, s.noise + T.strokeNoise);
+    if (!bell.active) s.noise = Math.min(1, s.noise + T.strokeNoise * extra.noise);
     ev.push({ type: "stroke", side, masked: bell.active, rhythm });
   }
 
