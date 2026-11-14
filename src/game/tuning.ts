@@ -24,7 +24,7 @@ export const TUNING = {
     /** Max seconds between alternating strokes to count as rhythm. */
     rhythmWindow: 0.9,
     /** Yaw added by one stroke (radians). */
-    strokeYaw: 0.16,
+    strokeYaw: 0.22,
     /** Velocity damping rate (1/s) while gliding. */
     glideDamping: 0.55,
     /** Velocity damping rate (1/s) while holding both oars (braking). */
@@ -35,7 +35,10 @@ export const TUNING = {
     steerRate: 1.1,
     maxSpeed: 4.2,
     /** Noise added per stroke (0..1). */
-    strokeNoise: 0.2,
+    strokeNoise: 0.17,
+    /** Sideways speed (m/s) above which hitting the quay counts as a knock, and its noise. */
+    bumpSpeed: 1.4,
+    bumpNoise: 0.12,
     /** Noise decay per second. */
     noiseDecay: 0.14,
     /** Above this noise level the guard turns his light toward the boat. */
