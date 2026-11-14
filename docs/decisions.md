@@ -84,6 +84,11 @@ Formaat: beslissing · waarom · alternatief.
 27. **De uitkijktorens met zoeklichten zijn decor bij de fictie**, net als de verduistering: niets
     daarvan staat als feit in het bronnenregister.
 
+28. **Hoofdstuk 3 eindigt met een gedenkblad, niet met de krant.** Geen kop, geen stempel
+    FICTIE, geen beloning. De scènes binnen zijn verzonnen en dragen dat label; er wordt geen
+    naam van een slachtoffer verzonnen (een test bewaakt dat de lijst leeg blijft zolang de
+    feiten niet geverifieerd zijn) en er is op deze plek geen gegenereerd beeld.
+
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.
 - Blaeu-kaart: pin-posities zijn op het oog geplaatst. Georefereren met controlepunten in M8.

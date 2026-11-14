@@ -32,6 +32,22 @@ export interface Mirror {
   reward: string;
 }
 
+/** A place of remembrance instead of a newspaper: no fiction headline, no stamp, no reward. */
+export interface Memorial {
+  title: string;
+  lead: string;
+  facts: FactId[];
+  photo: ArchiveSlot;
+  /** Names are shown only once they are verified; until then the stones stay blank. */
+  names: string[];
+  namesNote: string;
+}
+
+export interface Witness {
+  /** Quiet moments, read one by one. Fiction, and labelled as such. */
+  moments: { lines: string[]; quote?: string }[];
+}
+
 export interface Chapter {
   id: number;
   title: string;
@@ -54,6 +70,8 @@ export interface Chapter {
   task: TaskKind;
   pages: DossierPage[];
   mirror?: Mirror;
+  witness?: Witness;
+  memorial?: Memorial;
 }
 
 const yearPos = (year: number, month: number) => (year - 1940 + (month - 1) / 12) / 5;
@@ -239,9 +257,64 @@ export const CHAPTERS: Chapter[] = [
     coords: { lat: 52.0112, lng: 4.7138 },
     map: { x: 75, y: 64 },
     teaser: "Hier valt niets te winnen. Hier wordt herinnerd.",
-    status: "soon",
+    status: "playable",
     task: "witness",
-    pages: [],
+    pages: [
+      {
+        kind: "scene",
+        image: "",
+        lines: [
+          "Voorjaar 1943, tegen de avond. Johanna vraagt of je meeloopt naar de Oosthaven.",
+          "Ze draagt een tas met brood en zegt onderweg bijna niets.",
+        ],
+        quote: "‘Je hoeft niets te doen. Alleen kijken, en het onthouden.’",
+      },
+      {
+        kind: "then-now",
+        image: "",
+        intro: "Sleep de schuif. Links het huis zoals het toen was, rechts het huis van nu.",
+        then: { label: "ARCHIEFFOTO · Oosthaven 31, ca. 1940", credit: "Rechten aanvragen: Streekarchief Midden-Holland" },
+        now: { label: "FOTO VAN NU · zelfde standpunt", credit: "Zelf maken bij veldbezoek" },
+        anchor: "Op locatie: voor de deur liggen de Stolpersteine. Lees de namen voordat je verdergaat.",
+      },
+      {
+        kind: "task",
+        image: "",
+        title: "Blijf even staan",
+        brief: "Dit hoofdstuk heeft geen opdracht, geen klok en geen goed of fout. Je loopt met Johanna mee naar binnen. Meer niet.",
+        cta: "Ga mee naar binnen",
+      },
+    ],
+    witness: {
+      moments: [
+        {
+          lines: [
+            "Binnen ruikt het naar gekookte melk en boenwas. In de gang staan stoelen tegen de muur.",
+            "Op elke stoel zit iemand te wachten, al weet niemand waarop.",
+          ],
+        },
+        {
+          lines: ["Johanna deelt het brood uit. Ze noemt iedereen bij de naam.", "Een vrouw vraagt of het al lente is."],
+          quote: "‘Bijna,’ zegt Johanna.",
+        },
+        {
+          lines: ["Een oude man wenkt je. Hij houdt een envelop vast met twee handen, alsof die zwaar is."],
+          quote: "‘Voor mijn zoon. Als je ooit in Amsterdam komt.’",
+        },
+        {
+          lines: ["Je steekt de brief in je tas, onder de dubbele bodem. Pas buiten zegt Johanna iets."],
+          quote: "‘Meer kunnen we niet. Onthoud hun gezichten.’",
+        },
+      ],
+    },
+    memorial: {
+      title: "Oosthaven 31",
+      lead: "De mensen in de gang waren verzonnen. De mensen die hier woonden niet.",
+      facts: ["oosthaven.home", "oosthaven.deportation"],
+      photo: { label: "ARCHIEFFOTO · gevel Oosthaven 31", credit: "Rechten aanvragen: Streekarchief Midden-Holland" },
+      names: [],
+      namesNote: "Hier komen de namen van de bewoners, zodra ze zijn gecontroleerd met het Joods Monument.",
+    },
   },
   {
     id: 4,

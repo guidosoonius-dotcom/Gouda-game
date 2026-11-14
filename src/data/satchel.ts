@@ -33,6 +33,24 @@ export function satchelItems(completed: number[], flags: Flags): SatchelItem[] {
       fiction: false,
     });
   }
+  const ch3 = CHAPTERS.find((c) => c.id === 3);
+  if (completed.includes(3) && ch3?.memorial) {
+    items.push({
+      id: "gedenken-3",
+      kind: "bron",
+      title: `${ch3.memorial.title}: gedenkblad`,
+      note: "Wat hier gebeurde, en de namen zodra ze zijn gecontroleerd.",
+      fiction: false,
+      mirrorOf: 3,
+    });
+    items.push({
+      id: "brief",
+      kind: "voorwerp",
+      title: "Brief voor een zoon in Amsterdam",
+      note: "Een envelop zonder adres. Je draagt hem nog steeds bij je.",
+      fiction: true,
+    });
+  }
   if (completed.includes(1) && flags["ch1.pass"] === "glazen") {
     items.push({
       id: "pass",

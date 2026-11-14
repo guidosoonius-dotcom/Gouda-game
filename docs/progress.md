@@ -1,7 +1,7 @@
 # Voortgang
 
-Laatste update: sessie 2 (hoofdstuk 1, 2 en 4 speelbaar). Start: `npm install && npm run dev` → http://localhost:3000.
-Kies "Speel thuis". Hoofdstuk 1, 2 en 4 zijn volledig.
+Laatste update: sessie 2 (hoofdstuk 1 t/m 4 speelbaar). Start: `npm install && npm run dev` → http://localhost:3000.
+Kies "Speel thuis". Hoofdstuk 1 t/m 4 zijn volledig.
 
 ## Af
 - **M0 Fundament:** Next.js 16 (App Router, TS), Tailwind v4-tokens, zelf-gehoste fonts, Zustand-store
@@ -31,9 +31,16 @@ Kies "Speel thuis". Hoofdstuk 1, 2 en 4 zijn volledig.
   Met Kees: hij fluistert wanneer het veilig is, maar loopt achter je in het licht. Wie in
   hoofdstuk 1 het bewijs bewaarde, begint twee daken verder (Willems sleutel).
 
+- **Hoofdstuk 3 compleet (sessie 2):** de getuigenis aan de Oosthaven. Geen spel, klok, keuze of
+  score, en geen gegenereerd beeld. Vier stille momenten (gelabeld als verzonnen), daarna een
+  gedenkblad in plaats van een krant: feiten uit het bronnenregister, lege stenen tot de namen
+  zijn gecontroleerd, en "houd vast voor een moment stilte".
+
 ## Half af
 - Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).
-- Hoofdstuk 3 en 5: alleen kaartgegevens en keuzes/echo's als data. De epiloog ontbreekt.
+- Hoofdstuk 5: alleen kaartgegevens en keuzes/echo's als data. De epiloog ontbreekt.
+- De tekst van hoofdstuk 3 is een voorstel: laat die lezen door iemand van het Joods Monument
+  of het Streekarchief voordat hij openbaar wordt.
 - Over de daken en Nachtvaart zijn op de testbot afgesteld, niet op mensen.
 - Locatiemodus: afstand via GPS en "Ik ben er" werken; ankers, veiligheidsblokkade en PWA niet.
 - Alle historische feiten staan op `verified: false` (`src/data/sources.ts`).
@@ -47,6 +54,5 @@ Kies "Speel thuis". Hoofdstuk 1, 2 en 4 zijn volledig.
 
 ## Volgende stap
 1. Speel hoofdstuk 1 en 4 op een iPhone; pas daarna `src/game/tuning.ts` aan.
-2. Hoofdstuk 5 (M6, Vluchtspoor) of hoofdstuk 3 (M7, de getuigenis zonder spelmechanica) en de
-   epiloog. Kees (hoofdstuk 2) en Jaap (hoofdstuk 4) komen daar terug; de echo's staan als data klaar.
+2. Hoofdstuk 5 (M6, Vluchtspoor) en de epiloog. Kees (hoofdstuk 2) en Jaap (hoofdstuk 4) komen daar terug; de echo's staan als data klaar.
 3. Laat de feiten van hoofdstuk 1, 2 en 4 verifiëren en vraag de eerste archieffoto's aan.

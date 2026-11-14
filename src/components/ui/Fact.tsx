@@ -5,10 +5,10 @@ import { FACTS, SHOW_UNVERIFIED, type Fact, type FactId } from "@/data/sources";
  * Verified: plain text. Unverified: visibly marked in dev/preview, withheld in production.
  */
 /** Legend for the dotted markers; only rendered while unverified facts are visible. */
-export function FactLegend({ ids }: { ids: FactId[] }) {
+export function FactLegend({ ids, dark = false }: { ids: FactId[]; dark?: boolean }) {
   if (!SHOW_UNVERIFIED || ids.every((id) => FACTS[id].verified)) return null;
   return (
-    <span className="font-label text-[10px] font-semibold tracking-wide text-wax-dark">
+    <span className={`font-label text-[10px] font-semibold tracking-wide ${dark ? "text-[#f0b5aa]" : "text-wax-dark"}`}>
       [?] ROOD GESTIPPELD = NOG NIET GEVERIFIEERD, BRON VOLGT
     </span>
   );
@@ -32,18 +32,18 @@ export function FactText({ id, dark = false }: { id: FactId; dark?: boolean }) {
  * A run of facts as one paragraph. In production, unverified claims are withheld and replaced by
  * a single honest note instead of a row of gaps.
  */
-export function FactBlock({ ids }: { ids: FactId[] }) {
+export function FactBlock({ ids, dark = false }: { ids: FactId[]; dark?: boolean }) {
   const hidden = SHOW_UNVERIFIED ? [] : ids.filter((id) => !FACTS[id].verified);
   const shown = ids.filter((id) => !hidden.includes(id));
   return (
     <>
       {shown.map((id) => (
         <span key={id}>
-          <FactText id={id} />{" "}
+          <FactText id={id} dark={dark} />{" "}
         </span>
       ))}
       {hidden.length > 0 && (
-        <span className="tbc">
+        <span className={dark ? "tbc-dark" : "tbc"}>
           [{hidden.length === 1 ? "Eén feit wordt" : `${hidden.length} feiten worden`} hier nog gecontroleerd door een historicus.]
         </span>
       )}

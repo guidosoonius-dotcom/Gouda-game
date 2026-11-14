@@ -61,6 +61,18 @@ export const FACTS = {
     todo: "titels, drukkers, adressen en jaren",
     verified: false,
   },
+  "oosthaven.home": {
+    claim: "Aan de Oosthaven 31 was tot 1943 een Joods bejaardentehuis gevestigd.",
+    source: "nog te bepalen (Joods Monument / Streekarchief Midden-Holland)",
+    todo: "naam van het tehuis, aantal bewoners en personeel",
+    verified: false,
+  },
+  "oosthaven.deportation": {
+    claim: "In het voorjaar van 1943 zijn de bewoners weggevoerd. Bijna niemand van hen heeft de oorlog overleefd.",
+    source: "nog te bepalen (Joods Monument / Stichting Stolpersteine Gouda)",
+    todo: "datum, route, aantallen en alle namen",
+    verified: false,
+  },
   "curfew.hours": {
     claim: "Tijdens de bezetting gold een spertijd: 's avonds mocht niemand zonder vergunning op straat.",
     source: "nog te bepalen (NIOD)",

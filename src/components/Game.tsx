@@ -10,6 +10,7 @@ import { TitleScreen } from "./screens/TitleScreen";
 import { MapScreen } from "./screens/MapScreen";
 import { DossierScreen } from "./screens/DossierScreen";
 import { MirrorScreen } from "./screens/MirrorScreen";
+import { MemorialScreen, WitnessScreen } from "./screens/WitnessScreen";
 import { PackingGame } from "./packing/PackingGame";
 
 // The WebGL minigame is only loaded (and its canvas only mounted) when it is played.
@@ -37,7 +38,14 @@ function Task() {
   if (kind === "packing") return <PackingGame />;
   if (kind === "canal") return <CanalGame />;
   if (kind === "rooftop") return <RoofGame />;
+  if (kind === "witness") return <WitnessScreen />;
   return <Loading />;
+}
+
+/** A chapter ends with its newspaper, or, at a place of remembrance, with a memorial page. */
+function Mirror() {
+  const chapter = useGameStore((s) => s.chapter);
+  return chapterById(chapter).memorial ? <MemorialScreen /> : <MirrorScreen />;
 }
 
 const SCREENS: Record<View, () => React.ReactNode> = {
@@ -45,7 +53,7 @@ const SCREENS: Record<View, () => React.ReactNode> = {
   map: () => <MapScreen />,
   dossier: () => <DossierScreen />,
   task: () => <Task />,
-  mirror: () => <MirrorScreen />,
+  mirror: () => <Mirror />,
 };
 
 export function Game() {

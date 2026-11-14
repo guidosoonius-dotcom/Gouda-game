@@ -44,7 +44,7 @@ export function DossierScreen() {
       <div className="absolute inset-x-0 top-0 h-[58%] overflow-hidden">
         <AnimatePresence>
           <motion.div
-            key={page.image}
+            key={page.image || "none"}
             className="absolute inset-0"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -53,7 +53,7 @@ export function DossierScreen() {
           >
             <div
               className="anim-kenburns absolute inset-0 bg-cover"
-              style={{ backgroundImage: `url(${page.image})`, backgroundPosition: "50% 38%" }}
+              style={{ backgroundImage: page.image ? `url(${page.image})` : undefined, backgroundPosition: "50% 38%" }}
             />
           </motion.div>
         </AnimatePresence>

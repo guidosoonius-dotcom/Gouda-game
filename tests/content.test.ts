@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { CHAPTERS } from "@/data/chapters";
 import { FACTS } from "@/data/sources";
+import { CHOICES, OUTCOMES } from "@/game/choices";
 import { LEVELS, canPlace, initPieces, isPacked, dims } from "@/components/packing/levels";
 
 describe("history rules", () => {
@@ -17,8 +18,19 @@ describe("history rules", () => {
     }
   });
 
-  it("chapter 3 is a testimony: no task with score, timer or failure", () => {
-    expect(CHAPTERS.find((c) => c.id === 3)!.task).toBe("witness");
+  it("chapter 3 is a testimony: no dilemma, no outcome, no newspaper with a fiction headline", () => {
+    const ch3 = CHAPTERS.find((c) => c.id === 3)!;
+    expect(ch3.task).toBe("witness");
+    expect(ch3.pages.some((p) => p.kind === "dilemma")).toBe(false);
+    expect(ch3.mirror).toBeUndefined();
+    expect(ch3.memorial).toBeDefined();
+    expect(CHOICES.some((c) => (c.chapter as number) === 3)).toBe(false);
+    expect(Object.keys(OUTCOMES).some((id) => id.startsWith("ch3"))).toBe(false);
+    // no generated imagery at this place: the pages carry no scene illustration
+    expect(ch3.pages.every((p) => p.image === "")).toBe(true);
+    // names of victims are never invented: the list stays empty until they are verified
+    for (const id of ch3.memorial!.facts) expect(FACTS[id]).toBeDefined();
+    if (ch3.memorial!.facts.some((id) => !FACTS[id].verified)) expect(ch3.memorial!.names).toEqual([]);
   });
 });
 
