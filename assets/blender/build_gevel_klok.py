@@ -3,4 +3,4 @@ import os, sys
 sys.path.insert(0, os.path.dirname(__file__))
 from _gevel import build
 
-build("klok", "gevel_klok", 6.2, 9.2, "BrickDark")
+build("klok", "gevel_klok", 6.2, 9.2, "BrickDark", shop=True, seed=221)

@@ -27,7 +27,19 @@ export function Night({
   focus,
   subject,
   extent = 30,
+  keyColor = "#bfd2f2",
+  keyIntensity = 3.4,
+  fillColor = "#7f97c4",
+  fillIntensity = 0.7,
+  skyEnv = true,
 }: {
+  /** Colour and strength of the shadow-casting key light, and of the fill from the other side. */
+  keyColor?: string;
+  keyIntensity?: number;
+  fillColor?: string;
+  fillIntensity?: number;
+  /** False when the scene sets its own environment (a photographic sky). */
+  skyEnv?: boolean;
   moon: [number, number, number];
   /** Centre of the shadowed area. */
   focus: (out: THREE.Vector3) => void;
@@ -44,6 +56,7 @@ export function Night({
   const offset = useMemo(() => new THREE.Vector3(...moon), [moon]);
 
   useEffect(() => {
+    if (!skyEnv) return;
     const pmrem = new THREE.PMREMGenerator(gl);
     const sky = new THREE.Scene();
     const dome = new THREE.Mesh(
@@ -66,7 +79,7 @@ export function Night({
       dome.geometry.dispose();
       (dome.material as THREE.Material).dispose();
     };
-  }, [gl, scene, offset]);
+  }, [gl, scene, offset, skyEnv]);
 
   useFrame(() => {
     focus(centre);
@@ -90,8 +103,8 @@ export function Night({
       <directionalLight
         ref={key}
         target={target}
-        color="#bfd2f2"
-        intensity={3.4}
+        color={keyColor}
+        intensity={keyIntensity}
         castShadow={TUNING.gfx.shadows}
         shadow-mapSize={[1024, 1024]}
         shadow-bias={-0.0006}
@@ -103,15 +116,22 @@ export function Night({
         shadow-camera-near={1}
         shadow-camera-far={110}
       />
-      <directionalLight color="#7f97c4" intensity={0.7} position={[-offset.x, 10, -offset.z]} />
+      <directionalLight color={fillColor} intensity={fillIntensity} position={[-offset.x, 10, -offset.z]} />
     </>
   );
 }
 
 /** Film look laid over the canvas in CSS: a vignette and fine grain cost the GPU almost nothing. */
-export function Cinema() {
+export function Cinema({ warm = false }: { warm?: boolean }) {
   return (
     <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+      {warm && (
+        <>
+          {/* split toning: firelight in the highlights, cold blue in the shadows */}
+          <div className="absolute inset-0 mix-blend-soft-light" style={{ background: "linear-gradient(180deg, rgba(255,140,60,.3) 0%, rgba(255,120,40,.04) 38%, rgba(30,60,150,.55) 100%)" }} />
+          <div className="absolute inset-0 mix-blend-screen" style={{ background: "radial-gradient(ellipse 70% 38% at 50% 24%, rgba(255,120,40,.12), rgba(255,120,40,0) 70%)" }} />
+        </>
+      )}
       <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 85% 70% at 50% 46%, rgba(4,6,10,0) 52%, rgba(4,6,10,.62) 100%)" }} />
       <Grain id="cinema-grain" opacity={0.13} />
     </div>

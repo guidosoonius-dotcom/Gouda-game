@@ -71,7 +71,7 @@ function Rider({ follow }: { follow: (out: { x: number; z: number; v: number; le
 
 export function BikeActors({ sim, kees, shake }: { sim: React.RefObject<BikeSim>; kees: boolean; shake: React.RefObject<number> }) {
   const { camera } = useThree();
-  const look = useRef(new THREE.Vector3(0, 0.5, -5));
+  const look = useRef(new THREE.Vector3(0, 3.6, -14));
   const prevX = useRef(0);
   const lean = useRef(0);
 
@@ -85,10 +85,13 @@ export function BikeActors({ sim, kees, shake }: { sim: React.RefObject<BikeSim>
     const j = shake.current * 0.45;
     const ease = 1 - Math.exp(-3.2 * dt);
     camera.position.x += (s.x * 0.4 - camera.position.x) * ease + (Math.random() - 0.5) * j;
-    camera.position.y = 9.5 + (Math.random() - 0.5) * j;
-    camera.position.z += (s.z + 11 - camera.position.z) * ease;
+    // a little handheld sway, and the view dips lower the faster you ride
+    const sway = Math.sin(performance.now() / 700) * 0.06 * (0.4 + s.v * 0.12);
+    camera.position.y = 5.8 - Math.min(1, s.v / 5) * 0.5 + sway + (Math.random() - 0.5) * j;
+    camera.position.z += (s.z + 11.4 - camera.position.z) * ease;
     look.current.x += (s.x * 0.4 - look.current.x) * ease;
-    look.current.z += (s.z - 5 - look.current.z) * ease;
+    look.current.y = 3.6;
+    look.current.z += (s.z - 14 - look.current.z) * ease;
     camera.lookAt(look.current);
   });
 

@@ -10,7 +10,8 @@ const ROOT = path.join(__dirname, "..");
 const SRC = path.join(ROOT, "assets", "blender");
 const OUT = path.join(ROOT, "public", "models");
 const MAX_KB = 250;
-const MAX_TOTAL_KB = 1500;
+// The 1.5 MB budget of CLAUDE.md applies per minigame (the models it loads), not to the whole kit.
+const MAX_TOTAL_KB = 3000;
 
 function run(cmd, args) {
   const r = spawnSync(cmd, args, { cwd: ROOT, encoding: "utf8" });

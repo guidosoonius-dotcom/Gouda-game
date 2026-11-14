@@ -12,6 +12,7 @@ const NAMES = [
   "kade", "riet", "schouw", "ophaalbrug", "sluisdeur", "soldaat", "zoeklicht", "lantaarn", "boom", "fiets",
   "meerpaal", "wachtpost", "vracht", "gevel_trap", "gevel_klok", "gevel_tuit",
   "dakhuis", "schoorsteen", "koerier", "sintjan", "uitkijk", "man", "vrouw", "puin", "ruine", "schuilkelder",
+  "gevel_trap_schade", "gevel_klok_schade", "gevel_tuit_schade", "vliegtuig", "handkar",
 ] as const;
 export type ModelName = (typeof NAMES)[number];
 export const url = (name: ModelName) => `/models/${name}.glb`;
@@ -19,6 +20,15 @@ export const url = (name: ModelName) => `/models/${name}.glb`;
 export const preload = (names: ModelName[]) => names.forEach((n) => useGLTF.preload(url(n)));
 
 /** Shared by every swaying material: one clock, the boat's position, how hard it brushes the reeds. */
+/**
+ * Fire light on the windows (chapter 5): positions (x, z, strength) of up to four fires and a master
+ * switch. With `uWindowGlow` at 0 (the other minigames) windows stay dark.
+ */
+export const glow = {
+  uFire: { value: [0, 1, 2, 3].map(() => new THREE.Vector3(0, 9999, 0)) },
+  uWindowGlow: { value: 0 },
+};
+
 export const sway = { uTime: { value: 0 }, uBoat: { value: new THREE.Vector3() }, uRustle: { value: 0 } };
 
 function swayMaterial(strength: number) {
@@ -50,6 +60,7 @@ function swayMaterial(strength: number) {
 /** Surface families for the procedural detail shader, stored per vertex as `kind`. */
 const SURFACE: Record<string, number> = {
   Brick: 1, BrickDark: 1, Roof: 2, Wood: 3, WoodDark: 3, WoodWhite: 3, Bark: 3, Stone: 4, Cobble: 4, Sand: 4,
+  Glass: 5, WindowDark: 5, Soot: 6,
 };
 
 /**
@@ -61,6 +72,7 @@ function detailMaterial() {
   const m = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.86, metalness: 0.02 });
   if (!TUNING.gfx.detail) return m;
   m.onBeforeCompile = (shader) => {
+    Object.assign(shader.uniforms, glow, { uTimeW: sway.uTime });
     shader.vertexShader = shader.vertexShader
       .replace("#include <common>", "#include <common>\nattribute float kind;\nvarying float vKind;\nvarying vec3 vWPos;\nvarying vec3 vWNor;")
       .replace(
@@ -83,6 +95,9 @@ function detailMaterial() {
         varying float vKind;
         varying vec3 vWPos;
         varying vec3 vWNor;
+        uniform vec3 uFire[4];
+        uniform float uWindowGlow;
+        uniform float uTimeW;
         float h21(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
         float vnoise(vec2 p) {
           vec2 i = floor(p), f = fract(p);
@@ -118,7 +133,26 @@ function detailMaterial() {
             detail = mix(0.58, 0.8 + 0.38 * h21(floor(c)), smoothstep(0.5, 0.38, max(f.x, f.y)));
           }
           detail *= 0.92 + 0.16 * grain;
+          if (vKind > 5.5) detail *= 0.7 + 0.3 * grain;
           diffuseColor.rgb *= mix(1.0, detail, fade);
+        }`,
+      )
+      .replace(
+        "#include <emissivemap_fragment>",
+        `#include <emissivemap_fragment>
+        if (uWindowGlow > 0.0 && vKind > 4.5 && vKind < 5.5) {
+          // Each window is its own cell: some hold a dim lamp behind the blackout curtain, all
+          // pick up the orange of nearby fires, flickering.
+          vec2 wc = vec2(floor(vWPos.z / 1.7) + 13.0 * step(0.0, vWPos.x), floor(vWPos.y / 2.7));
+          float hw = h21(wc);
+          float fire = 0.0;
+          for (int i = 0; i < 4; i++) {
+            float d = distance(vWPos.xz, uFire[i].xy);
+            fire += uFire[i].z / (1.0 + d * d * 0.03);
+          }
+          float flick = 0.75 + 0.25 * sin(uTimeW * (6.0 + 5.0 * hw) + hw * 40.0);
+          totalEmissiveRadiance += vec3(1.0, 0.44, 0.14) * fire * flick * 0.6 * (0.3 + 0.7 * hw) * uWindowGlow;
+          totalEmissiveRadiance += vec3(1.0, 0.68, 0.34) * step(0.86, hw) * 0.55 * flick * uWindowGlow;
         }`,
       );
   };

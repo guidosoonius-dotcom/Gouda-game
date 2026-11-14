@@ -8,6 +8,8 @@ export const TUNING = {
     spotShadows: true,
     /** Procedural brick, tile, wood and stone detail in the shader. */
     detail: true,
+    /** Ambient life in the bicycle chapter: extra people, aircraft, debris, embers and ash. */
+    life: true,
   },
   packing: {
     /** Seconds between distant shock waves. */

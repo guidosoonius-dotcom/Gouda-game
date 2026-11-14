@@ -1,5 +1,7 @@
 /* eslint-disable */
-// Dev tool: screenshots of "Vluchtspoor". BASE_URL=http://localhost:3000 node scripts/bike-shots.cjs
+// Dev tool: screenshots of "Vluchtspoor" from fixed spots in the street, plus a frame-rate probe.
+//   BASE_URL=http://localhost:3000 node scripts/bike-shots.cjs
+// Note: headless Chromium renders in software here, so the frame rate is far below a phone's.
 const path = require("node:path");
 const fs = require("node:fs");
 const { chromium } = require("playwright");
@@ -14,33 +16,27 @@ const OUT = path.join(__dirname, "..", "test-results");
   page.on("console", (m) => m.type() === "error" && errors.push(m.text().slice(0, 400)));
   const base = process.env.BASE_URL || "http://localhost:3000";
   // dev-only shortcuts: ?bike=1 opens the run, ?z= starts further down the street
-  const open = async (query) => {
-    await page.goto(`${base}/?bike=1${query}`);
-    await page.getByRole("button", { name: /Op de fiets/i }).waitFor({ timeout: 40000 });
-    await page.waitForTimeout(2500);
+  const open = async (z) => {
+    await page.goto(`${base}/?bike=1${z ? `&z=${z}` : ""}`);
+    await page.getByRole("button", { name: /Op de fiets/i }).waitFor({ timeout: 60000 });
+    await page.waitForTimeout(1500);
     await page.getByRole("button", { name: /Op de fiets/i }).click();
   };
-  await open("");
-  await page.waitForTimeout(1500);
-  await page.screenshot({ path: path.join(OUT, "50-fiets-start.png") });
-  await page.keyboard.down("ArrowRight");
-  await page.waitForTimeout(700);
-  await page.keyboard.up("ArrowRight");
-  await page.keyboard.down("ArrowLeft");
-  await page.waitForTimeout(1500);
-  await page.keyboard.up("ArrowLeft");
-  await page.keyboard.press("Space");
-  await page.waitForTimeout(2600);
-  await page.screenshot({ path: path.join(OUT, "51-fiets-volgers.png") });
-  await page.waitForTimeout(3500);
-  await page.screenshot({ path: path.join(OUT, "52-fiets-inslag.png") });
-  await open("&z=-66");
-  await page.getByText("Waar ga jij").waitFor({ timeout: 120000 });
-  await page.waitForTimeout(800);
-  await page.screenshot({ path: path.join(OUT, "53-fiets-dilemma.png") });
-  await page.getByRole("button", { name: /Ik help de man zoeken/i }).click();
-  await page.waitForTimeout(25000);
-  await page.screenshot({ path: path.join(OUT, "54-fiets-zoeken.png") });
+  const spots = [[0, "50-fiets-start", 9000], [-30, "51-fiets-30", 7000], [-50, "52-fiets-62", 7000], [-100, "53-fiets-100", 4000], [-124, "54-fiets-124", 4000]];
+  for (const [z, name, wait] of spots) {
+    await open(z);
+    if (z === -30) {
+      await page.keyboard.press("Space");
+    }
+    await page.waitForTimeout(wait);
+    await page.screenshot({ path: path.join(OUT, `${name}.png`) });
+    if (z === 0) {
+      const fps = await page.evaluate(() => new Promise((res) => { let n = 0; const t0 = performance.now(); const f = () => { n++; performance.now() - t0 < 4000 ? requestAnimationFrame(f) : res(n / 4); }; requestAnimationFrame(f); }));
+      console.log(`software-rendered frame rate here: ${fps.toFixed(1)} fps`);
+      const info = await page.evaluate(() => { const i = window.__gl.info; return { calls: i.render.calls, triangles: i.render.triangles, geometries: i.memory.geometries, textures: i.memory.textures }; });
+      console.log(`per frame: ${info.calls} draw calls, ${(info.triangles / 1000).toFixed(0)}k triangles; ${info.geometries} geometries, ${info.textures} textures in memory`);
+    }
+  }
   console.log(errors.length ? "ERRORS:\n" + errors.join("\n") : "bike shots ok");
   await browser.close();
 })();

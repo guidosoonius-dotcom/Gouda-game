@@ -49,11 +49,23 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   je vijf avonden op een rij en een brief aan later (blijft op het toestel). Opent zodra alle
   vijf hoofdstukken gespeeld zijn.
 
+- **Vluchtspoor drastisch verbeterd (sessie 3):** een straat met leven. Lucht, station en keien
+  zijn met Higgsfield gegenereerd (`public/img/bike/`); de lucht is ook de weerspiegeling in de
+  plassen. Gevels met kozijnen, lateien, regenpijpen, winkelpuien, luifels en beschadigde
+  varianten (uitgeblazen ramen, roet, gebroken gevel); ramen gloeien door de branden. Rennende
+  mensen, vliegtuigen met gedrein, sirene, vuur met rook, vonken en as, puin en stof bij elke
+  inslag, een lage zon die lange schaduwen de straat in werpt. Camera lager, met lucht erboven.
+  Gemeten: ± 200 draw calls en 250k driehoeken per beeld (schaduwlaag inbegrepen).
+
 ## Half af
 - Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).
 - De tekst van hoofdstuk 3 is een voorstel: laat die lezen door iemand van het Joods Monument
   of het Streekarchief voordat hij openbaar wordt.
 - Over de daken en Nachtvaart zijn op de testbot afgesteld, niet op mensen.
+- De zwaarste scène (Vluchtspoor) is niet op een telefoon gemeten. In software haalt hij 1 beeld
+  per seconde; schakel anders `gfx.life`, schaduwen of details uit in `src/game/tuning.ts`.
+- De nieuwe gevels (ook in Nachtvaart en Over de daken) en de nieuwe lichtinstellingen voor die
+  twee minigames zijn niet opnieuw bekeken; bekijk ze eerst.
 - Locatiemodus: afstand via GPS en "Ik ben er" werken; ankers, veiligheidsblokkade en PWA niet.
 - Alle historische feiten staan op `verified: false` (`src/data/sources.ts`).
 
@@ -61,7 +73,8 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
 - `npm run build` · `npm test` (45 tests) · `npm run test:e2e` (speelt hoofdstuk 1 door op 390×844,
   speelt het dossier van hoofdstuk 4 tot in de vaart en zet screenshots in `test-results/`) · `npm run assets`.
 - Ontwikkelhulp (alleen in dev): `/?canal=1` opent de vaart direct, `&z=-60` start verderop;
-  `/?roof=1` opent de daken, `&cover=8` start verderop; `/?bike=1` opent de fietstocht. `node scripts/roof-shots.cjs` maakt screenshots.
+  `/?roof=1` opent de daken, `&cover=8` start verderop; `/?bike=1` opent de fietstocht (`&bomb=1` laat direct een bom vallen, `&plane=1` toont een
+  vliegtuig; `node scripts/bike-shots.cjs` en `bike-impact.cjs` maken screenshots). `node scripts/roof-shots.cjs` maakt screenshots.
   `node scripts/canal-shots.cjs` maakt screenshots van de vaart.
 
 ## Volgende stap

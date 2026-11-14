@@ -108,6 +108,20 @@ Formaat: beslissing · waarom · alternatief.
     Markt staat (getest voor elke optie); de speler sluit af met een eigen brief. De bevrijding
     van Gouda staat als onverifieerd feit in het bronnenregister.
 
+33. **Gegenereerde beelden als decor voor Vluchtspoor.** Een rokerige schemerlucht, naadloze natte
+    keien en een stationsgevel komen uit Higgsfield (`public/img/bike/`, samen 350 KB). Dit
+    verruimt de regel "geen afbeeldingen": alleen voor decor en ondergrond, nooit als
+    archieffoto. Het station is een generiek Nederlands stationsgebouw, niet het Goudse.
+34. **Licht in Vluchtspoor: een lage zon achter het spoor** is de enige schaduwwerper. Die rakelt
+    langs de straat, dus de schaduwen vallen naar de speler toe en de gevels zijn aan de rand
+    verlicht. De lucht dient ook als omgevingsbeeld voor weerspiegelingen. Het vuur kleurt de
+    ramen oranje via de shader (vier vuurpunten), zonder extra geometrie.
+35. **Gevels kregen veel meer detail maar geen bevel.** Afgeronde randen op kleine onderdelen
+    maakten elk huis 8.000 driehoeken; zonder bevel zijn het er ± 1.000. Personages en
+    rekwisieten houden hun gladde vorm.
+36. **Het waarschuwingsvlak van een bom is gameplay**, dus altijd getekend (ook als `gfx.life` uit
+    staat), en op de heldere straat een witte pulserende ring op rood.
+
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.
 - Blaeu-kaart: pin-posities zijn op het oog geplaatst. Georefereren met controlepunten in M8.

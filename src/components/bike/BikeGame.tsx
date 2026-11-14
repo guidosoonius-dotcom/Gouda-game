@@ -32,7 +32,7 @@ function Loop({ sim, input, shake, onHud, onEvent }: {
   input: React.RefObject<Input>;
   shake: React.RefObject<number>;
   onHud: (h: BikeHudState) => void;
-  onEvent: (type: "dilemma" | "done", outcome?: BikeOutcome) => void;
+  onEvent: (type: "dilemma" | "done" | "impact", outcome?: BikeOutcome) => void;
 }) {
   const since = useRef(0);
   useFrame((_, delta) => {
@@ -45,7 +45,7 @@ function Loop({ sim, input, shake, onHud, onEvent }: {
       else if (e.type === "join") sfx.chime();
       else if (e.type === "bump") sfx.settle();
       else if (e.type === "whistle") sfx.fall();
-      else if (e.type === "impact") (sfx.rumble(), (shake.current = 1));
+      else if (e.type === "impact") (sfx.rumble(), (shake.current = 1), onEvent("impact"));
       else if (e.type === "scatter") sfx.reject();
       else if (e.type === "dilemma") onEvent("dilemma");
       else if (e.type === "done") onEvent("done", e.outcome);
@@ -79,6 +79,7 @@ export function BikeGame() {
   const [phase, setPhase] = useState<"intro" | "play" | "dilemma" | "done">("intro");
   const [hud, setHud] = useState<BikeHudState>(BIKE_HUD_START);
   const [outcome, setOutcome] = useState<BikeOutcome>("allen");
+  const [flash, setFlash] = useState(false);
 
   const steer = useCallback((side: "L" | "R", down: boolean) => void (input.current[side] = down), []);
   const bell = useCallback(() => void (input.current.bell = true), []);
@@ -100,18 +101,27 @@ export function BikeGame() {
     unlockAudio();
     sfx.paper();
     ambience.start();
+    sfx.siren();
     sim.current = createBike();
     sim.current.status = "play";
     // Dev aid: /?z=-60 starts further down the street (ignored in production builds).
     const z = process.env.NODE_ENV !== "production" ? Number(new URLSearchParams(window.location.search).get("z")) : 0;
     if (z < 0) sim.current.z = z;
+    // Dev aid: /?bomb=1 drops a bomb a few metres ahead at once (to see the impact).
+    if (process.env.NODE_ENV !== "production" && new URLSearchParams(window.location.search).has("bomb")) {
+      sim.current.nextBomb = 0.01;
+    }
     input.current = { L: false, R: false, bell: false };
     setHud(BIKE_HUD_START);
     setPhase("play");
   };
 
   const onEvent = useCallback(
-    (type: "dilemma" | "done", result?: BikeOutcome) => {
+    (type: "dilemma" | "done" | "impact", result?: BikeOutcome) => {
+      if (type === "impact") {
+        setFlash(true);
+        window.setTimeout(() => setFlash(false), 90);
+      }
       if (type === "dilemma") setPhase("dilemma");
       if (type === "done" && result) {
         setOutcome(result);
@@ -131,15 +141,26 @@ export function BikeGame() {
 
   return (
     <div className="absolute inset-0 touch-none overflow-hidden bg-night">
-      <Canvas shadows="soft" dpr={[1, 2]} style={{ filter: "contrast(1.07) saturate(1.1)" }} camera={{ fov: 62, near: 0.5, far: 200, position: [0, 9.5, 11] }} gl={{ antialias: true, powerPreference: "high-performance" }}>
-        <color attach="background" args={["#1c1a1d"]} />
-        <fogExp2 attach="fog" args={["#1c1a1d", 0.021]} />
-        <Night moon={[-12, 24, 10]} focus={(out) => out.set(sim.current.x * 0.4, 0, sim.current.z - 10)} extent={30} />
+      <Canvas shadows="soft" dpr={[1, 2]} style={{ filter: "contrast(1.08) saturate(1.05)" }} camera={{ fov: 54, near: 0.5, far: 420, position: [0, 5.8, 11.4] }} gl={{ antialias: true, powerPreference: "high-performance" }}>
+        <color attach="background" args={["#352a35"]} />
+        <fog attach="fog" args={["#3d2d38", 22, 330]} />
+        {/* the low sun behind the burning yard rakes down the street: long shadows toward the camera */}
+        <Night
+          moon={[-5, 11, -30]}
+          focus={(out) => out.set(sim.current.x * 0.4, 0, sim.current.z - 12)}
+          extent={34}
+          keyColor="#ffb274"
+          keyIntensity={3.0}
+          fillColor="#6f93d8"
+          fillIntensity={1.7}
+          skyEnv={false}
+        />
         <BikeWorld sim={sim} />
         <BikeActors sim={sim} kees={kees} shake={shake} />
         <Loop sim={sim} input={input} shake={shake} onHud={setHud} onEvent={onEvent} />
       </Canvas>
-      <Cinema />
+      <Cinema warm />
+      <div className="pointer-events-none absolute inset-0 transition-opacity duration-300" style={{ background: "radial-gradient(ellipse at 50% 45%, rgba(255,230,190,.95), rgba(255,160,70,.6) 60%, rgba(255,120,40,.3))", opacity: flash ? 0.85 : 0, transitionDuration: flash ? "40ms" : "500ms" }} />
       {phase === "play" && <BikeHud hud={hud} onSteer={steer} onBell={bell} />}
 
       <AnimatePresence>

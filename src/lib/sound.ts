@@ -143,6 +143,50 @@ export const sfx = {
   fall() {
     tone({ freq: 1700, to: 320, dur: 2.5, gain: 0.07, type: "triangle", attack: 0.3 });
   },
+  /** An aircraft passing overhead: a low drone that swells and fades. */
+  drone() {
+    const c = ac();
+    if (!c || !master) return;
+    const t = c.currentTime;
+    const g = c.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.1, t + 2.2);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 5.4);
+    const f = c.createBiquadFilter();
+    f.type = "lowpass";
+    f.frequency.value = 520;
+    for (const [freq, det] of [[82, 0], [84.5, 5]] as const) {
+      const o = c.createOscillator();
+      o.type = "sawtooth";
+      o.frequency.setValueAtTime(freq, t);
+      o.frequency.linearRampToValueAtTime(freq * 0.93, t + 5.4);
+      o.detune.value = det;
+      o.connect(f);
+      o.start(t);
+      o.stop(t + 5.5);
+    }
+    f.connect(g).connect(master);
+  },
+  /** Air-raid siren: a slow wail, two rises. */
+  siren() {
+    const c = ac();
+    if (!c || !master) return;
+    const t = c.currentTime;
+    const o = c.createOscillator();
+    o.type = "sine";
+    o.frequency.setValueAtTime(380, t);
+    for (let i = 0; i < 2; i++) {
+      o.frequency.linearRampToValueAtTime(640, t + 3 + i * 7);
+      o.frequency.linearRampToValueAtTime(380, t + 6.5 + i * 7);
+    }
+    const g = c.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.045, t + 1.5);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 14);
+    o.connect(g).connect(master);
+    o.start(t);
+    o.stop(t + 14.5);
+  },
   /** A footstep on roof tiles. */
   step() {
     noise({ dur: 0.05, freq: 1100 + Math.random() * 500, q: 1.4, gain: 0.07 });

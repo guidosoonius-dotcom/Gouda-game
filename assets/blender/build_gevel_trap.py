@@ -3,4 +3,4 @@ import os, sys
 sys.path.insert(0, os.path.dirname(__file__))
 from _gevel import build
 
-build("trap", "gevel_trap", 5.6, 8.6, "Brick")
+build("trap", "gevel_trap", 5.6, 8.6, "Brick", shop=False, seed=4973)

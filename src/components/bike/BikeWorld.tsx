@@ -1,24 +1,90 @@
 "use client";
 
-import { useMemo, useRef } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useEffect, useMemo, useRef } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
+import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
-import { Instanced, Model, place, preload, type ModelName } from "@/components/canal/Kit";
+import { Instanced, Model, glow, place, preload, sway, type ModelName } from "@/components/canal/Kit";
 import { rng } from "@/components/canal/layout";
 import { radialTexture } from "@/components/canal/textures";
 import { TUNING } from "@/game/tuning";
+import { BikeBombs } from "./BikeBombs";
+import { BikeLife } from "./BikeLife";
+import { BikeSky } from "./BikeSky";
 import { STREET, type BikeSim } from "./sim";
 
-const GABLES: ModelName[] = ["gevel_trap", "gevel_klok", "gevel_tuit"];
-preload([...GABLES, "puin", "ruine", "schuilkelder", "man", "vrouw", "fiets", "koerier", "lantaarn"]);
-const HW = STREET.halfWidth;
-/** Fires burning along the street: at the collapsed house and where earlier bombs fell. */
-const FIRES: [number, number][] = [[-HW - 1.5, STREET.ruin.z + 1], [HW - 0.6, -41], [-HW + 0.4, -76], [HW - 0.4, -104]];
+const GABLES: ModelName[] = ["gevel_trap", "gevel_klok", "gevel_tuit", "gevel_trap_schade", "gevel_klok_schade", "gevel_tuit_schade"];
+preload([...GABLES, "puin", "ruine", "schuilkelder", "man", "vrouw", "fiets", "koerier", "lantaarn", "vliegtuig", "handkar", "vracht"]);
+export const HW = STREET.halfWidth;
+const SIDEWALK = 1.7;
+
+/** Fires in the ground floors along the street: flames, smoke, a light, and glow in the windows. */
+export const FIRES = [
+  { x: -(HW + 2.4), y: 0.9, z: STREET.ruin.z, s: 1.9 },
+  { x: -(HW - 0.2), y: 1.6, z: -41, s: 1 },
+  { x: HW - 0.2, y: 1.7, z: -78, s: 1.1 },
+  { x: -(HW - 0.2), y: 1.6, z: -106, s: 0.9 },
+];
+
+/** Wet clinkers: the generated cobble texture with puddles that mirror the sky and the fires. */
+function useStreetMaterial(repeatY: number, width: number, tint: string) {
+  const { gl } = useThree();
+  const map = useTexture("/img/bike/cobble.webp");
+  return useMemo(() => {
+    const t = map.clone();
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    t.repeat.set(width / 4.4, repeatY);
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = Math.min(8, gl.capabilities.getMaxAnisotropy());
+    t.needsUpdate = true;
+    const m = new THREE.MeshStandardMaterial({ map: t, color: tint, roughness: 0.62, metalness: 0.05 });
+    m.onBeforeCompile = (shader) => {
+      Object.assign(shader.uniforms, glow, { uTimeS: sway.uTime });
+      shader.vertexShader = shader.vertexShader
+        .replace("#include <common>", "#include <common>\nvarying vec3 vSPos;")
+        .replace("#include <begin_vertex>", "#include <begin_vertex>\nvSPos = (modelMatrix * vec4(transformed, 1.0)).xyz;");
+      shader.fragmentShader = shader.fragmentShader
+        .replace(
+          "#include <common>",
+          `#include <common>
+          varying vec3 vSPos;
+          uniform vec3 uFire[4];
+          uniform float uTimeS;
+          float sh(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+          float sn(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
+            return mix(mix(sh(i), sh(i + vec2(1.0, 0.0)), f.x), mix(sh(i + vec2(0.0, 1.0)), sh(i + vec2(1.0, 1.0)), f.x), f.y); }
+          float puddleAt(vec2 p) { float n = 0.6 * sn(p * 0.55) + 0.4 * sn(p * 1.7 + 4.0); return smoothstep(0.56, 0.7, n); }`,
+        )
+        .replace(
+          "#include <map_fragment>",
+          `#include <map_fragment>
+          float puddle = puddleAt(vSPos.xz);
+          diffuseColor.rgb *= mix(1.0, 0.5, puddle);`,
+        )
+        .replace(
+          "#include <roughnessmap_fragment>",
+          `#include <roughnessmap_fragment>
+          roughnessFactor = mix(roughnessFactor, 0.05, puddle);`,
+        )
+        .replace(
+          "#include <emissivemap_fragment>",
+          `#include <emissivemap_fragment>
+          float fireLight = 0.0;
+          for (int i = 0; i < 4; i++) { float d = distance(vSPos.xz, uFire[i].xy); fireLight += uFire[i].z / (1.0 + d * d * 0.02); }
+          float fl = 0.8 + 0.2 * sin(uTimeS * 7.0 + vSPos.z);
+          totalEmissiveRadiance += vec3(1.0, 0.42, 0.12) * fireLight * fl * (0.04 + 0.3 * puddle);`,
+        );
+    };
+    return m;
+  }, [map, gl, repeatY, width, tint]);
+}
 
 function Street() {
+  const ground = useStreetMaterial(60, HW * 2 + 0.6, "#cfc8d0");
+  const walk = useStreetMaterial(60, SIDEWALK, "#948b84");
   const p = useMemo(() => {
     const r = rng(1126);
-    const rows: THREE.Matrix4[][] = [[], [], []];
+    const rows: THREE.Matrix4[][] = GABLES.map(() => []);
     for (const side of [1, -1]) {
       for (let z = 16; z > -190; ) {
         const kind = Math.floor(r() * 3);
@@ -26,123 +92,149 @@ function Street() {
         const zc = z - w / 2;
         z -= w + 0.03;
         const taken = side < 0 ? Math.abs(zc - STREET.ruin.z) < 4.5 : Math.abs(zc - (STREET.shelterZ - 1)) < 6.5;
-        if (!taken) rows[kind].push(place(side * (HW + 0.3), 0, zc, { yaw: side > 0 ? 0 : Math.PI, sy: 0.92 + r() * 0.22 }));
+        if (taken) continue;
+        // houses near a fire are damaged, plus now and then another one
+        const hit = FIRES.some((f) => Math.abs(f.z - zc) < 16 && Math.sign(f.x) === side) || r() < 0.1;
+        rows[kind + (hit ? 3 : 0)].push(place(side * (HW + 0.3), 0, zc, { yaw: side > 0 ? 0 : Math.PI, sy: 0.92 + r() * 0.22 }));
       }
     }
+    const lean = (side: number, z: number, i: number) => place(side * (HW + 0.05 - 0.35), 0.14, z, { yaw: i, roll: side * -0.26 });
     return {
       rows,
       rubble: STREET.rubble.map((q) => place(q.x, 0, q.z, { yaw: r() * 6.28, s: q.r / 1.45 })),
-      lamps: [-30, -90, -146].map((z, i) => place((i % 2 ? 1 : -1) * (HW - 0.3), 0, z)),
+      lamps: [-30, -90, -146].map((z, i) => place((i % 2 ? 1 : -1) * (HW - 0.3), 0.14, z)),
+      bikes: [lean(1, -6, 0), lean(-1, -25, 0), lean(1, -52, 0), lean(-1, -91, 0), lean(1, -119, 0)],
+      carts: [place(-(HW - 1.2), 0.14, -17, { yaw: 0.25 }), place(HW - 1.1, 0.14, -66, { yaw: Math.PI - 0.3 })],
+      crates: [place(HW - 0.9, 0.14, -29, { yaw: 0.6 }), place(-(HW - 0.9), 0.14, -86, { yaw: 2.2 }), place(HW - 0.9, 0.14, -133, { yaw: 1.1 })],
     };
   }, []);
   return (
     <>
       <mesh rotation-x={-Math.PI / 2} position={[0, 0, -85]} receiveShadow>
-        <planeGeometry args={[HW * 2 + 0.6, 230]} />
-        <meshStandardMaterial color="#43464b" roughness={0.95} />
+        <planeGeometry args={[HW * 2 + 0.6, 240]} />
+        <primitive object={ground} attach="material" />
       </mesh>
+      {[-1, 1].map((side) => (
+        <group key={side}>
+          <mesh position={[side * (HW + 0.3 - SIDEWALK / 2), 0.07, -85]} receiveShadow castShadow>
+            <boxGeometry args={[SIDEWALK, 0.14, 240]} />
+            <primitive object={walk} attach="material" />
+          </mesh>
+          <mesh position={[side * (HW + 0.3 - SIDEWALK), 0.075, -85]}>
+            <boxGeometry args={[0.16, 0.15, 240]} />
+            <meshStandardMaterial color="#8d867d" roughness={0.9} />
+          </mesh>
+        </group>
+      ))}
       {GABLES.map((name, i) => (
         <Instanced key={name} name={name} placements={p.rows[i]} />
       ))}
       <Instanced name="puin" placements={p.rubble} />
       <Instanced name="lantaarn" placements={p.lamps} />
+      <Instanced name="fiets" placements={p.bikes} />
+      <Instanced name="handkar" placements={p.carts} />
+      <Instanced name="vracht" placements={p.crates} />
       <Model name="ruine" position={[-(HW + 0.3), 0, STREET.ruin.z]} rotation-y={Math.PI} />
       <Model name="schuilkelder" position={[HW + 0.3, 0, STREET.shelterZ - 1]} />
+      <ShelterSign />
     </>
   );
 }
 
-/** Flames, smoke and the flickering light they throw on the facades. */
+/** The painted board over the shelter door; a lit window below it. */
+function ShelterSign() {
+  const tex = useMemo(() => {
+    const c = document.createElement("canvas");
+    c.width = 512;
+    c.height = 96;
+    const g = c.getContext("2d")!;
+    g.fillStyle = "#1c2a3c";
+    g.fillRect(0, 0, 512, 96);
+    g.strokeStyle = "#e9e2d0";
+    g.lineWidth = 5;
+    g.strokeRect(6, 6, 500, 84);
+    g.fillStyle = "#e9e2d0";
+    g.font = "bold 54px 'Archivo Narrow', 'Arial Narrow', sans-serif";
+    g.textAlign = "center";
+    g.textBaseline = "middle";
+    g.fillText("SCHUILKELDER", 256, 52);
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    return t;
+  }, []);
+  return (
+    <group position={[HW + 0.3 - 0.12, 3.55, STREET.shelterZ - 1]} rotation-y={-Math.PI / 2}>
+      <mesh>
+        <planeGeometry args={[3.2, 0.6]} />
+        <meshStandardMaterial map={tex} emissive="#e9e2d0" emissiveMap={tex} emissiveIntensity={0.35} roughness={0.8} />
+      </mesh>
+      <pointLight position={[0, -1.4, -1.2]} color="#ffcf8a" intensity={26} distance={9} decay={1.8} />
+    </group>
+  );
+}
+
+/** Flames, smoke columns and the light and glow on the ground that they throw. */
 function Fires() {
   const tex = useMemo(radialTexture, []);
   const flames = useRef<(THREE.Sprite | null)[]>([]);
   const smoke = useRef<(THREE.Sprite | null)[]>([]);
   const lights = useRef<(THREE.PointLight | null)[]>([]);
+  const SMOKE = 6;
+
+  useEffect(() => {
+    FIRES.forEach((f, i) => glow.uFire.value[i].set(f.x, f.z, 2.4 * f.s));
+    glow.uWindowGlow.value = 1;
+    return () => {
+      glow.uWindowGlow.value = 0;
+      glow.uFire.value.forEach((v) => v.set(0, 9999, 0));
+    };
+  }, []);
+
   useFrame(({ clock }) => {
     const t = clock.elapsedTime;
-    FIRES.forEach(([x, z], i) => {
-      const f = 0.75 + 0.25 * Math.sin(t * 9 + i * 2) * Math.sin(t * 5.3 + i);
-      flames.current[i]?.scale.set(2.2 * f, 3.2 * f, 1);
-      if (lights.current[i]) lights.current[i]!.intensity = 60 * f;
-      for (let k = 0; k < 3; k++) {
-        const s = smoke.current[i * 3 + k];
+    FIRES.forEach((f, i) => {
+      for (let k = 0; k < 4; k++) {
+        const sp = flames.current[i * 4 + k];
+        if (!sp) continue;
+        const ph = i * 3 + k * 1.7;
+        const fl = 0.7 + 0.3 * Math.sin(t * (8 + k * 2.3) + ph) * Math.sin(t * 5.1 + ph * 2);
+        sp.position.set(f.x + 0.5 + Math.sin(t * 2.2 + ph) * 0.25, f.y + 0.2 + fl * 0.9 * f.s + k * 0.55 * f.s, f.z + (k - 1.5) * 0.8 * f.s);
+        sp.scale.set((3.1 - k * 0.5) * f.s * fl, (5.2 - k * 0.8) * f.s * fl, 1);
+      }
+      if (lights.current[i]) lights.current[i]!.intensity = 90 * f.s * (0.75 + 0.25 * Math.sin(t * 9 + i * 2) * Math.sin(t * 5.3 + i));
+      for (let k = 0; k < SMOKE; k++) {
+        const s = smoke.current[i * SMOKE + k];
         if (!s) continue;
-        const rise = (t * 0.22 + k / 3 + i * 0.17) % 1;
-        s.position.set(x + Math.sin(t * 0.4 + k) * 0.8 + rise * 2, 1.5 + rise * 11, z - rise * 3);
-        s.scale.setScalar(3 + rise * 7);
-        (s.material as THREE.SpriteMaterial).opacity = 0.34 * (1 - rise);
+        const rise = (t * 0.16 + k / SMOKE + i * 0.17) % 1;
+        s.position.set(f.x + Math.sin(t * 0.3 + k * 2) * 1.2 + rise * 5, f.y + 1 + rise * 15 * f.s, f.z - rise * 4);
+        s.scale.setScalar((4.5 + rise * 12) * (0.8 + f.s * 0.3));
+        const m = s.material as THREE.SpriteMaterial;
+        m.opacity = 0.62 * (1 - rise) * Math.min(1, rise * 6);
+        m.color.setRGB(0.12 + 0.5 * (1 - rise) * (1 - rise), 0.1 + 0.2 * (1 - rise) * (1 - rise), 0.1 + 0.05 * (1 - rise));
       }
     });
   });
+
+  const add = { transparent: true, depthWrite: false, blending: THREE.AdditiveBlending } as const;
   return (
     <>
-      {FIRES.map(([x, z], i) => (
+      {FIRES.map((f, i) => (
         <group key={i}>
-          <sprite ref={(m) => void (flames.current[i] = m)} position={[x, 1.1, z]}>
-            <spriteMaterial map={tex} color="#ff8a2a" transparent depthWrite={false} blending={THREE.AdditiveBlending} />
-          </sprite>
-          <pointLight ref={(m) => void (lights.current[i] = m)} position={[x, 1.6, z]} color="#ff8a3a" distance={16} decay={1.5} />
-          {[0, 1, 2].map((k) => (
-            <sprite key={k} ref={(m) => void (smoke.current[i * 3 + k] = m)}>
-              <spriteMaterial map={tex} color="#2a2a2e" transparent depthWrite={false} />
+          {[0, 1, 2, 3].map((k) => (
+            <sprite key={k} ref={(m) => void (flames.current[i * 4 + k] = m)}>
+              <spriteMaterial map={tex} color={k < 2 ? "#ff7a1c" : "#ffc060"} {...add} opacity={1 - k * 0.1} />
             </sprite>
           ))}
-        </group>
-      ))}
-    </>
-  );
-}
-
-const MARKS = 3;
-/** Where a bomb is about to fall the street is marked first; then a flash and a cloud of dust. */
-function Bombs({ sim }: { sim: React.RefObject<BikeSim> }) {
-  const tex = useMemo(radialTexture, []);
-  const marks = useRef<(THREE.Group | null)[]>([]);
-  const bursts = useRef<(THREE.Sprite | null)[]>([]);
-  const last = useRef<{ x: number; z: number; t: number }[]>(Array.from({ length: MARKS }, () => ({ x: 0, z: 0, t: -9 })));
-  const seen = useRef(new Map<number, number>());
-  useFrame(() => {
-    const s = sim.current;
-    for (let i = 0; i < MARKS; i++) {
-      const b = s.bombs[i];
-      const g = marks.current[i];
-      if (g) g.visible = !!b;
-      if (b && g) {
-        const k = 1 - (b.at - s.t) / TUNING.bike.bombWarn;
-        g.position.set(b.x, 0.03, b.z);
-        g.children[0].scale.setScalar(0.25 + 0.75 * k);
-        (((g.children[1] as THREE.Mesh).material) as THREE.MeshBasicMaterial).opacity = 0.35 + 0.3 * Math.sin(s.t * 14);
-        seen.current.set(b.at, i);
-        last.current[i] = { x: b.x, z: b.z, t: b.at };
-      }
-      const age = s.t - last.current[i].t;
-      const burst = bursts.current[i];
-      if (burst) {
-        burst.visible = age >= 0 && age < 1.6;
-        burst.position.set(last.current[i].x, 1.5 + age * 2, last.current[i].z);
-        burst.scale.setScalar(3 + age * 9);
-        (burst.material as THREE.SpriteMaterial).opacity = Math.max(0, 0.75 - age * 0.5);
-        (burst.material as THREE.SpriteMaterial).color.set(age < 0.12 ? "#fff1c8" : "#6a5f55");
-      }
-    }
-  });
-  return (
-    <>
-      {Array.from({ length: MARKS }, (_, i) => (
-        <group key={i}>
-          <group ref={(g) => void (marks.current[i] = g)} visible={false}>
-            <mesh rotation-x={-Math.PI / 2}>
-              <circleGeometry args={[TUNING.bike.bombRadius, 36]} />
-              <meshBasicMaterial color="#e25b4a" transparent opacity={0.22} depthWrite={false} />
-            </mesh>
-            <mesh rotation-x={-Math.PI / 2} position={[0, 0.01, 0]}>
-              <ringGeometry args={[TUNING.bike.bombRadius - 0.18, TUNING.bike.bombRadius, 48]} />
-              <meshBasicMaterial color="#ff8a6a" transparent opacity={0.5} depthWrite={false} />
-            </mesh>
-          </group>
-          <sprite ref={(m) => void (bursts.current[i] = m)} visible={false}>
-            <spriteMaterial map={tex} transparent depthWrite={false} />
-          </sprite>
+          <mesh rotation-x={-Math.PI / 2} position={[f.x * 0.82, 0.04, f.z]}>
+            <circleGeometry args={[7 * f.s, 28]} />
+            <meshBasicMaterial color="#ff6a1c" {...add} opacity={0.1} />
+          </mesh>
+          <pointLight ref={(m) => void (lights.current[i] = m)} position={[f.x * 0.9, f.y + 0.6, f.z]} color="#ff8a3a" distance={19} decay={1.5} />
+          {Array.from({ length: SMOKE }, (_, k) => (
+            <sprite key={k} ref={(m) => void (smoke.current[i * SMOKE + k] = m)}>
+              <spriteMaterial map={tex} transparent depthWrite={false} />
+            </sprite>
+          ))}
         </group>
       ))}
     </>
@@ -152,9 +244,11 @@ function Bombs({ sim }: { sim: React.RefObject<BikeSim> }) {
 export function BikeWorld({ sim }: { sim: React.RefObject<BikeSim> }) {
   return (
     <group>
+      <BikeSky />
       <Street />
       <Fires />
-      <Bombs sim={sim} />
+      <BikeBombs sim={sim} />
+      {TUNING.gfx.life && <BikeLife sim={sim} />}
     </group>
   );
 }
