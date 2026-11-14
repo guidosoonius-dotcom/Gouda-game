@@ -129,8 +129,30 @@ async function packCrate(page, crateNo) {
     await page.waitForTimeout(600);
     await shot("08-koerierstas");
 
-    // Chapter 4: dossier, the dilemma about Jaap, then the WebGL crossing mounts and takes input.
+    // Chapter 2: dossier, the dilemma about Kees, then the rooftop run mounts and takes input.
     await page.getByRole("button", { name: /Sluit/i }).click();
+    await page.getByRole("button", { name: /Open het dossier/i }).click();
+    await expectText("Dossier 02");
+    await page.waitForTimeout(5500);
+    await page.getByRole("button", { name: /Verder/i }).click();
+    await expectText("Neem je Kees mee");
+    await page.waitForTimeout(6500);
+    await shot("09-dilemma-kees");
+    await page.getByRole("button", { name: /Kees gaat mee/i }).click();
+    await expectText("Over de daken naar de drukkerij");
+    await expectText("sleutel van de kerkzolder");
+    await page.getByRole("button", { name: /Het dak op/i }).click();
+    await expectText("Kees loopt achter je aan");
+    await page.getByRole("button", { name: /Het dak op/i }).click();
+    await page.waitForSelector("canvas");
+    await page.keyboard.press("Space");
+    await page.waitForTimeout(1500);
+    await expectText("Spertijd om acht uur");
+    await shot("09-over-de-daken");
+    await page.goto(base);
+    await page.getByRole("button", { name: /thuis/i }).click();
+
+    // Chapter 4: dossier, the dilemma about Jaap, then the WebGL crossing mounts and takes input.
     await page.getByRole("button", { name: /Hoofdstuk 4/i }).click();
     await page.getByRole("button", { name: /Open het dossier/i }).click();
     await expectText("Dossier 04");

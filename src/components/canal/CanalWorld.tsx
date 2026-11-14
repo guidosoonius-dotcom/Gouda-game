@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { Instanced, Model, place, type ModelName } from "./Kit";
+import { Instanced, Model, place, preload, type ModelName } from "./Kit";
 import { HW, LAYOUT, LEN, QUAY, rng } from "./layout";
 import { COURSE } from "./sim";
 
@@ -59,6 +59,7 @@ function Water() {
 }
 
 const HOUSES: ModelName[] = ["gevel_trap", "gevel_klok", "gevel_tuit"];
+preload([...HOUSES, "kade", "riet", "schouw", "ophaalbrug", "sluisdeur", "soldaat", "zoeklicht", "lantaarn", "boom", "fiets", "meerpaal", "wachtpost", "vracht"]);
 
 /** Three gable types, stretched and tinted per house so the street never repeats. */
 function Houses() {

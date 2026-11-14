@@ -18,6 +18,11 @@ const CanalGame = dynamic(() => import("./canal/CanalGame").then((m) => m.CanalG
   loading: () => <Loading />,
 });
 
+const RoofGame = dynamic(() => import("./rooftop/RoofGame").then((m) => m.RoofGame), {
+  ssr: false,
+  loading: () => <Loading />,
+});
+
 function Loading() {
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-night">
@@ -31,6 +36,7 @@ function Task() {
   const kind = chapterById(chapter).task;
   if (kind === "packing") return <PackingGame />;
   if (kind === "canal") return <CanalGame />;
+  if (kind === "rooftop") return <RoofGame />;
   return <Loading />;
 }
 
@@ -49,9 +55,11 @@ export function Game() {
 
   useEffect(() => {
     setMounted(true);
-    // Dev aid: /?canal=1 opens the Nachtvaart directly (ignored in production builds).
-    if (process.env.NODE_ENV !== "production" && new URLSearchParams(window.location.search).has("canal")) {
-      useGameStore.getState().openTask(4);
+    // Dev aid: /?canal=1 and /?roof=1 open a minigame directly (ignored in production builds).
+    if (process.env.NODE_ENV !== "production") {
+      const q = new URLSearchParams(window.location.search);
+      if (q.has("canal")) useGameStore.getState().openTask(4);
+      if (q.has("roof")) useGameStore.getState().openTask(2);
     }
   }, []);
   useEffect(() => setMuted(muted), [muted]);

@@ -17,14 +17,14 @@ const POST_B = new THREE.Vector3(HW + 1.2, 1.6, COURSE.lockZ + 1.5);
 const UP = new THREE.Vector3(0, 1, 0);
 const turn = (from: number, to: number) => Math.atan2(Math.sin(to - from), Math.cos(to - from));
 
-function useSoldier() {
+export function useSoldier() {
   const obj = useModel("soldaat");
   const legs = useMemo(() => [obj.getObjectByName("LegL")!, obj.getObjectByName("LegR")!], [obj]);
   return { obj, legs };
 }
 
 /** A searchlight on its tripod and the soldier who swings it: he steps around it as it turns. */
-function Post({ foot, aim }: { foot: THREE.Vector3; aim: React.RefObject<THREE.Vector3> }) {
+export function Post({ foot, aim }: { foot: THREE.Vector3; aim: React.RefObject<THREE.Vector3> }) {
   const lamp = useModel("zoeklicht");
   const head = useMemo(() => lamp.getObjectByName("Head")!, [lamp]);
   const { obj, legs } = useSoldier();

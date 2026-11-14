@@ -124,6 +124,11 @@ export function DossierScreen() {
                 <h1 className="m-0 font-fell text-[30px] font-normal leading-[1.08]">{page.title}</h1>
               </div>
               <p className="m-0 font-news text-[16.5px] leading-[1.5] text-[#d8d0be]">{page.brief}</p>
+              {echoesFor(chapter.id, flags, "route").map((e) => (
+                <p key={e.id} className="m-0 border-l-2 border-ochre pl-3 font-news text-[14.5px] italic leading-snug text-bone">
+                  {e.text}
+                </p>
+              ))}
               <Continue label={page.cta} onPress={() => (sfx.paper(), go("task"))} />
             </>
           )}

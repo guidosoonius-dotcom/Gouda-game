@@ -72,6 +72,18 @@ Formaat: beslissing · waarom · alternatief.
 22. **Speelbare hoofdstukken zijn los te openen** zolang de tussenliggende nog gebouwd worden.
     Als alle vijf er zijn, kan de volgorde weer worden afgedwongen (één regel in `MapScreen`).
 
+23. **Over de daken: camera achter de koerier langs de nok**, niet het zijaanzicht uit het
+    ontwerp. In staand formaat zie je in zijaanzicht maar zes meter dak; langs de nok zie je de
+    schoorstenen op een rij en het zoeklicht aankomen. Zelfde opzet als de Nachtvaart.
+24. **Eén duim, twee werkwoorden:** tikken is rennen naar de volgende schoorsteen, vasthouden is
+    plat gaan liggen (het licht telt dan voor 30%). Springen over stegen gaat vanzelf.
+25. **De klok is de tweede tegenstander.** 80 seconden staan voor 19:52 tot 20:00. Te laat of drie
+    keer gezien: je neemt de steeg en komt te laat; het verhaal gaat door (uitkomst `telaat`).
+26. **Kees is een ruil, geen bonus.** Hij zegt wanneer een sprint veilig is (dezelfde berekening
+    als de testbot), maar je bent trager en hij loopt twee meter achter je in het licht.
+27. **De uitkijktorens met zoeklichten zijn decor bij de fictie**, net als de verduistering: niets
+    daarvan staat als feit in het bronnenregister.
+
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.
 - Blaeu-kaart: pin-posities zijn op het oog geplaatst. Georefereren met controlepunten in M8.

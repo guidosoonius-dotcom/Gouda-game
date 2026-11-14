@@ -10,10 +10,12 @@ import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js
 const NAMES = [
   "kade", "riet", "schouw", "ophaalbrug", "sluisdeur", "soldaat", "zoeklicht", "lantaarn", "boom", "fiets",
   "meerpaal", "wachtpost", "vracht", "gevel_trap", "gevel_klok", "gevel_tuit",
+  "dakhuis", "schoorsteen", "koerier", "sintjan", "uitkijk",
 ] as const;
 export type ModelName = (typeof NAMES)[number];
 export const url = (name: ModelName) => `/models/${name}.glb`;
-NAMES.forEach((n) => useGLTF.preload(url(n)));
+/** Fetch the models of one minigame before its scene mounts. */
+export const preload = (names: ModelName[]) => names.forEach((n) => useGLTF.preload(url(n)));
 
 /** Shared by every swaying material: one clock, the boat's position, how hard it brushes the reeds. */
 export const sway = { uTime: { value: 0 }, uBoat: { value: new THREE.Vector3() }, uRustle: { value: 0 } };

@@ -20,8 +20,8 @@ de betreffende sectie van `docs/design.md`.
 | M8 | **Locatiemodus:** GPS, ankers, veiligheidsblokkade, PWA | Veldtest in Gouda met 2 spelers |
 | M9 | **Afwerking:** audio, toegankelijkheid, bronverificatie, archieffoto's | Alle `verified: true`; a11y-check |
 
-Stand na sessie 2: M0 t/m M3 zijn af. Hoofdstuk 1 en hoofdstuk 4 (M4) zijn volledig speelbaar,
-Nachtvaart is aangekleed met de kit. Nog open bij M4: een speeltest op een iPhone.
+Stand na sessie 2: M0 t/m M3 zijn af. Hoofdstuk 1, hoofdstuk 2 (M5) en hoofdstuk 4 (M4) zijn
+volledig speelbaar. Nog open bij M4 en M5: een speeltest op een iPhone.
 Zie `docs/progress.md`.
 
 ## Zuinig met tokens

@@ -158,7 +158,7 @@ export const CHAPTERS: Chapter[] = [
     coords: { lat: 52.0118, lng: 4.7113 },
     map: { x: 51.4, y: 34.9 },
     teaser: "Acht minuten voor spertijd. De straten zijn afgezet, de daken niet.",
-    status: "soon",
+    status: "playable",
     task: "rooftop",
     pages: [
       {

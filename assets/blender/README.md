@@ -25,6 +25,11 @@ ontworpen. Materiaal `Lamp` krijgt in het spel een gloed.
 | `fiets` | 1,8 m lang | grond, tussen de wielen | `Fiets` |
 | `meerpaal` | 2,5 m, waarvan 1,65 m boven water | waterlijn | `Meerpaal` |
 | `vracht` | twee kisten en een ton | grond | `Vracht` |
+| `dakhuis` | 9 × 9 m, nok op 10,2 m | maaiveld, midden; nok langs X, voorkant naar +Z | `Dakhuis` |
+| `schoorsteen` | 1,2 × 1,0 m, 2,4 m boven de nok | op de noklijn | `Schoorsteen` |
+| `koerier` | 1,7 m | voeten; kijkt naar +Z | `Koerier`, `LegL`, `LegR` |
+| `uitkijk` | 3,2 m vierkant, platform op 14,3 m | maaiveld | `Uitkijk` |
+| `sintjan` | ± 60 m lang, toren 52 m; alleen als silhouet | maaiveld, midden van het schip | `SintJan` |
 | `lantaarn` | 3,4 m, gedoofd (verduistering) | voet | `Lantaarn`, `Light` |
 
 In het spel (`src/components/canal/Kit.tsx`) worden de materiaalkleuren naar vertexkleuren gebakken

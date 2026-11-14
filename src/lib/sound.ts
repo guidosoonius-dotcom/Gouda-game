@@ -132,6 +132,10 @@ export const sfx = {
     noise({ dur: 0.34, freq: 900, q: 0.6, gain: 0.08 + loud * 0.2, sweepTo: 300, attack: 0.04 });
     tone({ freq: 110, to: 70, dur: 0.14, gain: 0.08 });
   },
+  /** A footstep on roof tiles. */
+  step() {
+    noise({ dur: 0.05, freq: 1100 + Math.random() * 500, q: 1.4, gain: 0.07 });
+  },
   whistle() {
     tone({ freq: 2300, to: 2500, dur: 0.5, gain: 0.12, type: "square", attack: 0.02 });
     tone({ freq: 2380, dur: 0.5, gain: 0.08, type: "sine", attack: 0.02 });
