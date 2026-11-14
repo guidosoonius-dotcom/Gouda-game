@@ -160,7 +160,72 @@ export const CHAPTERS: Chapter[] = [
     teaser: "Acht minuten voor spertijd. De straten zijn afgezet, de daken niet.",
     status: "soon",
     task: "rooftop",
-    pages: [],
+    pages: [
+      {
+        kind: "scene",
+        image: "/img/scenes/daken.webp",
+        lines: [
+          "November, acht minuten voor spertijd. De Peperstraat is afgezet: aan beide einden staat een post.",
+          "Drukker Hendrik weet van niets. Zijn pers draait nog.",
+        ],
+        quote: "‘Over de daken dan. Een andere weg is er niet.’",
+      },
+      {
+        kind: "dilemma",
+        image: "/img/scenes/daken.webp",
+        lines: [
+          "Op de zolder achter de Waag wacht Kees, de zoon van de drukker. Veertien jaar, zijn jas al aan.",
+          "Hij kent hier elke dakgoot. Hij is ook de enige zoon die Hendrik heeft.",
+        ],
+        quote: "‘Laat mij mee. Twee paar ogen zien meer dan één.’",
+        choice: "ch2.kees",
+      },
+      {
+        kind: "task",
+        image: "/img/scenes/daken.webp",
+        title: "Over de daken naar de drukkerij",
+        brief:
+          "Van schoorsteen naar schoorsteen, als het zoeklicht weg is. Wie in het licht blijft staan, wordt gezien. Om acht uur slaat de klok: dan moet Hendrik het weten.",
+        cta: "Het dak op",
+      },
+    ],
+    mirror: {
+      edition: "No. 2",
+      dateline: "GOUDA · NOVEMBER 1942",
+      story: (flags) => {
+        const kees = flags["ch2.kees"] === "mee";
+        const run = flags["ch2.task"];
+        return {
+          headline:
+            run === "telaat"
+              ? "Controle in de Peperstraat; drukker ontkomt op het nippertje"
+              : run === "gezien"
+                ? "Fluitsignaal boven de Markt, maar de pers staat op tijd stil"
+                : "Koerier ongezien over de daken; drukkerij gewaarschuwd",
+          body:
+            (run === "telaat"
+              ? "Het sloeg acht uur toen je het dakraam bereikte. Hendrik kon alleen nog het zetsel in de kachel gooien. "
+              : run === "gezien"
+                ? "Iemand heeft een schim op het dak gezien. Toen de controle kwam, lag het lood al onder de vloer. "
+                : "Niemand keek omhoog. Toen de controle aanbelde, stond de pers stil en rook het naar soep. ") +
+            (kees
+              ? "Kees wees je elke losse pan. Zijn vader zei niets, en legde een hand in zijn nek."
+              : "Je ging alleen. Kees zat thuis bij het raam en heeft je niet gegroet."),
+        };
+      },
+      factsTitle: "Gouda drukte door",
+      facts: ["press.gouda"],
+      scan: {
+        label: "SCAN · illegale uitgave uit Gouda",
+        credit: "Bron volgt: Streekarchief Midden-Holland, inv.nr.",
+      },
+      notice: {
+        title: "Acht uur",
+        fact: "curfew.hours",
+        body: "Hendrik en Kees zijn verzonnen. Wie in Gouda echt drukte, zoeken we nog uit.",
+      },
+      reward: "De tweede editie van De Koerier",
+    },
   },
   {
     id: 3,

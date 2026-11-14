@@ -71,6 +71,8 @@ export type ChoiceId = (typeof CHOICES)[number]["id"];
 export const OUTCOMES = {
   "ch1.task": ["alleen", "willem"],
   "ch4.task": ["stil", "gezien", "omweg"],
+  // Appended, not inserted: the recovery code stores outcomes in this order.
+  "ch2.task": ["ongezien", "gezien", "telaat"],
 } as const;
 export type OutcomeId = keyof typeof OUTCOMES;
 

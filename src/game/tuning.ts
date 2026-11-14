@@ -12,6 +12,21 @@ export const TUNING = {
     /** A drop snaps when the panel is within this many cells of a valid slot. */
     snapCells: 0.6,
   },
+  rooftop: {
+    /** Seconds until curfew (19:52 to 20:00 on the clock). */
+    time: 80,
+    /** Running speed along the ridge (m/s), alone and with Kees in tow. */
+    runSpeed: 4.6,
+    keesSpeed: 4.0,
+    /** How far Kees trails behind (m): he must be out of the light as well. */
+    keesGap: 2.0,
+    /** Seconds in the light before the guard whistles. */
+    exposureLimit: 0.3,
+    /** Lying flat on the tiles, the light counts only this much. */
+    flatFactor: 0.3,
+    /** Times caught before you give up the roofs and take the alley (no game over). */
+    maxCaught: 3,
+  },
   canal: {
     /** Course length in metres from start to the lock gate. */
     length: 140,

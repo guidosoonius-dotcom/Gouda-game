@@ -55,6 +55,12 @@ export const FACTS = {
     todo: "datum, route en vervoermiddel",
     verified: false,
   },
+  "press.gouda": {
+    claim: "In Gouda werden tijdens de bezetting illegale bladen gedrukt en door koeriers rondgebracht.",
+    source: UNSOURCED,
+    todo: "titels, drukkers, adressen en jaren",
+    verified: false,
+  },
   "curfew.hours": {
     claim: "Tijdens de bezetting gold een spertijd: 's avonds mocht niemand zonder vergunning op straat.",
     source: "nog te bepalen (NIOD)",
