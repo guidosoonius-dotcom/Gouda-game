@@ -59,7 +59,7 @@ async function packCrate(page, crateNo) {
     server = spawn("npx", ["next", "start", "-p", String(PORT)], { cwd: path.join(__dirname, ".."), stdio: "ignore" });
     base = `http://localhost:${PORT}`;
   }
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({ args: ["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
   let failed = false;
   try {
     await waitForServer(base);
@@ -124,6 +124,19 @@ async function packCrate(page, crateNo) {
     await expectText("Herstelcode");
     await page.waitForTimeout(600);
     await shot("08-koerierstas");
+
+    // Nachtvaart prototype: the WebGL canvas mounts, takes input and unmounts again.
+    await page.getByRole("button", { name: /Sluit/i }).click();
+    await page.getByRole("button", { name: /Hoofdstuk 4/i }).click();
+    await page.getByRole("button", { name: /Proefvaart/i }).click();
+    await page.getByRole("button", { name: /Afvaren/i }).click();
+    await page.waitForSelector("canvas");
+    for (const key of ["ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight"]) {
+      await page.keyboard.press(key);
+      await page.waitForTimeout(450);
+    }
+    await expectText("NAAR DE SLUIS");
+    await shot("09-nachtvaart");
 
     if (errors.length) {
       failed = true;

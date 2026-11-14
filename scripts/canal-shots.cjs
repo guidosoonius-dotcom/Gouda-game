@@ -38,6 +38,18 @@ const OUT = path.join(__dirname, "..", "test-results");
   await page.screenshot({ path: path.join(OUT, "14-nachtvaart-licht.png") });
   await page.waitForTimeout(2500);
   await page.screenshot({ path: path.join(OUT, "15-nachtvaart-later.png") });
+  // Later stretches, using the dev-only ?z= start offset.
+  for (const [z, name, keys] of [[-58, "16-nachtvaart-brug", "LRLR"], [-124, "17-nachtvaart-sluis", "LRLRL"]]) {
+    await page.goto((process.env.BASE_URL || "http://localhost:3000") + `/?z=${z}`);
+    await page.getByRole("button", { name: /Ga verder thuis|Speel thuis/i }).click();
+    await page.getByRole("button", { name: /Hoofdstuk 4/i }).click();
+    await page.getByRole("button", { name: /Proefvaart/i }).click();
+    await page.getByRole("button", { name: /Afvaren/i }).click();
+    await page.waitForTimeout(1500);
+    await row(keys, 520);
+    await page.waitForTimeout(400);
+    await page.screenshot({ path: path.join(OUT, `${name}.png`) });
+  }
   console.log(errors.length ? "ERRORS:\n" + errors.join("\n") : "canal shots ok");
   await browser.close();
 })();

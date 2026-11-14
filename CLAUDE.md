@@ -39,6 +39,12 @@ Read only the section you need; do not load whole documents by default.
 - Use the installed skills when relevant: `prototype-fast`, `game-feel`, `camera-systems`,
   `threejs-*`, `audio-design`, `game-ui-ux`, `dialogue-systems`, `save-systems`.
 
+## Where things are
+- Content: `src/data/chapters.ts`, facts `src/data/sources.ts`, choices and echoes `src/game/choices.ts`.
+- Screens: `src/components/screens/*`; chapter 1 puzzle `src/components/packing/*`;
+  Nachtvaart `src/components/canal/*` (pure sim in `sim.ts`, tested by a bot).
+- State of the work: `docs/progress.md`; why things are the way they are: `docs/decisions.md`.
+
 ## Commands
-- `npm run dev` / `npm run build` / `npm run test:e2e`
+- `npm run dev` / `npm run build` / `npm test` / `npm run test:e2e` (needs a build first)
 - `npm run assets` — runs every `assets/blender/build_*.py` and optimizes the GLBs.

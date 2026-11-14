@@ -129,6 +129,9 @@ export function CanalGame() {
     sfx.paper();
     sim.current = createSim();
     sim.current.status = "play";
+    // Dev aid: /?z=-60 starts further down the canal (ignored in production builds).
+    const z = process.env.NODE_ENV !== "production" ? Number(new URLSearchParams(window.location.search).get("z")) : 0;
+    if (z < 0) Object.assign(sim.current, { z, graceUntil: 4, checkpoint: { x: 0, z, reed: -1 } });
     setHud(HUD_START);
     setPhase("play");
   };

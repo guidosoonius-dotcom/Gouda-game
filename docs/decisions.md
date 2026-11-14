@@ -35,7 +35,25 @@ Formaat: beslissing · waarom · alternatief.
 10. **Basale GPS zit er al in** (afstand op de archiefkaart na toestemming, plus handmatige
     "Ik ben er"). De volledige locatiemodus (ankers, veiligheidsblokkade, PWA) blijft M8.
 
+11. **Nachtvaart: de simulatie staat los van de weergave** (`sim.ts`, zonder three.js). Daardoor
+    kan een testbot het parcours varen: de test bewijst dat het ongezien haalbaar is en dat
+    30, 60 en 120 fps hetzelfde resultaat geven. Alternatief: logica in `useFrame`.
+12. **"Links" stuurt naar links.** In een echte roeiboot draait de boot naar links als je de
+    rechterriem trekt; de knop volgt de richting, de animatie de juiste riem. Alternatief: knop =
+    riem (realistischer, maar verwarrend op een telefoon).
+13. **Twee soorten licht in plaats van één.** Het zoeklicht van de brugwacht zwenkt zigzag (uitwijken
+    opzij), de lamp op de sluis veegt een band over de hele breedte (alleen timing en riet helpen).
+    De wal schampen kost alleen lawaai bij een echte klap, omdat het riet tegen de kade staat.
+14. **Kit zonder huizen.** In de staande camera valt de bebouwing buiten beeld; de huizen zijn
+    donkere blokken (twee draw calls). De kit bevat wat je wel ziet: schouw, riet, kade, brug,
+    sluisdeuren, wacht, lantaarn. De subagent voor de kit liep vast op een gebruikslimiet; de kit is
+    daarna in de hoofdsessie gebouwd.
+15. **Proefvaart bereikbaar via zegel 4**, met stempel "PROEFVAART". Ze telt niet als voltooid
+    hoofdstuk; de afloop wordt wel al als vlag bewaard (`ch4.task`).
+
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.
 - Blaeu-kaart: pin-posities zijn op het oog geplaatst. Georefereren met controlepunten in M8.
+- Nachtvaart: lawaai per slag (0,17) en alarmgrens (0,72) zijn op de bot afgesteld, niet op mensen.
+- Nachtvaart: camera kijkt steil omlaag; een iets lagere hoek toont meer sfeer maar minder overzicht.
 - Krant in productie: achterhouden (nu) of het hoofdstuk pas vrijgeven als alles geverifieerd is?

@@ -3,6 +3,7 @@
 import { useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
+import { MODELS, Model, useModel } from "./Kit";
 import { COURSE, type Sim } from "./sim";
 
 export interface Fx {
@@ -12,8 +13,9 @@ export interface Fx {
 }
 
 const RINGS = 10;
-const GUARD = new THREE.Vector3(2, 2.75, COURSE.bridgeZ);
-const LOCK_LAMP = new THREE.Vector3(COURSE.halfWidth + 1, 3.2, COURSE.lockZ);
+const GUARD_POS: [number, number, number] = [2, 1.3, COURSE.bridgeZ];
+const GUARD = new THREE.Vector3(2.33, 2.44, COURSE.bridgeZ + 0.5);
+const LOCK_LAMP = new THREE.Vector3(COURSE.halfWidth + 1.2, 4.67, COURSE.lockZ + 2);
 const UP = new THREE.Vector3(0, 1, 0);
 
 /** Translucent cone from a lamp to a point on the water. */
@@ -33,8 +35,8 @@ function useCone(radius: number) {
 
 export function CanalActors({ sim, fx }: { sim: React.RefObject<Sim>; fx: React.RefObject<Fx> }) {
   const boat = useRef<THREE.Group>(null);
-  const oarL = useRef<THREE.Group>(null);
-  const oarR = useRef<THREE.Group>(null);
+  const schouw = useModel(MODELS.schouw);
+  const oars = useMemo(() => ({ L: schouw.getObjectByName("OarL")!, R: schouw.getObjectByName("OarR")! }), [schouw]);
   const beamDisc = useRef<THREE.Mesh>(null);
   const beamLight = useRef<THREE.SpotLight>(null);
   const band = useRef<THREE.Group>(null);
@@ -58,10 +60,12 @@ export function CanalActors({ sim, fx }: { sim: React.RefObject<Sim>; fx: React.
       boat.current.position.set(s.x, Math.sin(t * 1.7) * 0.03, s.z);
       boat.current.rotation.set(Math.sin(t * 1.3) * 0.02, -s.heading, -s.yawRate * 0.12);
     }
-    for (const [side, ref] of [["L", oarL], ["R", oarR]] as const) {
-      const since = t - fx.current.oar[side];
-      const pull = since < 0.5 ? Math.sin((since / 0.5) * Math.PI) : 0;
-      if (ref.current) ref.current.rotation.set(0, (side === "L" ? 1 : -1) * (0.5 - pull * 1.1), (side === "L" ? -1 : 1) * (0.2 + pull * 0.25));
+    // Oars: catch at the bow, pull through the water, lift and swing back.
+    for (const side of ["L", "R"] as const) {
+      const sign = side === "L" ? -1 : 1;
+      const p = (t - fx.current.oar[side]) / 0.55;
+      const sweep = p < 1 ? 0.55 * Math.cos(p * Math.PI) : p < 1.8 ? -0.55 * (1 - (p - 1) / 0.8) : 0;
+      oars[side].rotation.set(0, sign * sweep, sign * (p < 1 ? -0.1 : 0.16));
     }
 
     // Ripples
@@ -104,36 +108,8 @@ export function CanalActors({ sim, fx }: { sim: React.RefObject<Sim>; fx: React.
 
   return (
     <>
-      {/* Grey-box rowboat; replaced by schouw.glb when the kit lands. */}
       <group ref={boat}>
-        <mesh position={[0, 0.16, 0.1]}>
-          <boxGeometry args={[1.3, 0.42, 3.2]} />
-          <meshStandardMaterial color="#7a5a3a" roughness={0.85} />
-        </mesh>
-        <mesh position={[0, 0.16, -1.95]} rotation-y={Math.PI / 4} scale={[1, 1, 1]}>
-          <boxGeometry args={[0.92, 0.42, 0.92]} />
-          <meshStandardMaterial color="#7a5a3a" roughness={0.85} />
-        </mesh>
-        {[0.55, -0.75].map((z, i) => (
-          <group key={i} position={[0, 0.5, z]}>
-            <mesh position={[0, 0.15, 0]}>
-              <capsuleGeometry args={[0.24, 0.42, 3, 8]} />
-              <meshStandardMaterial color="#2b313a" roughness={1} />
-            </mesh>
-            <mesh position={[0, 0.66, 0]}>
-              <sphereGeometry args={[0.17, 8, 6]} />
-              <meshStandardMaterial color="#3a3531" roughness={1} />
-            </mesh>
-          </group>
-        ))}
-        {[["L", oarL, -1], ["R", oarR, 1]].map(([key, ref, side]) => (
-          <group key={key as string} ref={ref as React.RefObject<THREE.Group>} position={[(side as number) * 0.66, 0.42, 0.55]}>
-            <mesh position={[(side as number) * 1.05, -0.12, 0]}>
-              <boxGeometry args={[2.1, 0.06, 0.1]} />
-              <meshStandardMaterial color="#a08256" roughness={0.9} />
-            </mesh>
-          </group>
-        ))}
+        <primitive object={schouw} />
       </group>
 
       {Array.from({ length: RINGS }, (_, i) => (
@@ -144,16 +120,7 @@ export function CanalActors({ sim, fx }: { sim: React.RefObject<Sim>; fx: React.
       ))}
 
       {/* Guard and searchlight */}
-      <group position={[GUARD.x, 1.45, GUARD.z]}>
-        <mesh position={[0, 0.8, 0]}>
-          <capsuleGeometry args={[0.26, 1.1, 3, 8]} />
-          <meshStandardMaterial color="#15171a" roughness={1} />
-        </mesh>
-        <mesh position={[0, 1.3, -0.3]}>
-          <sphereGeometry args={[0.12, 8, 6]} />
-          <meshBasicMaterial color="#ffe1a0" toneMapped={false} />
-        </mesh>
-      </group>
+      <Model url={MODELS.wacht} position={GUARD_POS} />
       <primitive object={target} />
       <spotLight ref={beamLight} position={GUARD} target={target} color="#ffd27a" angle={0.2} penumbra={0.55} distance={70} decay={1.6} />
       <mesh ref={beamCone.ref}>

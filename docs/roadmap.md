@@ -20,6 +20,9 @@ de betreffende sectie van `docs/design.md`.
 | M8 | **Locatiemodus:** GPS, ankers, veiligheidsblokkade, PWA | Veldtest in Gouda met 2 spelers |
 | M9 | **Afwerking:** audio, toegankelijkheid, bronverificatie, archieffoto's | Alle `verified: true`; a11y-check |
 
+Stand na sessie 1: M0, M1, M2 en M3 zijn af; M4 is een speelbaar prototype met de kit (nog geen
+speeltest op een iPhone, nog geen dossier en krant). Zie `docs/progress.md`.
+
 ## Zuinig met tokens
 
 - `CLAUDE.md` kort houden (deze wordt elke sessie geladen); details in `docs/`.
