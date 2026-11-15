@@ -5,11 +5,11 @@ import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { spotCaster } from "@/components/canal/Kit";
 import { type Figure, useFigure } from "@/components/canal/Figure";
-import { crouch, leap, prone } from "@/components/canal/poses";
+import { crouch, hang, leap, prone, teeter } from "@/components/canal/poses";
 import { TUNING } from "@/game/tuning";
 import { sfx } from "@/lib/sound";
-import { RIDGE_Z, ridgeAt, roofAt, stride } from "./layout";
-import type { RoofSim } from "./sim";
+import { HOUSES, RIDGE_Z, houseAt, ridgeAt, roofAt, stride } from "./layout";
+import type { Leap, RoofSim } from "./sim";
 
 interface Runner {
   group: THREE.Group | null;
@@ -38,8 +38,9 @@ export function RoofActors({ sim }: { sim: React.RefObject<RoofSim> }) {
   const { camera } = useThree();
   const look = useRef(new THREE.Vector3(7, ridgeAt(0) + 0.3, RIDGE_Z));
 
-  const animate = (r: Runner, fig: Figure, x: number, moving: boolean, flat: boolean, dt: number, steps: boolean) => {
-    const running = moving && !flat;
+  const animate = (r: Runner, fig: Figure, x: number, moving: boolean, flat: boolean, dt: number, steps: boolean, leapState: Leap = "none", hanging = 0) => {
+    // hesitating at an edge or hanging from one is not running
+    const running = moving && !flat && leapState !== "balk" && hanging <= 0;
     if (running) {
       // two footfalls per cycle of the clip; none in the air
       const half = fig.duration("run") / 2;
@@ -56,7 +57,11 @@ export function RoofActors({ sim }: { sim: React.RefObject<RoofSim> }) {
     const dz = FLAT_DZ * r.flat;
     const feet = st.air > 0 ? st.y : roofAt(x, dz);
     r.y += (feet - r.y) * (1 - Math.exp(-20 * dt));
-    r.group?.position.set(x, feet + SOLE, RIDGE_Z + dz);
+    // hanging from the far edge after a jump that came too early: pulled up as `hanging` runs out
+    const h = Math.min(1, hanging / TUNING.rooftop.scramble);
+    const edge = HOUSES[houseAt(x)].x0;
+    const hx = h > 0 ? edge - 0.1 + (x - edge + 0.1) * (1 - h) ** 2 : x;
+    r.group?.position.set(hx, feet + SOLE - 0.85 * h * h, RIDGE_Z + dz);
     fig.root.rotation.x = r.flat * 1.42;
     fig.root.position.y = r.flat * 0.16;
     fig.begin();
@@ -66,12 +71,14 @@ export function RoofActors({ sim }: { sim: React.RefObject<RoofSim> }) {
     // crouched behind the chimney, upright while running, prone when lying flat
     fig.blend((1 - r.run) * (1 - r.flat), crouch);
     fig.blend(r.flat, prone);
+    if (leapState === "balk") fig.blend(1, (f) => teeter(f, performance.now() / 1000));
+    if (h > 0) fig.blend(Math.min(1, h * 1.6), hang);
   };
 
   useFrame((_, delta) => {
     const s = sim.current;
     const dt = Math.min(delta, 0.05);
-    animate(a.current, me, s.x, s.moving, s.flat, dt, true);
+    animate(a.current, me, s.x, s.moving, s.flat, dt, true, s.leap, s.hang);
     if (b.current.group) b.current.group.visible = s.kees;
     if (s.kees) animate(b.current, kees, s.x - (s.moving ? TUNING.rooftop.keesGap : 0.9), s.moving, s.flat, dt, false);
 

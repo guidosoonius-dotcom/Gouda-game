@@ -52,6 +52,14 @@ export const TUNING = {
     flatFactor: 0.3,
     /** Times caught before you give up the roofs and take the alley (no game over). */
     maxCaught: 3,
+    /** Alleys: how far before the take-off point a tap counts as a jump (m), and the last stretch
+     *  of that in which it is a clean jump. Earlier is too early: you grab the far edge. */
+    jumpWindow: 2.6,
+    jumpClean: 1.3,
+    /** Seconds hanging from the far edge after a jump that came too early. */
+    scramble: 0.9,
+    /** A jump from standing (after hesitating at the edge) crosses at this fraction of the speed. */
+    standingJump: 0.7,
   },
   canal: {
     /** Course length in metres from start to the lock gate. */

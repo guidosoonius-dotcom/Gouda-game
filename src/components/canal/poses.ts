@@ -77,6 +77,32 @@ export function leap(f: Figure, reach: number) {
   });
 }
 
+/** Hesitating at an edge: leaning back, arms wheeling (`t` in seconds drives the wheel). */
+export function teeter(f: Figure, t: number) {
+  f.dir(1, 0, 0, AXIS);
+  f.turn("Spine02", AXIS, -0.18);
+  f.turn("Head", AXIS, 0.25);
+  SIDES.forEach((side, i) => {
+    const out = sign(side);
+    const a = t * 8 + i * 1.3;
+    const hand = f.at(`${side}Arm`, V).add(f.dir(out * 0.75, 0.25 + Math.sin(a) * 0.35, Math.cos(a) * 0.35, W).multiplyScalar(0.55));
+    f.reach("Arm", side, hand, f.dir(0, -1, -0.3, W));
+  });
+}
+
+/** Hanging over an edge, forearms on the roof ahead, legs dangling: pulling yourself up. */
+export function hang(f: Figure) {
+  f.dir(1, 0, 0, AXIS);
+  f.turn("Spine02", AXIS, 0.35);
+  f.turn("Head", AXIS, -0.45);
+  SIDES.forEach((side, i) => {
+    const out = sign(side);
+    f.reach("Arm", side, f.at(`${side}Arm`, V).add(f.dir(out * 0.2, 0.35, 1, W).multiplyScalar(0.55)), f.dir(out, -0.6, -0.2, W));
+    f.at(`${side}Foot`, FEET[i]);
+    f.reach("Leg", side, FEET[i].add(f.dir(0, 0.1, -0.12, W)), f.dir(0, 0, 1, W));
+  });
+}
+
 /**
  * Sitting: hips on `seat`, feet on `feet` (both in the world), back bent forward by `lean` radians.
  * Call inside a pose; put the hands somewhere with `Figure.reach` afterwards.

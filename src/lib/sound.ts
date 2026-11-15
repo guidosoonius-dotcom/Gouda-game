@@ -191,6 +191,18 @@ export const sfx = {
   step() {
     noise({ dur: 0.05, freq: 1100 + Math.random() * 500, q: 1.4, gain: 0.07 });
   },
+  /** The jump: a rush of air. */
+  leap() {
+    noise({ dur: 0.3, freq: 600, q: 0.7, gain: 0.07, sweepTo: 1800, attack: 0.02 });
+  },
+  /** Grabbing the far edge: tiles clatter and scrape. */
+  scramble() {
+    for (let i = 0; i < 4; i++) noise({ dur: 0.07, freq: 380 + Math.random() * 300, q: 1.2, gain: 0.09 - i * 0.015 }, i * 0.09);
+  },
+  /** The alley is coming: a soft tick to say "now you can jump". */
+  cue() {
+    tone({ freq: 1180, dur: 0.07, gain: 0.04, type: "triangle" });
+  },
   /** Pigeons taking off: a quick run of soft wing claps. */
   flutter() {
     for (let i = 0; i < 7; i++) noise({ dur: 0.04, freq: 700 + Math.random() * 400, q: 0.8, gain: 0.05 - i * 0.005 }, i * 0.07 + Math.random() * 0.02);

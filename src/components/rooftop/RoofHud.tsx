@@ -1,7 +1,7 @@
 "use client";
 
 import { TUNING } from "@/game/tuning";
-import { ROOF } from "./sim";
+import { ROOF, type Leap } from "./sim";
 
 export interface RoofHudState {
   timeLeft: number;
@@ -13,11 +13,19 @@ export interface RoofHudState {
   kees: boolean;
   safe: boolean;
   caught: number;
+  leap: Leap;
+  hang: boolean;
+  /** Progress through the jump window, 0 to 1 (the take-off point). */
+  jump: number;
 }
 
 export const ROOF_HUD_START: RoofHudState = {
   timeLeft: TUNING.rooftop.time, cover: 0, moving: false, flat: false, lit: false, exposure: 0, kees: false, safe: false, caught: 0,
+  leap: "none", hang: false, jump: 0,
 };
+
+/** Where the clean stretch of the jump window starts, as a fraction of the window. */
+const CLEAN = 1 - TUNING.rooftop.jumpClean / TUNING.rooftop.jumpWindow;
 
 /** 19:52 at the start, 20:00 when the time is up. */
 function clock(timeLeft: number) {
@@ -27,6 +35,9 @@ function clock(timeLeft: number) {
 }
 
 function caption(h: RoofHudState): string {
+  if (h.leap === "open") return "Een steeg! Tik vlak voor de rand.";
+  if (h.leap === "balk") return "Te laat. Tik om alsnog te springen.";
+  if (h.hang) return "Te vroeg gesprongen. Optrekken…";
   if (h.lit) return h.flat ? "Plat blijven. Niet bewegen." : "Het licht! Plat op de pannen!";
   if (h.kees) return h.moving ? "‘Doorlopen, ik zit achter je.’" : h.safe ? "‘Nu! Het licht is weg.’" : "‘Wacht… nog niet.’";
   if (h.moving) return "Rennen. Niet omkijken.";
@@ -60,7 +71,18 @@ export function RoofHud({ hud, onDown, onUp }: { hud: RoofHudState; onDown: () =
       </div>
 
       <div className="absolute inset-x-5 top-[calc(max(46px,env(safe-area-inset-top))+78px)] flex h-9 items-center justify-between gap-2">
-        {hud.lit ? (
+        {hud.leap === "open" ? (
+          <div className="flex flex-1 items-center gap-2.5 border-l-2 border-ochre bg-night/65 px-2 py-1.5" role="img" aria-label="Springen: tik als de streep in het gele deel is">
+            <span className="label text-[10px] text-ochre">Spring</span>
+            <span className="relative h-[10px] flex-1 bg-parchment/15">
+              <span className="absolute inset-y-0 right-0 bg-ochre/45" style={{ left: `${CLEAN * 100}%` }} />
+              <span className="absolute inset-y-0 right-0 w-[3px] bg-alarm" />
+              <span className="absolute -inset-y-1 w-[3px] bg-parchment" style={{ left: `calc(${hud.jump * 100}% - 1.5px)` }} />
+            </span>
+          </div>
+        ) : hud.leap === "balk" ? (
+          <span className="label border-l-2 border-alarm bg-night/65 px-2 py-1.5 text-[10px] text-[#f2c1b8]">Aan de rand · in het open</span>
+        ) : hud.lit ? (
           <div className="flex flex-1 items-center gap-2.5 border-l-2 border-alarm bg-night/65 px-2 py-1.5">
             <span className="label text-[10px] text-[#f2c1b8]">In het licht</span>
             <span className="h-[3px] flex-1 bg-parchment/15">
@@ -98,7 +120,7 @@ export function RoofHud({ hud, onDown, onUp }: { hud: RoofHudState; onDown: () =
       >
         <span className="flex flex-col items-center gap-1">
           <span className="label text-[13px] tracking-[0.2em]">Tik</span>
-          <span className="font-fell text-[15px] italic tracking-normal text-bone">ren naar de volgende schoorsteen</span>
+          <span className="font-fell text-[15px] italic tracking-normal text-bone">{hud.leap === "open" || hud.leap === "balk" ? "spring over de steeg" : "ren naar de volgende schoorsteen"}</span>
         </span>
         <span className="h-16 w-px bg-parchment/25" />
         <span className="flex flex-col items-center gap-1">

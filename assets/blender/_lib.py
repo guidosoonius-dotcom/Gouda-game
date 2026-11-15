@@ -55,6 +55,11 @@ MATERIALS = {
     "RoofRed": ("#7d3d2c", False),
     "Lead": ("#5a5f63", False),
     "StonePale": ("#b8b09e", False),
+    "Sandstone": ("#6f665a", False),
+    "Slate": ("#3b4552", False),
+    "Stucco": ("#b9b2a2", False),
+    "Relief": ("#dcd6c8", False),
+    "ArmsRed": ("#a3262a", False),
 }
 
 

@@ -79,7 +79,9 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
 
 - **Over de daken afwisselender (sessie 3):** drie soorten daken (donkere pannen, steile rode
   pannen met hijsbalk, plat loodsdak achter een borstwering), hoogteverschillen tot 2,2 m tussen
-  buren, en stegen van 1,6 tot 2,5 m die de koerier met gespreide benen overspringt. Hij loopt nu
+  buren, en vijf stegen van 1,7 tot 2,4 m. De sprong over een steeg time je zelf met een
+  springbalk: op tijd een schone sprong, te vroeg grijp je de rand, te laat blijf je aarzelend
+  aan de rand staan. Hij loopt nu
   echt op de nok (zweefde eerst boven het dak). De Waag en De Zalm staan op de achtergrond, links
   vooruit over de Markt, naast de Sint-Jan. De camera gaat omhoog als een hoger dak het zicht
   dreigt te blokkeren. Gemeten: 54 draw calls en 143k driehoeken.
@@ -90,7 +92,8 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
 - De tekst van hoofdstuk 3 is een voorstel: laat die lezen door iemand van het Joods Monument
   of het Streekarchief voordat hij openbaar wordt.
 - Over de daken en Nachtvaart zijn op de testbot afgesteld, niet op mensen.
-- De vorm van de Waag en De Zalm is uit het hoofd vereenvoudigd; laat hem naast een foto leggen.
+- De Waag en De Zalm zijn naar foto's van nu gemaakt; of De Zalm er in 1942 zo uitzag, is niet nagegaan.
+- De springtiming (venster 2,6 m, schoon in de laatste 1,3 m) is op de bot afgesteld; speeltest met 12-jarigen.
 - De zwaarste scène (Vluchtspoor) is niet op een telefoon gemeten. In software haalt hij 1 beeld
   per seconde; schakel anders `gfx.life`, schaduwen of details uit in `src/game/tuning.ts`.
 - Locatiemodus: afstand via GPS en "Ik ben er" werken; ankers, veiligheidsblokkade en PWA niet.

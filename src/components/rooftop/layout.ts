@@ -1,9 +1,10 @@
 /**
- * Where the roofs stand. Derived from the chimneys of the course: one house per chimney. Purely
- * visual: the simulation only knows x, so jumps and climbs never change the timing of a dash.
+ * Where the roofs stand. Derived from the chimneys of the course: one house per chimney, with the
+ * alleys of `ROOF.alleys` between some of them. The simulation knows only x; the heights, roof
+ * kinds and the hops up and down a step are scenery.
  */
 import { rng } from "@/components/canal/layout";
-import { ROOF } from "./sim";
+import { ROOF, RUNUP } from "./sim";
 
 export type RoofKind = "dakhuis" | "dakhuis_steil" | "dakhuis_plat";
 
@@ -38,8 +39,13 @@ function build(): RoofHouse[] {
   const centres = [c[0] - 27, c[0] - 18, c[0] - 9, ...c, c[c.length - 1] + 9, c[c.length - 1] + 19, c[c.length - 1] + 28];
   const edges = centres.map((x, i) => (i === 0 ? x - 5 : (centres[i - 1] + x) / 2 + (r() - 0.5) * 1.2));
   edges.push(centres[centres.length - 1] + 5);
-  // an alley (steeg) between some houses: the courier jumps it
-  const alley = edges.map((_, i) => (i > 0 && i < edges.length - 1 && r() < 0.45 ? 0.8 + r() * 0.45 : 0.06));
+  // the alleys (stegen) of the course sit exactly where the simulation expects the jumps
+  const alley = edges.map(() => 0.06);
+  for (const a of ROOF.alleys) {
+    const e = 3 + a.after + 1;
+    edges[e] = (c[a.after] + c[a.after + 1]) / 2;
+    alley[e] = a.w / 2;
+  }
   let last = 10.2;
   const order: RoofKind[] = ["dakhuis", "dakhuis_steil", "dakhuis", "dakhuis_plat"];
   let before: RoofKind = "dakhuis";
@@ -71,8 +77,7 @@ export const roofAt = (x: number, dz: number) => {
   return h.ridge - h.slope * Math.abs(dz);
 };
 
-/** How far before an edge the courier takes off, and after it lands; further for a big step. */
-const TAKEOFF = 0.45;
+/** Between houses that touch, the hop up or down a step starts further back for a big step. */
 const TAKEOFF_PER_METRE = 0.35;
 
 /**
@@ -84,12 +89,13 @@ export function stride(x: number) {
   for (let i = 0; i < HOUSES.length - 1; i++) {
     const a = HOUSES[i];
     const b = HOUSES[i + 1];
-    const run = TAKEOFF + TAKEOFF_PER_METRE * Math.abs(b.ridge - a.ridge);
+    const gap = b.x0 - a.x1;
+    // over an alley exactly the simulation's take-off and landing points; at a step a longer hop
+    const run = gap > 0.5 ? RUNUP : RUNUP + TAKEOFF_PER_METRE * Math.abs(b.ridge - a.ridge);
     const from = a.x1 - run;
     const to = b.x0 + run;
     if (x <= from || x >= to) continue;
     const u = (x - from) / (to - from);
-    const gap = b.x0 - a.x1;
     const apex = 0.25 + gap * 0.32 + Math.max(0, b.ridge - a.ridge) * 0.55;
     return { y: a.ridge + (b.ridge - a.ridge) * u + apex * 4 * u * (1 - u), air: Math.sin(Math.PI * u), gap };
   }

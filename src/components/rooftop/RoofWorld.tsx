@@ -68,7 +68,7 @@ function Town() {
       <Model name="sintjan" position={[178, -6, -62]} rotation-y={0.25} scale={1.25} />
       <group position={[MARKT.x, 0, MARKT.z]} rotation-y={MARKT.yaw}>
         <Model name="waag" />
-        <Model name="zalm" position={[-11.4, 0, 0.6]} />
+        <Model name="zalm" position={[-17, 0, 1.5]} />
       </group>
       <mesh rotation-x={-Math.PI / 2} position={[60, 0, 0]} receiveShadow>
         <planeGeometry args={[400, 240]} />

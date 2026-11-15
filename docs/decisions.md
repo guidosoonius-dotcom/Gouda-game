@@ -144,18 +144,21 @@ Formaat: beslissing · waarom · alternatief.
     erin mengen, handgemaakte houding erin mengen (`Figure.begin/clip/blend`). Zitten, roeien en
     fietsen zijn geen clips maar een bereik-oplossing met twee botten: de voeten volgen de trappers,
     de handen de riemen. Geen verborgen toestand, dus een gepauzeerd spel kan niet wegdrijven.
-43. **Springen en klimmen op de daken zijn beeld, geen gameplay.** De simulatie kent alleen x; de
-    hoogte van de voeten volgt uit de plek (`layout.stride`): een parabool over een steeg, een
-    sprongetje bij een hoogteverschil. Zo blijven tijd en moeilijkheid (en de bottest) gelijk. Een
-    sprong die je zelf moet timen kan later, maar maakt het hoofdstuk zwaarder voor 12-jarigen.
+43. **De sprong over een steeg time je zelf** (op verzoek, "dat maakt het leuker"). Vlak voor de
+    afzet verschijnt een springbalk: tik je in het laatste stuk, dan is het een schone sprong.
+    Tik je eerder, dan kom je te kort, grijp je de rand en trek je je op (0,9 s, in het open).
+    Tik je niet, dan blijf je aarzelend aan de rand staan tot je tikt, ook in het open. Nooit een
+    val: rule 9. De stegen staan in `ROOF.alleys`; de bot springt en haalt de tijd ruim.
+    Hoogteverschillen tussen huizen die tegen elkaar staan blijven een automatisch sprongetje.
 44. **De koerier loopt óp de nok.** Hij zweefde een meter boven de voorkant van het dak. Nu loopt
     hij over de nokpannen, staan de schoorstenen net achter de nok (tussen hem en de torens), en
     glijdt hij bij platliggen een halve meter de voorkant af.
-45. **Waag en De Zalm als silhouet in de verte**, schuin links vooruit over de Markt, met een gat in
-    de achterste huizenrij op de zichtlijn. De vorm is uit het hoofd vereenvoudigd (fronton,
-    schilddak, reliëf; De Zalm lager dan de Waag, vergulde zalm op het dak). De gevelvorm van
-    De Zalm en de precieze ligging zijn niet gecontroleerd: Wikipedia was vanuit de sessie niet
-    bereikbaar. Het is decor, geen bewering in de tekst.
+45. **Waag en De Zalm naar foto's** (aangeleverd, van nu): de Waag met grijsbruine zandstenen
+    voorgevel, boogdeur, wit reliëf van het kaaswegen, fronton met het stadswapen tussen leeuwen,
+    leien schilddak met twee pironnen en witte luifels opzij; De Zalm met lichte gepleisterde gevel
+    van vijf traveeën, balkonnetjes, kroonlijst op consoles, dakkapel met oeil-de-boeuf en de
+    vergulde zalm boven de ingang. Of de gevel van De Zalm er in 1942 al zo uitzag, en hoe ze
+    precies ten opzichte van elkaar staan, is niet gecontroleerd. Het is decor, geen bewering.
 
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.

@@ -15,7 +15,7 @@ import { Sky } from "@/components/canal/Sky";
 import { useWindowGlow } from "@/components/canal/Kit";
 import { RoofLife } from "./RoofLife";
 import { HOUSES, ridgeAt } from "./layout";
-import { ROOF, createRoof, dashIsSafe, stepRoof, type RoofOutcome, type RoofSim } from "./sim";
+import { ROOF, alleyAfter, createRoof, dashIsSafe, stepRoof, type RoofOutcome, type RoofSim } from "./sim";
 
 interface Input {
   tap: boolean;
@@ -27,6 +27,13 @@ const ENDINGS: Record<RoofOutcome, { title: string; body: string }> = {
   gezien: { title: "Gezien, maar op tijd", body: "Beneden klinkt een fluit. Je laat je door het dakraam zakken. ‘Controle,’ zeg je. Meer is niet nodig." },
   telaat: { title: "De klok slaat acht", body: "Te laat voor de daken. Je neemt de steeg en bonst op de achterdeur, terwijl aan de voorkant al wordt aangebeld." },
 };
+
+/** 0 when the jump window opens, 1 at the take-off point; the clean stretch is the last part. */
+function jumpProgress(s: RoofSim) {
+  const al = alleyAfter(s.cover);
+  if (!al || s.leap !== "open") return 0;
+  return Math.max(0, Math.min(1, 1 - (al.takeoff - s.x) / TUNING.rooftop.jumpWindow));
+}
 
 function Loop({ sim, input, onHud, onEvent }: {
   sim: React.RefObject<RoofSim>;
@@ -43,16 +50,21 @@ function Loop({ sim, input, onHud, onEvent }: {
     input.current.tap = false;
     for (const e of stepRoof(s, { tap, hold }, dt)) {
       if (e.type === "arrive") sfx.settle();
+      else if (e.type === "jumpCue") sfx.cue();
+      else if (e.type === "jump") sfx.leap();
+      else if (e.type === "scramble") sfx.scramble();
       else if (e.type === "caught") (sfx.whistle(), onEvent("caught"));
       else if (e.type === "respawn") onEvent("respawn");
       else if (e.type === "done") ((e.outcome === "telaat" ? sfx.bell : sfx.chime)(), onEvent("done", e.outcome));
     }
     since.current += dt;
-    if (since.current > 0.1) {
+    // the jump bar must move smoothly: refresh the HUD every frame while it shows
+    if (since.current > 0.1 || s.leap === "open") {
       since.current = 0;
       onHud({
         timeLeft: s.timeLeft, cover: s.cover, moving: s.moving, flat: s.flat, lit: s.lit,
         exposure: s.exposure / TUNING.rooftop.exposureLimit, kees: s.kees, safe: !s.moving && dashIsSafe(s), caught: s.caught,
+        leap: s.leap, hang: s.hang > 0, jump: jumpProgress(s),
       });
     }
   });
