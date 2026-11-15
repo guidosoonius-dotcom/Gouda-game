@@ -38,6 +38,24 @@ export const TUNING = {
     bombWarn: 2.6,
     bombRadius: 4.6,
   },
+  /** Location mode (walking through Gouda). */
+  location: {
+    /** Unlock a chapter this close to its address (m); a manual "Ik ben er" is always there as well. */
+    near: 30,
+    /** Faster than this (m/s) counts as walking: minigames are blocked (a stroll is 1.0, brisk 1.4). */
+    walkSpeed: 0.9,
+    /** Back below this (m/s) for `calmFor` seconds and the block is lifted. */
+    calmSpeed: 0.5,
+    /** Speed is the distance covered over this many seconds: long enough that GPS jitter averages out. */
+    window: 6,
+    calmFor: 3,
+    /** No fix for this long (s) means standing still: iOS only reports when you move. */
+    staleAfter: 4,
+    /** A fix with a worse accuracy than this (m) is too vague to judge speed by. */
+    maxAccuracy: 25,
+    /** The "I am sitting or standing still" override silences the block for this long (s). */
+    overrideFor: 90,
+  },
   rooftop: {
     /** Seconds until curfew (19:52 to 20:00 on the clock). */
     time: 80,

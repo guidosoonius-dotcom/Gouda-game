@@ -87,6 +87,19 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   dreigt te blokkeren. Gemeten: 54 draw calls en 143k driehoeken.
   Ontwikkelhulp: `/?roof=1&cam=wide` bekijkt de koerier van dichtbij vanaf de straatkant.
 
+- **Locatiemodus (M8, sessie 3):** een hoofdstuk ontgrendelt binnen 30 m van het adres ("Je bent
+  er"); verder dan dat staat er "Nog 1,4 km lopen" en blijft "Ik ben er al · zonder gps" als
+  terugval; zonder gps of zonder meting werkt "Ik ben er" meteen. In een hoofdstuk (dossier en
+  minigame) kijkt een loopdetector mee: boven 0,9 m/s over zes seconden, drie metingen achter
+  elkaar, komt er een scherm "Blijf even staan" en wachten alle minigames en de klok van het
+  inpakspel; na drie seconden stilstaan (of als de gps niets meer meldt, zoals iOS doet) gaat het
+  weg. "Ik sta of zit stil" zet de blokkade negentig seconden uit (trein, bankje, gps die springt).
+  De detector vraagt nooit zelf om toestemming: pas nadat de kaart ("meet") of een eerdere keer is
+  toegestaan. PWA: manifest, lakzegel-icoon (gewoon, maskable, Apple), service worker die de
+  pagina, modellen en beelden bewaart (werkt met slecht bereik) en een eenmalige tip "Zet op
+  beginscherm" (Installeer-knop op Android, uitleg over Deel op iOS).
+  Nog open voor M8: de ankers ter plekke (zie hieronder) en een veldtest met twee spelers.
+
 ## Half af
 - Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).
 - De tekst van hoofdstuk 3 is een voorstel: laat die lezen door iemand van het Joods Monument
@@ -96,21 +109,25 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
 - De springtiming (venster 2,6 m, schoon in de laatste 1,3 m) is op de bot afgesteld; speeltest met 12-jarigen.
 - De zwaarste scène (Vluchtspoor) is niet op een telefoon gemeten. In software haalt hij 1 beeld
   per seconde; schakel anders `gfx.life`, schaduwen of details uit in `src/game/tuning.ts`.
-- Locatiemodus: afstand via GPS en "Ik ben er" werken; ankers, veiligheidsblokkade en PWA niet.
+- Locatiemodus: ankers ontbreken nog. Het dossier toont alleen een zin ("zoek in de kerk…", "voor de
+  deur liggen de Stolpersteine"); wat er precies te vinden is (jaartal, kisten, namen) moet ter
+  plekke bekeken en in `sources.ts` gezet worden. De loopdetector en de 30 m zijn nooit op straat
+  geprobeerd, alleen met een nagebootste gps (`node scripts/location-check.cjs`, na `npm run build`).
 - Alle historische feiten staan op `verified: false` (`src/data/sources.ts`).
 
 ## Controle
-- `npm run build` · `npm test` (45 tests) · `npm run test:e2e` (speelt hoofdstuk 1 door op 390×844,
+- `npm run build` · `npm test` (60 tests) · `npm run test:e2e` (speelt hoofdstuk 1 door op 390×844,
   speelt het dossier van hoofdstuk 4 tot in de vaart en zet screenshots in `test-results/`) · `npm run assets`.
 - Ontwikkelhulp (alleen in dev): `/?canal=1` opent de vaart direct, `&z=-60` start verderop;
   `/?roof=1` opent de daken, `&cover=8` start verderop; `/?bike=1` opent de fietstocht (`&bomb=1` laat direct een bom vallen, `&plane=1` toont een
   vliegtuig; `node scripts/bike-shots.cjs` en `bike-impact.cjs` maken screenshots). `node scripts/roof-shots.cjs` maakt screenshots.
   `node scripts/figure-shots.cjs` maakt close-ups van de personages (`/?bike=1&cam=side` bekijkt de
   fietser van opzij). `node scripts/canal-shots.cjs` maakt screenshots van de vaart; `node scripts/night-shots.cjs` maakt
-  vier vaste shots van vaart en daken en meldt draw calls en driehoeken.
+  vier vaste shots van vaart en daken en meldt draw calls en driehoeken. `node scripts/location-check.cjs`
+  (na een build) test de locatiemodus met een nagebootste gps en controleert manifest en service worker.
 
 ## Volgende stap
 1. Speel hoofdstuk 1 en 4 op een iPhone; pas daarna `src/game/tuning.ts` aan.
-2. Locatiemodus afmaken (M8): ankers ter plekke, veiligheidsblokkade tijdens lopen, PWA.
+2. Locatiemodus afmaken (M8): de ankers ter plekke, na een veldbezoek, en de veldtest met twee spelers.
    Daarna afwerking (M9): stemmen, toegankelijkheidscheck, archieffoto's. Kees (hoofdstuk 2) en Jaap (hoofdstuk 4) komen daar terug; de echo's staan als data klaar.
 3. Laat de feiten van alle hoofdstukken verifiëren en vraag de eerste archieffoto's aan.

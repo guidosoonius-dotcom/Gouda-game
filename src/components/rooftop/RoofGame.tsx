@@ -16,6 +16,7 @@ import { useWindowGlow } from "@/components/canal/Kit";
 import { RoofLife } from "./RoofLife";
 import { HOUSES, ridgeAt } from "./layout";
 import { ROOF, alleyAfter, createRoof, dashIsSafe, stepRoof, type RoofOutcome, type RoofSim } from "./sim";
+import { isWalkBlocked } from "@/lib/walk";
 
 interface Input {
   tap: boolean;
@@ -44,7 +45,7 @@ function Loop({ sim, input, onHud, onEvent }: {
   const since = useRef(0);
   useFrame((_, delta) => {
     const s = sim.current;
-    const dt = Math.min(delta, 0.05);
+    const dt = isWalkBlocked() ? 0 : Math.min(delta, 0.05);
     const hold = input.current.downAt > 0 && performance.now() - input.current.downAt > 170;
     const tap = input.current.tap;
     input.current.tap = false;

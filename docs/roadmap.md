@@ -21,7 +21,7 @@ de betreffende sectie van `docs/design.md`.
 | M9 | **Afwerking:** audio, toegankelijkheid, bronverificatie, archieffoto's | Alle `verified: true`; a11y-check |
 
 Stand na sessie 3: M0 t/m M7 zijn gebouwd. Alle vijf hoofdstukken en de epiloog zijn speelbaar.
-Nog open: speeltest op een iPhone (M4 t/m M6), locatiemodus (M8), afwerking en verificatie (M9).
+M8 is voor het grootste deel gebouwd (30 m, loopblokkade, PWA). Nog open: speeltest op een iPhone (M4 t/m M6), de ankers ter plekke en een veldtest (M8), afwerking en verificatie (M9).
 
 ## Zuinig met tokens
 

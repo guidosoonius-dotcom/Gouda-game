@@ -4,7 +4,8 @@ import { useState } from "react";
 import { AnimatePresence } from "motion/react";
 import { CHAPTERS, chapterById } from "@/data/chapters";
 import { currentChapterId, useGameStore, type Mode } from "@/store/useGameStore";
-import { useDistance } from "@/lib/geo";
+import { formatMetres, useDistance } from "@/lib/geo";
+import { TUNING } from "@/game/tuning";
 import { sfx, unlockAudio } from "@/lib/sound";
 import { BlaeuMap } from "@/components/map/BlaeuMap";
 import { ChapterCard, type CardAction } from "@/components/map/ChapterCard";
@@ -76,7 +77,20 @@ export function MapScreen() {
     primary = { label: "Herlees de krant", onPress: press(() => rereadMirror(selected.id)) };
     secondary = { label: "Speel dit hoofdstuk opnieuw", onPress: press(() => openChapter(selected.id)) };
   } else if (selected.status === "playable") {
-    primary = { label: location ? "Ik ben er · open het dossier" : "Open het dossier", onPress: press(() => openChapter(selected.id)) };
+    // Location mode unlocks within `near` metres of the address. Without a fix (no gps, no consent,
+    // or it has not measured yet) "Ik ben er" always works; with one that is clearly too far it
+    // waits, and the player can still say they are there (a gps that is off by a street).
+    const far = location && geo.status === "ok" && geo.metres - geo.accuracy > TUNING.location.near;
+    const near = location && geo.status === "ok" && !far;
+    if (far) {
+      primary = { label: `Nog ${formatMetres(geo.metres)} lopen`, onPress: () => {}, disabled: true };
+      secondary = { label: "Ik ben er al · zonder gps", onPress: press(() => openChapter(selected.id)) };
+    } else {
+      primary = {
+        label: !location ? "Open het dossier" : near ? "Je bent er · open het dossier" : "Ik ben er · open het dossier",
+        onPress: press(() => openChapter(selected.id)),
+      };
+    }
   } else if (selected.status === "soon") {
     primary = { label: "Nog in de maak", onPress: () => {}, disabled: true };
   } else {

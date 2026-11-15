@@ -3,6 +3,7 @@
 import { useGameStore, type Mode } from "@/store/useGameStore";
 import { sfx, unlockAudio } from "@/lib/sound";
 import { Arrow, Headphones } from "@/components/ui/icons";
+import { InstallHint } from "@/components/ui/PwaSetup";
 
 function ModeButton({
   mode,
@@ -101,6 +102,8 @@ export function TitleScreen() {
             sub="Met de kaart, de beelden en een koptelefoon"
           />
         </div>
+
+        <InstallHint />
 
         <div className="flex items-center justify-between font-label text-[11px] font-semibold tracking-[0.15em] text-ash">
           <span className="flex items-center gap-2">

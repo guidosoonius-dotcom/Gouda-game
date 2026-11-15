@@ -16,6 +16,7 @@ import { Cinema, Night } from "./Night";
 import { Sky } from "./Sky";
 import { useWindowGlow } from "./Kit";
 import { COURSE, createSim, step, type Outcome, type Side, type Sim } from "./sim";
+import { isWalkBlocked } from "@/lib/walk";
 
 interface Input {
   strokes: Side[];
@@ -53,7 +54,7 @@ function Loop({ sim, fx, input, onHud, onEvent }: {
   const sinceHud = useRef(0);
   useFrame((_, delta) => {
     const s = sim.current;
-    const dt = Math.min(delta, 0.05);
+    const dt = isWalkBlocked() ? 0 : Math.min(delta, 0.05);
     const now = performance.now();
     const { L, R } = input.current.held;
     const holdBoth = L > 0 && R > 0 && now - Math.max(L, R) > 220;

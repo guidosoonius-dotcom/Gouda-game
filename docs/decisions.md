@@ -159,6 +159,18 @@ Formaat: beslissing · waarom · alternatief.
     van vijf traveeën, balkonnetjes, kroonlijst op consoles, dakkapel met oeil-de-boeuf en de
     vergulde zalm boven de ingang. Of de gevel van De Zalm er in 1942 al zo uitzag, en hoe ze
     precies ten opzichte van elkaar staan, is niet gecontroleerd. Het is decor, geen bewering.
+46. **De loopblokkade is streng op snelheid en mild op fouten.** Snelheid is de afstand over zes
+    seconden (twee metingen vlak na elkaar zijn gps-ruis); drie metingen achter elkaar boven
+    0,9 m/s blokkeren, drie seconden onder 0,5 m/s heffen op, en een gps die niets meer meldt
+    telt als stilstaan (iOS meldt alleen bij beweging). Een kind kan "Ik sta of zit stil"
+    indrukken; dat is bewust: een trein of een springende gps mag het spel niet onspeelbaar
+    maken, en de blokkade is een hulp, geen slot. De waarden staan in `TUNING.location`.
+47. **Ontgrendelen blijft vertrouwen.** Binnen 30 m staat er "Je bent er", ver weg blijft de
+    knop dicht, maar een handmatige knop opent hem toch: gps in een smalle straat tussen hoge
+    gevels is vaak een straat ernaast. Zonder meting opent "Ik ben er" meteen.
+48. **De service worker bewaart, hij beslist niets.** Pagina's eerst via het netwerk (anders blijft
+    een oude versie hangen), bestanden met hash en modellen uit de cache met verversing op de
+    achtergrond. Alleen in productie geregistreerd.
 
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.

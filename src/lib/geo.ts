@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { allowWalkGuard } from "./walk";
 
 export interface LatLng {
   lat: number;
@@ -32,12 +33,14 @@ export function useDistance(target: LatLng, active: boolean): GeoState {
     if (!("geolocation" in navigator)) return setState({ status: "denied" });
     setState({ status: "asking" });
     const id = navigator.geolocation.watchPosition(
-      (pos) =>
+      (pos) => {
+        allowWalkGuard(); // the player said yes: the walking guard may use location from now on
         setState({
           status: "ok",
           metres: haversine({ lat: pos.coords.latitude, lng: pos.coords.longitude }, target),
           accuracy: pos.coords.accuracy,
-        }),
+        });
+      },
       () => setState({ status: "denied" }),
       { enableHighAccuracy: true, maximumAge: 5000, timeout: 15000 },
     );

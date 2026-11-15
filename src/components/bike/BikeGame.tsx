@@ -14,6 +14,7 @@ import { BikeActors } from "./BikeActors";
 import { BikeHud, BIKE_HUD_START, type BikeHudState } from "./BikeHud";
 import { BikeWorld } from "./BikeWorld";
 import { STREET, createBike, peopleSafe, resolveDilemma, stepBike, type BikeOutcome, type BikeSim } from "./sim";
+import { isWalkBlocked } from "@/lib/walk";
 
 interface Input {
   L: boolean;
@@ -37,7 +38,7 @@ function Loop({ sim, input, shake, onHud, onEvent }: {
   const since = useRef(0);
   useFrame((_, delta) => {
     const s = sim.current;
-    const dt = Math.min(delta, 0.05);
+    const dt = isWalkBlocked() ? 0 : Math.min(delta, 0.05);
     const bell = input.current.bell;
     input.current.bell = false;
     for (const e of stepBike(s, { left: input.current.L, right: input.current.R, bell }, dt)) {

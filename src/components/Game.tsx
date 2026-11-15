@@ -13,6 +13,9 @@ import { EpilogueScreen } from "./screens/EpilogueScreen";
 import { MirrorScreen } from "./screens/MirrorScreen";
 import { MemorialScreen, WitnessScreen } from "./screens/WitnessScreen";
 import { PackingGame } from "./packing/PackingGame";
+import { WalkGuard } from "./ui/WalkGuard";
+import { useServiceWorker } from "./ui/PwaSetup";
+import { useWalkWatcher } from "@/lib/walk";
 
 // The WebGL minigame is only loaded (and its canvas only mounted) when it is played.
 const CanalGame = dynamic(() => import("./canal/CanalGame").then((m) => m.CanalGame), {
@@ -67,7 +70,11 @@ const SCREENS: Record<View, () => React.ReactNode> = {
 export function Game() {
   const view = useGameStore((s) => s.view);
   const muted = useGameStore((s) => s.muted);
+  const location = useGameStore((s) => s.mode === "location");
   const [mounted, setMounted] = useState(false);
+  // Location mode: no games while walking. The watcher runs only in a chapter, never on the map.
+  useWalkWatcher(location && (view === "dossier" || view === "task"));
+  useServiceWorker();
 
   useEffect(() => {
     setMounted(true);
@@ -99,6 +106,7 @@ export function Game() {
               </motion.div>
             </AnimatePresence>
           )}
+          {location && (view === "dossier" || view === "task") && <WalkGuard />}
         </div>
       </main>
     </MotionConfig>

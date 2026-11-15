@@ -4,6 +4,8 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Koerier aan de Gouwe",
   description: "Vijf avonden in Gouda, 1940–1945. Een historische locatiegame.",
+  appleWebApp: { capable: true, title: "Koerier", statusBarStyle: "black-translucent" },
+  icons: { icon: "/icons/icon-192.png", apple: "/icons/apple-touch-icon.png" },
 };
 
 export const viewport: Viewport = {
