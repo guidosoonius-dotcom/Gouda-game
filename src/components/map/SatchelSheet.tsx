@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useGameStore } from "@/store/useGameStore";
 import { satchelItems, type SatchelItem } from "@/data/satchel";
 import { CHOICES } from "@/game/choices";
 import { decodeSave, encodeSave } from "@/game/save";
 import { sfx } from "@/lib/sound";
 import { Arrow, Speaker } from "@/components/ui/icons";
+import { AboutSheet } from "@/components/ui/AboutSheet";
 
 const KIND_LABEL: Record<SatchelItem["kind"], string> = { krant: "KRANT", voorwerp: "VOORWERP", bron: "BRON" };
 
@@ -43,6 +44,7 @@ export function SatchelSheet({ onClose }: { onClose: () => void }) {
   const [entry, setEntry] = useState("");
   const [error, setError] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
+  const [about, setAbout] = useState(false);
 
   const tryRestore = () => {
     const p = decodeSave(entry);
@@ -147,10 +149,13 @@ export function SatchelSheet({ onClose }: { onClose: () => void }) {
             {error && <span className="font-news text-[14px] italic text-[#f0b5aa]">Deze code klopt niet. Kijk de tekens nog eens na.</span>}
           </div>
 
-          <div className="flex items-center justify-between border-t border-rule pt-4">
+          <div className="flex flex-wrap items-center justify-between gap-x-4 border-t border-rule pt-4">
             <button type="button" onClick={toggleMute} className="label flex h-11 items-center gap-2.5 text-[11px]">
               <Speaker off={muted} color="#ede6d6" />
               Geluid {muted ? "uit" : "aan"}
+            </button>
+            <button type="button" onClick={() => setAbout(true)} className="label h-11 text-[11px] text-bone">
+              Over dit spel
             </button>
             {confirmReset ? (
               <button type="button" onClick={() => (reset(), onClose())} className="label h-11 border border-alarm px-3 text-[11px] text-[#f0b5aa]">
@@ -164,6 +169,7 @@ export function SatchelSheet({ onClose }: { onClose: () => void }) {
           </div>
         </div>
       </motion.section>
+      <AnimatePresence>{about && <AboutSheet onClose={() => setAbout(false)} />}</AnimatePresence>
     </motion.div>
   );
 }

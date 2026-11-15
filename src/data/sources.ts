@@ -16,6 +16,14 @@ export interface Fact {
 const UNSOURCED = "nog te bepalen (Streekarchief Midden-Holland / Sint-Janskerk Gouda)";
 
 export const FACTS = {
+  // Not shown through FactText: the credit sits as plain text in `AboutSheet` ("Over dit spel"), as
+  // the map caption did before it. Recorded here so it is checked like every other claim.
+  "kaart.blaeu": {
+    claim: "De kaart op het beginscherm is een plattegrond van Gouda door J. Blaeu, 1649, publiek domein.",
+    source: "nog te bepalen (herkomst van het kaartbestand; Wikimedia Commons / Toonneel der Steden)",
+    todo: "controleer jaar en editie (1649 eerste druk, 1652 Toonneel der Steden) en de rechten van de gebruikte scan",
+    verified: false,
+  },
   "glazen.what": {
     claim:
       "De Sint-Janskerk bezit een reeks zestiende-eeuwse gebrandschilderde ramen: de Goudse Glazen.",

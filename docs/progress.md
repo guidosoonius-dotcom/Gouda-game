@@ -105,6 +105,10 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   de adressen en het station in beeld. Een hoofdstuk kiezen laat de kaart er nog steeds naartoe
   glijden, en de knop met het vizier brengt je terug. Zegels houden hun grootte bij elke zoom, en
   een sleepbeweging die op een zegel begint kiest het hoofdstuk niet. Code: `map/useMapView.ts`.
+  De kaart blijft de Blaeu-plattegrond (een kaart uit 1940 was niet te vinden: Wikimedia heeft
+  niets tussen ± 1866 en nu voor Gouda, Topotijdreis, Delpher en Archive.org zijn vanuit de sessie
+  geblokkeerd). Op verzoek staat het jaartal niet meer op de kaart, maar onder "Over dit spel"
+  (titelscherm en koerierstas): wie het maakte, wat echt is en wat verzonnen, AI-beelden, privacy.
 
 ## Half af
 - Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).
@@ -119,7 +123,8 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   deur liggen de Stolpersteine"); wat er precies te vinden is (jaartal, kisten, namen) moet ter
   plekke bekeken en in `sources.ts` gezet worden. De loopdetector en de 30 m zijn nooit op straat
   geprobeerd, alleen met een nagebootste gps (`node scripts/location-check.cjs`, na `npm run build`).
-- Alle historische feiten staan op `verified: false` (`src/data/sources.ts`).
+- Alle historische feiten staan op `verified: false` (`src/data/sources.ts`), ook de kaartverwijzing
+  ("J. Blaeu, 1649") in "Over dit spel": herkomst van het kaartbestand en jaartal nog controleren.
 
 ## Controle
 - `npm run build` · `npm test` (60 tests) · `npm run test:e2e` (speelt hoofdstuk 1 door op 390×844,

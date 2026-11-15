@@ -139,9 +139,6 @@ export function MapScreen() {
           </button>
         </header>
 
-        <span className="absolute bottom-[52px] right-5 font-label text-[9px] font-medium tracking-[0.15em] text-ash-dim">
-          KAART: J. BLAEU, 1649 · PUBLIEK DOMEIN
-        </span>
         <Timeline at={selected.timeline} year={selected.date} />
       </div>
 

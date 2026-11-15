@@ -4,6 +4,9 @@ import { useGameStore, type Mode } from "@/store/useGameStore";
 import { sfx, unlockAudio } from "@/lib/sound";
 import { Arrow, Headphones } from "@/components/ui/icons";
 import { InstallHint } from "@/components/ui/PwaSetup";
+import { AboutSheet } from "@/components/ui/AboutSheet";
+import { AnimatePresence } from "motion/react";
+import { useState } from "react";
 
 function ModeButton({
   mode,
@@ -45,6 +48,7 @@ function ModeButton({
 export function TitleScreen() {
   const hasProgress = useGameStore((s) => s.completed.length > 0);
   const mode = useGameStore((s) => s.mode);
+  const [about, setAbout] = useState(false);
 
   return (
     <div className="absolute inset-0 overflow-hidden bg-night text-parchment">
@@ -110,9 +114,15 @@ export function TitleScreen() {
             <Headphones color="#8f989f" />
             KOPTELEFOON AANBEVOLEN
           </span>
-          <span>12+</span>
+          <span className="flex items-center gap-4">
+            <button type="button" onClick={() => setAbout(true)} className="-my-3 py-3 tracking-[0.15em] underline decoration-dotted underline-offset-4">
+              OVER DIT SPEL
+            </button>
+            12+
+          </span>
         </div>
       </div>
+      <AnimatePresence>{about && <AboutSheet onClose={() => setAbout(false)} />}</AnimatePresence>
     </div>
   );
 }
