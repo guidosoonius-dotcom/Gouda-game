@@ -100,6 +100,12 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   beginscherm" (Installeer-knop op Android, uitleg over Deel op iOS).
   Nog open voor M8: de ankers ter plekke (zie hieronder) en een veldtest met twee spelers.
 
+- **Kaart beweegbaar (sessie 3):** de kaart sleep je met een vinger (met een beetje uitloop), zoom je met
+  knijpen, de +/−-knoppen of het muiswiel (1× tot 2,6×); bij 1× staat de hele stad met alle vijf
+  de adressen en het station in beeld. Een hoofdstuk kiezen laat de kaart er nog steeds naartoe
+  glijden, en de knop met het vizier brengt je terug. Zegels houden hun grootte bij elke zoom, en
+  een sleepbeweging die op een zegel begint kiest het hoofdstuk niet. Code: `map/useMapView.ts`.
+
 ## Half af
 - Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).
 - De tekst van hoofdstuk 3 is een voorstel: laat die lezen door iemand van het Joods Monument

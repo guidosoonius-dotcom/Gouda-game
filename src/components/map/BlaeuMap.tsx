@@ -1,14 +1,12 @@
 "use client";
 
+import { useLayoutEffect, useRef, useState } from "react";
 import { CHAPTERS, type Chapter } from "@/data/chapters";
+import { MAX_ZOOM, MIN_ZOOM, useMapView } from "./useMapView";
 
 /** Map image is 1100 x 1216; the SVG overlay uses the same units. */
 const MW = 1100;
 const MH = 1216;
-/** The map layer is this much wider than the stage, so the engraving reads at phone size. */
-const ZOOM = 1.6;
-/** Overlay units per CSS pixel at a 390px stage. */
-const U = MW / (390 * ZOOM);
 const START = { x: 37, y: 63 };
 
 const px = (c: { x: number; y: number }) => ({ x: (c.x / 100) * MW, y: (c.y / 100) * MH });
@@ -19,7 +17,8 @@ function arc(a: { x: number; y: number }, b: { x: number; y: number }, bend = 0.
   return `M${a.x} ${a.y} Q${mx} ${my} ${b.x} ${b.y}`;
 }
 
-function Seal({ chapter, state, onSelect }: { chapter: Chapter; state: "done" | "active" | "sealed"; onSelect: () => void }) {
+/** `u` is overlay units per CSS pixel on screen, so seals keep their size whatever the zoom. */
+function Seal({ chapter, state, onSelect, u: U }: { chapter: Chapter; state: "done" | "active" | "sealed"; onSelect: () => void; u: number }) {
   const p = px(chapter.map);
   const label = `Hoofdstuk ${chapter.id}: ${chapter.title}`;
   return (
@@ -91,6 +90,20 @@ function Seal({ chapter, state, onSelect }: { chapter: Chapter; state: "done" | 
   );
 }
 
+function Button({ label, onClick, children, className = "" }: { label: string; onClick: () => void; children: React.ReactNode; className?: string }) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      onClick={onClick}
+      onPointerDown={(e) => e.stopPropagation()}
+      className={`pointer-events-auto flex h-11 w-11 items-center justify-center border border-[#3a434b] bg-night/75 font-label text-[20px] font-bold leading-none text-parchment active:bg-night ${className}`}
+    >
+      {children}
+    </button>
+  );
+}
+
 export function BlaeuMap({
   selected,
   current,
@@ -102,98 +115,142 @@ export function BlaeuMap({
   completed: number[];
   onSelect: (id: number) => void;
 }) {
+  const stageRef = useRef<HTMLDivElement>(null);
+  const [stage, setStage] = useState({ w: 390, h: 560 });
+  useLayoutEffect(() => {
+    const el = stageRef.current;
+    if (!el) return;
+    const measure = () => setStage({ w: el.clientWidth, h: el.clientHeight });
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   const focus = selected.map;
-  const tx = Math.max(-(1 - 1 / ZOOM) * 100, Math.min(0, (50 / ZOOM - focus.x)));
+  const { view, smooth, away, recenter, zoomIn, zoomOut, wheel, handlers } = useMapView(stage, MH / MW, focus, selected.id);
+  // wheel zoom needs a non-passive listener to stop the page from scrolling
+  useLayoutEffect(() => {
+    const el = stageRef.current;
+    if (!el) return;
+    const on = (e: WheelEvent) => wheel(e, el.getBoundingClientRect());
+    el.addEventListener("wheel", on, { passive: false });
+    return () => el.removeEventListener("wheel", on);
+  }, [wheel]);
+
+  const U = MW / (stage.w * view.zoom);
   const prev = CHAPTERS.find((c) => c.id === selected.id - 1);
   const from = px(prev ? prev.map : START);
   const to = px(focus);
-  const lantern = 250;
+  // The lantern circle is 250 screen pixels wide whatever the zoom.
+  const lantern = 250 / view.zoom;
 
   return (
-    <div
-      className="absolute left-0 top-0 w-[160%]"
-      style={{
-        aspectRatio: `${MW} / ${MH}`,
-        transform: `translate(${tx}%, clamp(calc(100cqh - 100%), calc(44cqh - ${focus.y}%), 64px))`,
-        transition: "transform 1.5s cubic-bezier(.3,.1,.2,1)",
-      }}
-    >
-      <img src="/img/map/kaart_nacht.webp" alt="" className="absolute inset-0 h-full w-full" draggable={false} />
-      {/* The lantern: the hand-coloured original shows through a soft drifting circle of light. */}
-      <img
-        src="/img/map/kaart_kleur.webp"
-        alt=""
-        draggable={false}
-        className="map-lantern absolute inset-0 h-full w-full"
-        style={
-          {
-            "--mx": `calc(${focus.x}% + ${(lantern * (focus.x - 50)) / 100}px)`,
-            "--my": `calc(${focus.y}% + ${(lantern * (focus.y - 50)) / 100}px)`,
-            "--ms": `${lantern}px`,
-            filter: "saturate(.85) brightness(.92) sepia(.15)",
-          } as React.CSSProperties
-        }
-      />
-      <svg viewBox={`0 0 ${MW} ${MH}`} className="absolute inset-0 h-full w-full" aria-label="Kaart van Gouda met de vijf adressen">
-        <defs>
-          <radialGradient id="wax" cx="38%" cy="32%" r="75%">
-            <stop offset="0%" stopColor="#c9473c" />
-            <stop offset="55%" stopColor="#9e2a2b" />
-            <stop offset="100%" stopColor="#5e1617" />
-          </radialGradient>
-        </defs>
-        {CHAPTERS.slice(0, -1).map((c, i) => (
-          <path
-            key={c.id}
-            d={arc(px(c.map), px(CHAPTERS[i + 1].map), 0.1)}
-            fill="none"
-            stroke="#c9bfa8"
-            strokeOpacity=".3"
-            strokeWidth={1.2 * U}
-            strokeDasharray={`${1 * U} ${5 * U}`}
-            strokeLinecap="round"
-          />
-        ))}
-        {selected.id === current && (
-          <>
+    <div ref={stageRef} className="absolute inset-0 touch-none select-none overflow-hidden" {...handlers} role="application" aria-label="Kaart van Gouda: sleep om te bewegen, knijp om te zoomen">
+      <div
+        className="absolute left-0 top-0 origin-top-left"
+        style={{
+          width: stage.w,
+          aspectRatio: `${MW} / ${MH}`,
+          transform: `translate(${view.x}px, ${view.y}px) scale(${view.zoom})`,
+          transition: smooth ? "transform 1.2s cubic-bezier(.3,.1,.2,1)" : "none",
+        }}
+      >
+        <img src="/img/map/kaart_nacht.webp" alt="" className="absolute inset-0 h-full w-full" draggable={false} />
+        {/* The lantern: the hand-coloured original shows through a soft drifting circle of light. */}
+        <img
+          src="/img/map/kaart_kleur.webp"
+          alt=""
+          draggable={false}
+          className="map-lantern absolute inset-0 h-full w-full"
+          style={
+            {
+              "--mx": `calc(${focus.x}% + ${(lantern * (focus.x - 50)) / 100}px)`,
+              "--my": `calc(${focus.y}% + ${(lantern * (focus.y - 50)) / 100}px)`,
+              "--ms": `${lantern}px`,
+              filter: "saturate(.85) brightness(.92) sepia(.15)",
+            } as React.CSSProperties
+          }
+        />
+        <svg viewBox={`0 0 ${MW} ${MH}`} className="absolute inset-0 h-full w-full" aria-label="Kaart van Gouda met de vijf adressen">
+          <defs>
+            <radialGradient id="wax" cx="38%" cy="32%" r="75%">
+              <stop offset="0%" stopColor="#c9473c" />
+              <stop offset="55%" stopColor="#9e2a2b" />
+              <stop offset="100%" stopColor="#5e1617" />
+            </radialGradient>
+          </defs>
+          {CHAPTERS.slice(0, -1).map((c, i) => (
             <path
-              className="anim-route"
-              d={arc(from, to)}
+              key={c.id}
+              d={arc(px(c.map), px(CHAPTERS[i + 1].map), 0.1)}
               fill="none"
-              stroke="#e2a93a"
-              strokeWidth={2.4 * U}
-              strokeDasharray={`${4 * U} ${7 * U}`}
+              stroke="#c9bfa8"
+              strokeOpacity=".3"
+              strokeWidth={1.2 * U}
+              strokeDasharray={`${1 * U} ${5 * U}`}
               strokeLinecap="round"
-              style={{ strokeDashoffset: 0 }}
             />
-            {!prev && (
-              <>
-                <circle className="anim-ping" cx={from.x} cy={from.y} r={8 * U} fill="none" stroke="#e2a93a" strokeWidth={1.5 * U} />
-                <circle cx={from.x} cy={from.y} r={5.5 * U} fill="#e2a93a" stroke="#0a0d11" strokeWidth={2 * U} />
-                <text
-                  x={from.x - 12 * U}
-                  y={from.y + 22 * U}
-                  fill="#e2a93a"
-                  fontFamily="var(--font-label)"
-                  fontWeight="700"
-                  fontSize={10 * U}
-                  letterSpacing={1.5 * U}
-                >
-                  JIJ
-                </text>
-              </>
-            )}
-          </>
+          ))}
+          {selected.id === current && (
+            <>
+              <path
+                className="anim-route"
+                d={arc(from, to)}
+                fill="none"
+                stroke="#e2a93a"
+                strokeWidth={2.4 * U}
+                strokeDasharray={`${4 * U} ${7 * U}`}
+                strokeLinecap="round"
+                style={{ strokeDashoffset: 0 }}
+              />
+              {!prev && (
+                <>
+                  <circle className="anim-ping" cx={from.x} cy={from.y} r={8 * U} fill="none" stroke="#e2a93a" strokeWidth={1.5 * U} />
+                  <circle cx={from.x} cy={from.y} r={5.5 * U} fill="#e2a93a" stroke="#0a0d11" strokeWidth={2 * U} />
+                  <text
+                    x={from.x - 12 * U}
+                    y={from.y + 22 * U}
+                    fill="#e2a93a"
+                    fontFamily="var(--font-label)"
+                    fontWeight="700"
+                    fontSize={10 * U}
+                    letterSpacing={1.5 * U}
+                  >
+                    JIJ
+                  </text>
+                </>
+              )}
+            </>
+          )}
+          {CHAPTERS.map((c) => (
+            <Seal
+              key={c.id}
+              chapter={c}
+              state={completed.includes(c.id) ? "done" : c.id === selected.id || c.id === current ? "active" : "sealed"}
+              onSelect={() => onSelect(c.id)}
+              u={U}
+            />
+          ))}
+        </svg>
+      </div>
+
+      <div className="pointer-events-none absolute bottom-[70px] left-3 z-10 flex flex-col gap-1.5">
+        <Button label="Inzoomen" onClick={zoomIn} className={view.zoom >= MAX_ZOOM - 0.01 ? "opacity-40" : ""}>
+          +
+        </Button>
+        <Button label="Uitzoomen" onClick={zoomOut} className={view.zoom <= MIN_ZOOM + 0.01 ? "opacity-40" : ""}>
+          −
+        </Button>
+        {away && (
+          <Button label={`Terug naar hoofdstuk ${selected.id}`} onClick={recenter}>
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="5.5" />
+              <path d="M11 1.5v4M11 16.5v4M1.5 11h4M16.5 11h4" />
+            </svg>
+          </Button>
         )}
-        {CHAPTERS.map((c) => (
-          <Seal
-            key={c.id}
-            chapter={c}
-            state={completed.includes(c.id) ? "done" : c.id === selected.id || c.id === current ? "active" : "sealed"}
-            onSelect={() => onSelect(c.id)}
-          />
-        ))}
-      </svg>
+      </div>
     </div>
   );
 }
