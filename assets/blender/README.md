@@ -36,6 +36,8 @@ ontworpen. Materiaal `Lamp` krijgt in het spel een gloed.
 | `ruine` | 5,6 m breed, ingestort huis | maaiveld, midden van de gevel; gevel naar −X | `Ruine` |
 | `schuilkelder` | 7 m breed, ingang met zandzakken | maaiveld, midden van de voorkant; voorkant naar −X | `Schuilkelder` |
 | `lantaarn` | 3,4 m, gedoofd (verduistering) | voet | `Lantaarn`, `Light` |
+| `dakhuis`, `dakhuis_steil`, `dakhuis_plat` | 9 × 9 m; nok op 10,2 / 11,0 m, plat dak op 9,0 m (zie `_dakhuis.py`) | maaiveld, midden; nok langs X | `dakhuis…` |
+| `waag`, `zalm` | Waag 14 m breed en ± 17 m hoog; De Zalm 8 m breed, lager dan de Waag; alleen als silhouet in de verte | maaiveld, midden; voorgevel naar +Z | `Waag`, `Zalm` |
 | `eend` | 0,5 m, woerd | waterlijn; snavel naar +Z | `Eend` |
 | `duif` | 0,3 m, zittend | onder de poten; snavel naar +Z | `Duif` |
 

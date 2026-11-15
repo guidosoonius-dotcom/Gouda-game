@@ -6,7 +6,7 @@ import * as THREE from "three";
 import { Instanced, place } from "@/components/canal/Kit";
 import { rng } from "@/components/canal/layout";
 import { sfx } from "@/lib/sound";
-import { HOUSES, ridgeAt } from "./layout";
+import { CHIMNEY_Z, HOUSES, RIDGE_Z, roofAt } from "./layout";
 import { ROOF, type RoofSim } from "./sim";
 
 type SimRef = React.RefObject<RoofSim>;
@@ -15,7 +15,7 @@ type SimRef = React.RefObject<RoofSim>;
 
 const PUFFS = 7; // per smoking chimney
 /** Chimneys with a fire lit below (November 1942: coal is rationed, so not all of them). */
-const SMOKING = ROOF.covers.filter((_, i) => i % 3 !== 2).map((x) => new THREE.Vector3(x + 0.3, ridgeAt(x) - 0.25 + 2.9, -0.75));
+const SMOKING = ROOF.covers.filter((_, i) => i % 3 !== 2).map((x) => new THREE.Vector3(x + 0.3, roofAt(x, RIDGE_Z - CHIMNEY_Z) + 2.8, CHIMNEY_Z));
 
 const smokeVert = /* glsl */ `
   attribute float aSize;
@@ -103,7 +103,7 @@ function Pigeons({ sim }: { sim: SimRef }) {
       if (!h) continue;
       const count = 2 + Math.floor(r() * 3);
       for (let j = 0; j < count; j++) {
-        out.push({ hx: x + j * 0.42 + r() * 0.15, hy: h.ridge + 0.08, hz: -1.2, yaw: r() * Math.PI * 2, seed: r() * 10, flown: -1, dir: r() < 0.5 ? -1 : 1 });
+        out.push({ hx: x + j * 0.42 + r() * 0.15, hy: h.ridge + 0.06, hz: RIDGE_Z, yaw: r() * Math.PI * 2, seed: r() * 10, flown: -1, dir: r() < 0.5 ? -1 : 1 });
       }
     }
     return out;

@@ -60,6 +60,24 @@ export function prone(f: Figure) {
 }
 
 /**
+ * In mid-air over a gap: the leading leg reaches forward, the other trails behind, the body leans
+ * into the jump and the arms go out for balance. `reach` (0-1) is how wide the gap is.
+ */
+export function leap(f: Figure, reach: number) {
+  f.dir(1, 0, 0, AXIS);
+  f.turn("Spine02", AXIS, 0.25 + reach * 0.15);
+  f.turn("Head", AXIS, -0.2);
+  const hips = f.at("Hips", W);
+  f.reach("Leg", "Left", V.copy(hips).add(f.dir(0.12, -0.55, 0.32 + reach * 0.18, FEET[0]).multiplyScalar(0.92)), f.dir(0, 0.2, 1, FEET[1]));
+  f.reach("Leg", "Right", V.copy(hips).add(f.dir(-0.12, -0.75, -0.42 - reach * 0.12, FEET[0]).multiplyScalar(0.95)), f.dir(0, -0.3, 1, FEET[1]));
+  SIDES.forEach((side) => {
+    const out = sign(side);
+    const hand = f.at(`${side}Arm`, V).add(f.dir(out * 0.55, 0.1 + reach * 0.2, 0.45, FEET[0]).multiplyScalar(0.55));
+    f.reach("Arm", side, hand, f.dir(out * 0.3, -1, -0.4, FEET[1]));
+  });
+}
+
+/**
  * Sitting: hips on `seat`, feet on `feet` (both in the world), back bent forward by `lean` radians.
  * Call inside a pose; put the hands somewhere with `Figure.reach` afterwards.
  */

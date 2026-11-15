@@ -144,6 +144,18 @@ Formaat: beslissing · waarom · alternatief.
     erin mengen, handgemaakte houding erin mengen (`Figure.begin/clip/blend`). Zitten, roeien en
     fietsen zijn geen clips maar een bereik-oplossing met twee botten: de voeten volgen de trappers,
     de handen de riemen. Geen verborgen toestand, dus een gepauzeerd spel kan niet wegdrijven.
+43. **Springen en klimmen op de daken zijn beeld, geen gameplay.** De simulatie kent alleen x; de
+    hoogte van de voeten volgt uit de plek (`layout.stride`): een parabool over een steeg, een
+    sprongetje bij een hoogteverschil. Zo blijven tijd en moeilijkheid (en de bottest) gelijk. Een
+    sprong die je zelf moet timen kan later, maar maakt het hoofdstuk zwaarder voor 12-jarigen.
+44. **De koerier loopt óp de nok.** Hij zweefde een meter boven de voorkant van het dak. Nu loopt
+    hij over de nokpannen, staan de schoorstenen net achter de nok (tussen hem en de torens), en
+    glijdt hij bij platliggen een halve meter de voorkant af.
+45. **Waag en De Zalm als silhouet in de verte**, schuin links vooruit over de Markt, met een gat in
+    de achterste huizenrij op de zichtlijn. De vorm is uit het hoofd vereenvoudigd (fronton,
+    schilddak, reliëf; De Zalm lager dan de Waag, vergulde zalm op het dak). De gevelvorm van
+    De Zalm en de precieze ligging zijn niet gecontroleerd: Wikipedia was vanuit de sessie niet
+    bereikbaar. Het is decor, geen bewering in de tekst.
 
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.

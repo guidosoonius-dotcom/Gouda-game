@@ -56,8 +56,8 @@ export function Sky({ url, yaw = 0, dist, width, height, y, env = 1, tint = "#ff
 
   // dev aid: lets scripts read the renderer statistics (draw calls, triangles)
   useEffect(() => {
-    if (process.env.NODE_ENV !== "production") Object.assign(window, { __gl: gl, __scene: scene });
-  }, [gl, scene]);
+    if (process.env.NODE_ENV !== "production") Object.assign(window, { __gl: gl, __scene: scene, __cam: camera });
+  }, [gl, scene, camera]);
 
   useFrame(() => {
     const g = rig.current;

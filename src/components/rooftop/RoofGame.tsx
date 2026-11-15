@@ -14,7 +14,7 @@ import { Cinema, Night } from "@/components/canal/Night";
 import { Sky } from "@/components/canal/Sky";
 import { useWindowGlow } from "@/components/canal/Kit";
 import { RoofLife } from "./RoofLife";
-import { ridgeAt } from "./layout";
+import { HOUSES, ridgeAt } from "./layout";
 import { ROOF, createRoof, dashIsSafe, stepRoof, type RoofOutcome, type RoofSim } from "./sim";
 
 interface Input {
@@ -95,6 +95,8 @@ export function RoofGame() {
     // Dev aid: /?cover=7 starts further along the roofs (ignored in production builds).
     const c = process.env.NODE_ENV !== "production" ? Number(new URLSearchParams(window.location.search).get("cover")) : 0;
     if (c > 0 && c < ROOF.covers.length - 1) Object.assign(sim.current, { cover: c, x: ROOF.covers[c] });
+    // dev aid: scripts can pose the courier (e.g. halfway over an alley, with status "ready")
+    if (process.env.NODE_ENV !== "production") Object.assign(window, { __roof: sim.current, __houses: HOUSES });
     setHud({ ...ROOF_HUD_START, kees });
     setPhase("play");
   };
@@ -117,7 +119,7 @@ export function RoofGame() {
     <div className="absolute inset-0 touch-none overflow-hidden bg-night">
       <Canvas shadows="soft" dpr={[1, 2]} style={{ filter: "contrast(1.07) saturate(1.1)" }} camera={{ fov: 58, near: 0.5, far: 420, position: [x0 - 12, ridgeAt(x0) + 5.2, 4.2] }} gl={{ antialias: true, powerPreference: "high-performance" }}>
         <color attach="background" args={["#1a2430"]} />
-        <fogExp2 attach="fog" args={["#1a2430", 0.0085]} />
+        <fogExp2 attach="fog" args={["#1a2430", 0.0065]} />
         <Night moon={[-9, 24, -15]} focus={(out) => out.set(sim.current.x + 9, ridgeAt(sim.current.x), 0)} subject={(out) => out.set(sim.current.x - 0.6, ridgeAt(sim.current.x), 1.6)} extent={34} skyEnv={false} />
         <Sky url="/img/rooftop/sky.webp" yaw={-Math.PI / 2} dist={380} width={420} height={180} y={70} env={0.9} tint="#c8d0dc" />
         <RoofWorld sim={sim} />

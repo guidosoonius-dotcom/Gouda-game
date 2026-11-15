@@ -8,12 +8,20 @@ import { Instanced, Model, place, preload, spotOnly, type ModelName } from "@/co
 import { rng } from "@/components/canal/layout";
 import { beamTexture, radialTexture } from "@/components/canal/textures";
 import { TUNING } from "@/game/tuning";
-import { HOUSES, TOWERS, TOWER_TOP, ridgeAt } from "./layout";
+import { CHIMNEY_Z, HOUSES, RIDGE_Z, TOWERS, TOWER_TOP, ridgeAt, roofAt, type RoofKind } from "./layout";
 import { ROOF, beamX, type RoofSim } from "./sim";
 
 const GABLES: ModelName[] = ["gevel_trap", "gevel_klok", "gevel_tuit"];
-preload([...GABLES, "dakhuis", "schoorsteen", "koerier", "sintjan", "uitkijk", "soldaat", "zoeklicht", "boom", "duif", "moves"]);
+const ROOFS: RoofKind[] = ["dakhuis", "dakhuis_steil", "dakhuis_plat"];
+preload([...GABLES, ...ROOFS, "waag", "zalm", "schoorsteen", "koerier", "sintjan", "uitkijk", "soldaat", "zoeklicht", "boom", "duif", "moves"]);
 const UP = new THREE.Vector3(0, 1, 0);
+
+/**
+ * Across the Markt, ahead and to the left: the Waag with De Zalm beside it. The back row of houses
+ * leaves a gap where the line of sight from the first half of the run crosses it (`from`-`to`), so
+ * they show above the roofs.
+ */
+const MARKT = { x: 125, z: -32, yaw: 0.45, from: 66, to: 112 };
 
 /** The row of roofs the courier crosses, the street behind it and the skyline. */
 function Town() {
@@ -21,26 +29,36 @@ function Town() {
     const r = rng(42);
     const scale = new THREE.Vector3();
     const q = new THREE.Quaternion();
-    const roofs = HOUSES.map((h) => new THREE.Matrix4().compose(new THREE.Vector3((h.x0 + h.x1) / 2, 0, -1.2), q, scale.set(h.sx, h.sy, 1.05)));
+    const roofs = ROOFS.map((kind) => {
+      const list = HOUSES.filter((h) => h.kind === kind);
+      return {
+        placements: list.map((h) => new THREE.Matrix4().compose(new THREE.Vector3((h.x0 + h.x1) / 2, 0, RIDGE_Z), q, scale.set(h.sx, h.sy, 1.05))),
+        tints: list.map((h) => new THREE.Color(...h.tint)),
+      };
+    });
     const back: THREE.Matrix4[][] = [[], [], []];
     for (let x = -40; x < 175; ) {
       const kind = Math.floor(r() * 3);
       const w = [5.6, 6.2, 5.0][kind];
+      // the Markt opens up behind the row: no houses in front of the Waag
+      if (x + w > MARKT.from && x < MARKT.to) x = MARKT.to;
       back[kind].push(place(x + w / 2, -3.5 + r() * 2.5, -19, { yaw: Math.PI / 2, sy: 0.95 + r() * 0.25 }));
       x += w + 0.05;
     }
     return {
       roofs,
-      tints: HOUSES.map((h) => new THREE.Color(...h.tint)),
       back,
-      chimneys: ROOF.covers.map((x) => place(x, ridgeAt(x) - 0.25, -0.75, { yaw: (r() - 0.5) * 0.1 })),
+      // just behind the ridge, between the courier and the towers
+      chimneys: ROOF.covers.map((x) => place(x, roofAt(x, RIDGE_Z - CHIMNEY_Z) - 0.05, CHIMNEY_Z, { yaw: (r() - 0.5) * 0.1 })),
       towers: TOWERS.map((t) => place(t.x, 0, t.z)),
       trees: [8, 52, 104].map((x) => place(x, 0, 9.5, { s: 1.5, yaw: x })),
     };
   }, []);
   return (
     <>
-      <Instanced name="dakhuis" placements={p.roofs} tints={p.tints} />
+      {ROOFS.map((name, i) => (
+        <Instanced key={name} name={name} placements={p.roofs[i].placements} tints={p.roofs[i].tints} />
+      ))}
       <Instanced name="schoorsteen" placements={p.chimneys} spot />
       <Instanced name="uitkijk" placements={p.towers} />
       <Instanced name="boom" placements={p.trees} />
@@ -48,6 +66,10 @@ function Town() {
         <Instanced key={name} name={name} placements={p.back[i]} />
       ))}
       <Model name="sintjan" position={[178, -6, -62]} rotation-y={0.25} scale={1.25} />
+      <group position={[MARKT.x, 0, MARKT.z]} rotation-y={MARKT.yaw}>
+        <Model name="waag" />
+        <Model name="zalm" position={[-11.4, 0, 0.6]} />
+      </group>
       <mesh rotation-x={-Math.PI / 2} position={[60, 0, 0]} receiveShadow>
         <planeGeometry args={[400, 240]} />
         <meshStandardMaterial color="#1a2029" roughness={1} />
@@ -70,7 +92,7 @@ function Lights({ sim }: { sim: React.RefObject<RoofSim> }) {
   useFrame(() => {
     TOWERS.forEach((_, i) => {
       const x = beamX(i, sim.current.t);
-      const to = aims.current[i].set(x, ridgeAt(x) + 0.2, 0.2);
+      const to = aims.current[i].set(x, ridgeAt(x) + 0.2, RIDGE_Z + 0.9);
       const from = feet[i].clone().setY(TOWER_TOP + 1.35);
       targets[i].position.copy(to);
       targets[i].updateMatrixWorld();

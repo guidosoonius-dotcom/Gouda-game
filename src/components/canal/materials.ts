@@ -45,7 +45,7 @@ function swayMaterial(strength: number) {
 
 /** Surface families for the procedural detail shader, stored per vertex as `kind`. */
 export const SURFACE: Record<string, number> = {
-  Brick: 1, BrickDark: 1, Roof: 2, Wood: 3, WoodDark: 3, WoodWhite: 3, Bark: 3, Stone: 4, Cobble: 4, Sand: 4,
+  Brick: 1, BrickDark: 1, Roof: 2, RoofRed: 2, StonePale: 4, Lead: 4, Wood: 3, WoodDark: 3, WoodWhite: 3, Bark: 3, Stone: 4, Cobble: 4, Sand: 4,
   Glass: 5, WindowDark: 5, Soot: 6,
 };
 

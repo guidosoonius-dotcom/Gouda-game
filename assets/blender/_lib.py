@@ -52,6 +52,9 @@ MATERIALS = {
     "FeatherGrey": ("#7b8088", False),
     "DuckGreen": ("#2a4636", False),
     "Beak": ("#c49a3a", False),
+    "RoofRed": ("#7d3d2c", False),
+    "Lead": ("#5a5f63", False),
+    "StonePale": ("#b8b09e", False),
 }
 
 
