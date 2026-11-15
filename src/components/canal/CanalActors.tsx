@@ -3,7 +3,9 @@
 import { useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
+import { type Figure, useFigure } from "./Figure";
 import { spotCaster, useModel } from "./Kit";
+import { sit } from "./poses";
 import type { Sim } from "./sim";
 
 export interface Fx {
@@ -14,6 +16,31 @@ export interface Fx {
 
 const RINGS = 16;
 const STROKE = 0.55;
+
+const SEAT = new THREE.Vector3();
+const HAND = new THREE.Vector3();
+const POLE = new THREE.Vector3();
+const TMP = new THREE.Vector3();
+const FEET: [THREE.Vector3, THREE.Vector3] = [new THREE.Vector3(), new THREE.Vector3()];
+/** Height of the thwarts and of the floor boards above the waterline. */
+const THWART = 0.36;
+const FLOOR = 0.1;
+
+/** Sits a figure on a thwart at `z` in the boat, facing the stern (+1) or the bow (-1). */
+function seat(f: Figure, hull: THREE.Object3D, z: number, facing: 1 | -1, lean: number) {
+  f.begin();
+  FEET.forEach((foot, i) => hull.localToWorld(foot.set((i ? -1 : 1) * facing * 0.13, FLOOR + 0.08, z + facing * 0.52)));
+  sit(f, hull.localToWorld(SEAT.set(0, THWART + 0.08, z)), FEET, lean);
+}
+
+/** Both hands in front of the chest, `forward` metres out: on the knees, or pulling along. */
+function hands(f: Figure, forward: number) {
+  for (const side of ["Left", "Right"] as const) {
+    const out = side === "Left" ? 1 : -1;
+    f.at("Spine", HAND).add(f.dir(out * 0.5, -0.75, 1, TMP).multiplyScalar(forward + 0.12));
+    f.reach("Arm", side, HAND, f.dir(out, -0.8, -0.2, POLE));
+  }
+}
 
 /** The rowboat and its crew, the ripples they leave, and the camera that follows them. */
 export function CanalActors({ sim, fx }: { sim: React.RefObject<Sim>; fx: React.RefObject<Fx> }) {
@@ -28,14 +55,15 @@ export function CanalActors({ sim, fx }: { sim: React.RefObject<Sim>; fx: React.
     }),
     [schouw],
   );
-  // Jaap, when he comes along: a second rower on the stern thwart.
-  const jaap = useMemo(() => {
-    const figure = part.rower.clone(true);
-    figure.position.z += 0.95;
-    figure.scale.setScalar(0.93);
-    schouw.add(figure);
-    return figure;
-  }, [schouw, part]);
+  // The crew: the courier at the oars (back to the bow), the passenger in the bow, and Jaap, when
+  // he comes along, on the stern thwart. The blocky figures of the boat model stay hidden.
+  const rower = useFigure("koerier");
+  const passenger = useFigure("man", 0.96);
+  const jaap = useFigure("koerier", 0.93, "#d9c9b4");
+  useMemo(() => {
+    part.rower.visible = false;
+    part.passenger.visible = false;
+  }, [part]);
   const rings = useRef<(THREE.Mesh | null)[]>([]);
   const ringState = useRef(Array.from({ length: RINGS }, () => ({ age: 9, loud: 0 })));
   const ringNext = useRef(0);
@@ -63,16 +91,26 @@ export function CanalActors({ sim, fx }: { sim: React.RefObject<Sim>; fx: React.
     // The rower throws his back into it; both duck when they hide or the light finds them.
     const hiding = s.hidden || s.underBridge || s.lit || s.status === "caught" ? 1 : 0;
     duck.current += (hiding - duck.current) * (1 - Math.exp(-6 * dt));
-    part.rower.rotation.x = lean + duck.current * 0.35;
-    jaap.visible = s.crew === 3;
-    jaap.rotation.x = lean * 0.8 + duck.current * 0.35;
-    part.rower.scale.y = 1 - duck.current * 0.12;
-    part.passenger.rotation.x = -(0.08 + duck.current * 0.5) + Math.sin(t * 0.9) * 0.02;
-    part.passenger.scale.y = 1 - duck.current * 0.2;
-
-    if (boat.current) {
-      boat.current.position.set(s.x, Math.sin(t * 1.7) * 0.03, s.z);
-      boat.current.rotation.set(Math.sin(t * 1.3) * 0.02 - s.v * 0.006, -s.heading, -s.yawRate * 0.12 + heel);
+    const hull = boat.current;
+    if (hull) {
+      hull.position.set(s.x, Math.sin(t * 1.7) * 0.03, s.z);
+      hull.rotation.set(Math.sin(t * 1.3) * 0.02 - s.v * 0.006, -s.heading, -s.yawRate * 0.12 + heel);
+      hull.updateMatrixWorld(true);
+      const low = duck.current;
+      // the rower throws his back into it and holds the oars; all duck when the light is near
+      seat(rower, hull, 0.4, 1, 0.12 + lean * 0.9 + low * 0.5);
+      for (const side of ["Left", "Right"] as const) {
+        const oar = side === "Left" ? part.R : part.L;
+        const out = side === "Left" ? 1 : -1;
+        rower.reach("Arm", side, oar.localToWorld(HAND.set(-out * 0.36, 0.07, 0)), rower.dir(out, -0.9, -0.2, POLE));
+      }
+      seat(passenger, hull, -0.95, -1, 0.3 + low * 0.7 + Math.sin(t * 0.9) * 0.02);
+      hands(passenger, 0.2);
+      jaap.root.visible = s.crew === 3;
+      if (jaap.root.visible) {
+        seat(jaap, hull, 1.35, 1, 0.12 + lean * 0.75 + low * 0.5);
+        hands(jaap, 0.34 - lean * 0.3);
+      }
     }
 
     // Wake: small rings shed from the stern while the boat is under way.
@@ -109,6 +147,9 @@ export function CanalActors({ sim, fx }: { sim: React.RefObject<Sim>; fx: React.
     <>
       <group ref={(g) => (spotCaster(g), void (boat.current = g))}>
         <primitive object={schouw} />
+        <primitive object={rower.root} />
+        <primitive object={passenger.root} rotation-y={Math.PI} />
+        <primitive object={jaap.root} />
       </group>
       {Array.from({ length: RINGS }, (_, i) => (
         <mesh key={i} ref={(m) => void (rings.current[i] = m)} rotation-x={-Math.PI / 2} visible={false}>

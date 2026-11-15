@@ -68,6 +68,15 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   weggelaten als ze buiten beeld zijn. Gemeten: vaart 186 draw calls en 240–262k driehoeken
   (was 374k), daken 55 calls en 145k (was 256k).
 
+- **Echte personages (sessie 3):** koerier, soldaat, man en vrouw zijn vervangen door getextureerde
+  figuren met een skelet (character sheets in `docs/characters/`). De koerier rent met een echte
+  renbeweging, hurkt achter de schoorsteen en ligt plat; op de fiets volgen zijn voeten de
+  trappers en houden zijn handen het stuur vast; in de schouw trekt hij aan de riemen. Soldaten
+  lopen over de brug, roken en houden het zoeklicht vast; burgers lopen, rennen en duiken weg.
+  Gemeten: fietsstraat 145 draw calls en 265–270k driehoeken (was 250k), vaart 255–278k, daken 160k.
+  Nog niet gedaan: gezichten zijn van dichtbij vaag, er zijn geen kinderfiguren (een kind is een
+  verkleinde volwassene), en Marie en Jaap hebben geen eigen model.
+
 ## Half af
 - Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).
 - De tekst van hoofdstuk 3 is een voorstel: laat die lezen door iemand van het Joods Monument
@@ -84,7 +93,8 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
 - Ontwikkelhulp (alleen in dev): `/?canal=1` opent de vaart direct, `&z=-60` start verderop;
   `/?roof=1` opent de daken, `&cover=8` start verderop; `/?bike=1` opent de fietstocht (`&bomb=1` laat direct een bom vallen, `&plane=1` toont een
   vliegtuig; `node scripts/bike-shots.cjs` en `bike-impact.cjs` maken screenshots). `node scripts/roof-shots.cjs` maakt screenshots.
-  `node scripts/canal-shots.cjs` maakt screenshots van de vaart; `node scripts/night-shots.cjs` maakt
+  `node scripts/figure-shots.cjs` maakt close-ups van de personages (`/?bike=1&cam=side` bekijkt de
+  fietser van opzij). `node scripts/canal-shots.cjs` maakt screenshots van de vaart; `node scripts/night-shots.cjs` maakt
   vier vaste shots van vaart en daken en meldt draw calls en driehoeken.
 
 ## Volgende stap

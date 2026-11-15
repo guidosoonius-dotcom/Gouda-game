@@ -19,11 +19,16 @@ Read only the section you need; do not load whole documents by default.
    <= 1.5 MB of 3D per minigame (the models that minigame loads; `npm run assets` checks the whole kit against 3 MB). Keep model materials simple (base color only): `canal/Kit.tsx` bakes them to vertex
    colours and adds brick, tile, wood and stone detail procedurally in the shader. Image
    textures are allowed only for generated backdrops and ground (`public/img/<minigame>/*.webp`,
-   <= 250 KB each, made with Higgsfield, never presented as archive photographs). Props and characters use `build(bevel=...)` for rounded, smooth
+   <= 250 KB each, made with Higgsfield, never presented as archive photographs). Props use `build(bevel=...)` for rounded, smooth
    edges; big architecture stays unbevelled. Lighting is designed in R3F, not in Blender.
+   Exception, the people: each character starts from a sheet (`docs/characters/*.webp`), is lifted to a
+   textured mesh and rigged with Higgsfield (originals in `assets/characters/`) and is then made
+   phone-sized by `assets/blender/_figure.py` (decimate, 512 px WebP texture, shared skeleton and
+   clips). Original characters only, never a real person. In the game they are `canal/Figure.ts`
+   (skinned mesh, clips, two-bone reach) with hand-made poses in `canal/poses.ts`.
 4. Mount `<Canvas>` only in the minigame view; dispose on exit. Preload the minigame chunk
    while the dossier is open. Cap DPR at 2. Measured budget per frame (shadow pass included):
-   about 200 draw calls and 250k triangles for the bicycle street, the heaviest scene; keep new
+   about 200 draw calls and 270k triangles for the bicycle street, the heaviest scene; keep new
    work inside that, and keep architecture models unbevelled (bevels multiply triangles by ~8). Shadows: one 1024 moon map that follows the player
    plus one per searchlight, all switchable in `TUNING.gfx`; no post-processing passes (the film
    look is CSS: vignette, grain, colour filter).

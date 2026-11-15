@@ -14,7 +14,7 @@ const NAMES = [
   "kade", "riet", "schouw", "ophaalbrug", "sluisdeur", "soldaat", "zoeklicht", "lantaarn", "boom", "fiets",
   "meerpaal", "wachtpost", "vracht", "gevel_trap", "gevel_klok", "gevel_tuit",
   "dakhuis", "schoorsteen", "koerier", "sintjan", "uitkijk", "man", "vrouw", "puin", "ruine", "schuilkelder",
-  "gevel_trap_schade", "gevel_klok_schade", "gevel_tuit_schade", "vliegtuig", "handkar", "eend", "duif",
+  "gevel_trap_schade", "gevel_klok_schade", "gevel_tuit_schade", "vliegtuig", "handkar", "eend", "duif", "moves",
 ] as const;
 export type ModelName = (typeof NAMES)[number];
 export const url = (name: ModelName) => `/models/${name}.glb`;

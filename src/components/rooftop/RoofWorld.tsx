@@ -12,7 +12,7 @@ import { HOUSES, TOWERS, TOWER_TOP, ridgeAt } from "./layout";
 import { ROOF, beamX, type RoofSim } from "./sim";
 
 const GABLES: ModelName[] = ["gevel_trap", "gevel_klok", "gevel_tuit"];
-preload([...GABLES, "dakhuis", "schoorsteen", "koerier", "sintjan", "uitkijk", "soldaat", "zoeklicht", "boom", "duif"]);
+preload([...GABLES, "dakhuis", "schoorsteen", "koerier", "sintjan", "uitkijk", "soldaat", "zoeklicht", "boom", "duif", "moves"]);
 const UP = new THREE.Vector3(0, 1, 0);
 
 /** The row of roofs the courier crosses, the street behind it and the skyline. */

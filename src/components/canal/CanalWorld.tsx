@@ -89,7 +89,7 @@ function Water() {
 const HOUSES: ModelName[] = ["gevel_trap", "gevel_klok", "gevel_tuit"];
 /** Metres per culled block of the long rows along the canal. */
 const CHUNK = 50;
-preload([...HOUSES, "kade", "riet", "schouw", "ophaalbrug", "sluisdeur", "soldaat", "zoeklicht", "lantaarn", "boom", "fiets", "meerpaal", "wachtpost", "vracht", "eend"]);
+preload([...HOUSES, "kade", "riet", "schouw", "ophaalbrug", "sluisdeur", "soldaat", "zoeklicht", "lantaarn", "boom", "fiets", "meerpaal", "wachtpost", "vracht", "eend", "koerier", "man", "moves"]);
 
 /** Three gable types, stretched and tinted per house so the street never repeats. */
 function Houses() {

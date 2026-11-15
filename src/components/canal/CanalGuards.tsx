@@ -4,6 +4,8 @@ import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { TUNING } from "@/game/tuning";
+import { useFigure } from "./Figure";
+import { stand } from "./poses";
 import { spotOnly, useModel } from "./Kit";
 import { HW } from "./layout";
 import { COURSE, type Sim } from "./sim";
@@ -18,42 +20,50 @@ const POST_B = new THREE.Vector3(HW + 1.2, 1.6, COURSE.lockZ + 1.5);
 const UP = new THREE.Vector3(0, 1, 0);
 const turn = (from: number, to: number) => Math.atan2(Math.sin(to - from), Math.cos(to - from));
 
-export function useSoldier() {
-  const obj = useModel("soldaat");
-  const legs = useMemo(() => [obj.getObjectByName("LegL")!, obj.getObjectByName("LegR")!], [obj]);
-  return { obj, legs };
-}
+const HAND = new THREE.Vector3();
+const POLE = new THREE.Vector3();
+const TMP = new THREE.Vector3();
 
 /** A searchlight on its tripod and the soldier who swings it: he steps around it as it turns. */
 export function Post({ foot, aim }: { foot: THREE.Vector3; aim: React.RefObject<THREE.Vector3> }) {
   const lamp = useModel("zoeklicht");
   const head = useMemo(() => lamp.getObjectByName("Head")!, [lamp]);
-  const { obj, legs } = useSoldier();
-  const yaw = useRef(0);
+  const fig = useFigure("soldaat");
+  const st = useRef({ yaw: 0, phase: 0, step: 0 });
   useFrame(({ clock }, delta) => {
     const dt = Math.min(delta, 0.05);
+    const a = st.current;
     head.lookAt(aim.current);
-    const step = turn(yaw.current, Math.atan2(aim.current.x - foot.x, aim.current.z - foot.z)) * (1 - Math.exp(-4 * dt));
-    yaw.current += step;
-    obj.position.set(foot.x - Math.sin(yaw.current) * 0.85, foot.y, foot.z - Math.cos(yaw.current) * 0.85);
-    obj.rotation.set(0, yaw.current, Math.sin(clock.elapsedTime * 0.8) * 0.025);
-    // small side-steps while he swings the lamp
-    const shuffle = Math.max(-0.4, Math.min(0.4, (step / dt) * 0.35)) * Math.sin(clock.elapsedTime * 7);
-    legs[0].rotation.x = shuffle;
-    legs[1].rotation.x = -shuffle;
+    const step = turn(a.yaw, Math.atan2(aim.current.x - foot.x, aim.current.z - foot.z)) * (1 - Math.exp(-4 * dt));
+    a.yaw += step;
+    fig.root.position.set(foot.x - Math.sin(a.yaw) * 0.78, foot.y, foot.z - Math.cos(a.yaw) * 0.78);
+    fig.root.rotation.set(0, a.yaw, 0);
+    // he shuffles around the tripod while he swings the lamp, and stands still when it rests
+    a.step += (Math.min(1, Math.abs(step / dt) * 2.4) - a.step) * (1 - Math.exp(-6 * dt));
+    a.phase += dt * (0.5 + a.step * 0.7);
+    fig.begin();
+    fig.clip("walk", a.phase, a.step * 0.55);
+    fig.turn("Spine", fig.dir(1, 0, 0, TMP), 0.1 + Math.sin(clock.elapsedTime * 0.8) * 0.02);
+    // both hands on the grips at the back of the lamp
+    for (const side of ["Left", "Right"] as const) {
+      const out = side === "Left" ? 1 : -1;
+      HAND.copy(fig.root.position).add(fig.dir(out * 0.17, 0, 0, TMP).multiplyScalar(0.17));
+      HAND.addScaledVector(fig.dir(0, 0, 1, TMP), 0.44).setY(foot.y + 1.24);
+      fig.reach("Arm", side, HAND, fig.dir(out, -0.8, -0.3, POLE));
+    }
   });
   return (
     <>
       <primitive object={lamp} position={foot} />
-      <primitive object={obj} />
+      <primitive object={fig.root} />
     </>
   );
 }
 
-/** A sentry pacing the bridge. He stops to look over the railing, and turns when he hears oars. */
+/** A sentry pacing the bridge. He stops for a smoke, and turns when he hears oars. */
 function Patrol({ sim }: { sim: SimRef }) {
-  const { obj, legs } = useSoldier();
-  const st = useRef({ x: -4.2, dir: 1, pause: 1.5, phase: 0, yaw: Math.PI / 2, look: 0 });
+  const fig = useFigure("soldaat");
+  const st = useRef({ x: -4.2, dir: 1, pause: 1.5, phase: 0, yaw: Math.PI / 2, look: 0, walk: 0, smoke: 0 });
   const ember = useRef<THREE.Mesh>(null);
   useFrame(({ clock }, delta) => {
     const dt = Math.min(delta, 0.05);
@@ -79,26 +89,37 @@ function Patrol({ sim }: { sim: SimRef }) {
       }
     }
     a.yaw += turn(a.yaw, want) * (1 - Math.exp(-5 * dt));
-    if (walking) a.phase += dt * 5.4;
-    const swing = walking ? Math.sin(a.phase) * 0.5 : 0;
-    const k = 1 - Math.exp(-10 * dt);
-    legs[0].rotation.x += (swing - legs[0].rotation.x) * k;
-    legs[1].rotation.x += (-swing - legs[1].rotation.x) * k;
-    obj.position.set(a.x, DECK + (walking ? Math.abs(Math.sin(a.phase)) * 0.025 : 0), COURSE.bridgeZ - 0.45);
-    obj.rotation.y = a.yaw;
-    // the ember of his cigarette, brighter when he draws on it
+    if (walking) a.phase += dt * 0.8;
+    const k = 1 - Math.exp(-6 * dt);
+    a.walk += ((walking ? 1 : 0) - a.walk) * k;
+    const smoking = !walking && !heard;
+    // he lifts the cigarette to his mouth every few seconds
+    const draw = smoking ? Math.max(0, Math.sin(clock.elapsedTime * 0.9)) ** 3 : 0;
+    a.smoke += (draw - a.smoke) * k;
+    fig.root.position.set(a.x, DECK, COURSE.bridgeZ - 0.45);
+    fig.root.rotation.y = a.yaw;
+    fig.begin();
+    fig.clip("walk", a.phase, a.walk);
+    fig.blend(1 - a.walk, stand);
+    if (a.smoke > 0.01) {
+      fig.at("Head", HAND).addScaledVector(fig.dir(-0.25, -0.35, 1, TMP), 0.13);
+      fig.at("RightHand", TMP).lerp(HAND, a.smoke);
+      fig.reach("Arm", "Right", TMP, fig.dir(-1, -0.6, 0.2, POLE));
+    }
     if (ember.current) {
-      ember.current.visible = !walking && !heard;
-      ember.current.scale.setScalar(0.7 + 1.3 * Math.max(0, Math.sin(clock.elapsedTime * 0.9)) ** 10);
+      ember.current.visible = smoking;
+      fig.at("RightHand", ember.current.position).addScaledVector(fig.dir(-0.1, -0.5, 1, TMP), 0.09);
+      ember.current.scale.setScalar(0.7 + 1.6 * draw);
     }
   });
   return (
-    <primitive object={obj}>
-      <mesh ref={ember} position={[0.06, 1.55, 0.13]}>
+    <>
+      <primitive object={fig.root} />
+      <mesh ref={ember}>
         <sphereGeometry args={[0.022, 6, 4]} />
         <meshBasicMaterial color="#ff7a2a" toneMapped={false} />
       </mesh>
-    </primitive>
+    </>
   );
 }
 

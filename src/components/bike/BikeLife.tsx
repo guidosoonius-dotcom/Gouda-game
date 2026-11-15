@@ -3,7 +3,8 @@
 import { useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { useModel, type ModelName } from "@/components/canal/Kit";
+import { useFigure, type FigureName } from "@/components/canal/Figure";
+import { useModel } from "@/components/canal/Kit";
 import { rng } from "@/components/canal/layout";
 import { radialTexture } from "@/components/canal/textures";
 import { sfx } from "@/lib/sound";
@@ -17,14 +18,12 @@ const EXTRAS = 15;
 function Extra({ sim, seed }: { sim: SimRef; seed: number }) {
   const r = useMemo(() => rng(seed * 977), [seed]);
   const spec = useMemo(() => {
-    const kind: ModelName = r() < 0.5 ? "man" : "vrouw";
+    const kind: FigureName = r() < 0.5 ? "man" : "vrouw";
     const child = r() < 0.16;
     return { kind, scale: child ? 0.62 : 0.9 + r() * 0.14, toShelter: r() < 0.78, speed: 3.1 + r() * 1.5, lane: (r() < 0.5 ? -1 : 1) * (HW - 0.55 - r() * 0.7), z0: 8 - r() * 110, phase: r() * 6 };
   }, [r]);
-  const obj = useModel(spec.kind);
-  const legs = useMemo(() => [obj.getObjectByName("LegL")!, obj.getObjectByName("LegR")!], [obj]);
+  const fig = useFigure(spec.kind, spec.scale);
   const st = useRef({ z: spec.z0, phase: spec.phase, lane: spec.lane });
-  useMemo(() => obj.scale.setScalar(spec.scale), [obj, spec.scale]);
 
   useFrame((_, delta) => {
     const dt = Math.min(delta, 0.05);
@@ -41,16 +40,16 @@ function Extra({ sim, seed }: { sim: SimRef; seed: number }) {
       s.z = riderZ - 105 - r() * 20;
       s.lane = (r() < 0.5 ? -1 : 1) * (HW - 0.55 - r() * 0.7);
     }
-    s.phase += dt * (spec.speed * 2.6);
-    const swing = Math.sin(s.phase) * 0.7;
-    legs[0].rotation.x = swing;
-    legs[1].rotation.x = -swing;
-    obj.position.set(s.lane, 0.14 + Math.abs(Math.sin(s.phase)) * 0.05, s.z);
-    obj.rotation.set(0.14, dir < 0 ? Math.PI : 0, 0);
-    obj.rotation.y = dir < 0 ? Math.PI : 0;
-    obj.visible = s.z < riderZ + 15 && s.z > riderZ - 125;
+    // the run clip covers about 3.6 m per second at its own pace
+    s.phase += dt * (spec.speed / 3.6);
+    fig.root.position.set(s.lane, 0.14, s.z);
+    fig.root.rotation.y = dir < 0 ? Math.PI : 0;
+    fig.root.visible = s.z < riderZ + 15 && s.z > riderZ - 125;
+    if (!fig.root.visible) return;
+    fig.begin();
+    fig.clip("run", s.phase);
   });
-  return <primitive object={obj} />;
+  return <primitive object={fig.root} />;
 }
 
 /** Aircraft crossing the burning sky, with their drone. */

@@ -133,6 +133,17 @@ Formaat: beslissing · waarom · alternatief.
     veranderen de simulatie niet: een kwak of opvliegende duiven alarmeert geen wacht. Kleine
     ronde dingen krijgen `build(smooth=True)` in plaats van bevel (een bevel verdrievoudigde de
     driehoeken van een eend).
+40. **Personages komen uit Higgsfield, niet uit dozen.** De blokfiguren met draaiende benen waren
+    het zwakste punt. Nu: character sheet → 3D-mesh met textuur (SAM 3D, 1 credit per stuk) →
+    skelet met een echte loop- of renbeweging (Meshy, 8 credits per stuk, alleen voor koerier en
+    soldaat) → `_figure.py`. Meshy 7 had mooiere gezichten gegeven, maar kost 38–47 credits per
+    personage; op spelafstand is het verschil klein. Dit verruimt regel 3 voor personages.
+41. **Eén skelet voor soldaat, man en vrouw.** Alle drie dragen een lange jas; de gewichten van de
+    soldaat passen daarom goed. Zo delen ze hun clips (`moves.glb`) en was één betaald skelet genoeg.
+42. **Geen AnimationMixer.** Elke frame bouwt een scène de houding opnieuw op: rusthouding, clip
+    erin mengen, handgemaakte houding erin mengen (`Figure.begin/clip/blend`). Zitten, roeien en
+    fietsen zijn geen clips maar een bereik-oplossing met twee botten: de voeten volgen de trappers,
+    de handen de riemen. Geen verborgen toestand, dus een gepauzeerd spel kan niet wegdrijven.
 
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.

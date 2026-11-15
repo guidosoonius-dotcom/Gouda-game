@@ -14,7 +14,7 @@ import { BikeSky } from "./BikeSky";
 import { STREET, type BikeSim } from "./sim";
 
 const GABLES: ModelName[] = ["gevel_trap", "gevel_klok", "gevel_tuit", "gevel_trap_schade", "gevel_klok_schade", "gevel_tuit_schade"];
-preload([...GABLES, "puin", "ruine", "schuilkelder", "man", "vrouw", "fiets", "koerier", "lantaarn", "vliegtuig", "handkar", "vracht"]);
+preload([...GABLES, "puin", "ruine", "schuilkelder", "man", "vrouw", "fiets", "koerier", "lantaarn", "vliegtuig", "handkar", "vracht", "moves"]);
 export const HW = STREET.halfWidth;
 const SIDEWALK = 1.7;
 
