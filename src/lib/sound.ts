@@ -191,6 +191,15 @@ export const sfx = {
   step() {
     noise({ dur: 0.05, freq: 1100 + Math.random() * 500, q: 1.4, gain: 0.07 });
   },
+  /** Pigeons taking off: a quick run of soft wing claps. */
+  flutter() {
+    for (let i = 0; i < 7; i++) noise({ dur: 0.04, freq: 700 + Math.random() * 400, q: 0.8, gain: 0.05 - i * 0.005 }, i * 0.07 + Math.random() * 0.02);
+  },
+  /** A duck, softly, further off. */
+  quack() {
+    tone({ freq: 420, to: 330, dur: 0.12, gain: 0.04, type: "sawtooth", attack: 0.01 });
+    tone({ freq: 400, to: 310, dur: 0.1, gain: 0.03, type: "sawtooth", attack: 0.01 }, 0.18);
+  },
   whistle() {
     tone({ freq: 2300, to: 2500, dur: 0.5, gain: 0.12, type: "square", attack: 0.02 });
     tone({ freq: 2380, dur: 0.5, gain: 0.08, type: "sine", attack: 0.02 });

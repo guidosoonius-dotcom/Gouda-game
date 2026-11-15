@@ -121,6 +121,18 @@ Formaat: beslissing · waarom · alternatief.
     rekwisieten houden hun gladde vorm.
 36. **Het waarschuwingsvlak van een bom is gameplay**, dus altijd getekend (ook als `gfx.life` uit
     staat), en op de heldere straat een witte pulserende ring op rood.
+37. **Elke nachtscène krijgt een gegenereerde lucht die ook omgevingsbeeld is** (`canal/Sky.tsx`).
+    De lucht volgt de camera, dus geen parallax en nooit een rand. In Nachtvaart kijkt de camera
+    steil omlaag; daar zie je de lucht vooral terug in het water.
+38. **Zoeklichtschaduw alleen voor wat ertoe doet.** Elke schaduwkaart tekende de hele set
+    opnieuw. Nu tekent de maan alles en een zoeklicht alleen laag `SPOT_LAYER` (boot, riet,
+    eenden, koeriers, schoorstenen). Lange rijen langs de gracht zijn in blokken van 50 m
+    opgeknipt (`Instanced chunk`), en de camera van de vaart kijkt niet verder dan 130 m
+    (de mist is daar al dicht).
+39. **Dieren zijn sfeer, geen gameplay.** Eenden en duiven reageren op de speler, maar
+    veranderen de simulatie niet: een kwak of opvliegende duiven alarmeert geen wacht. Kleine
+    ronde dingen krijgen `build(smooth=True)` in plaats van bevel (een bevel verdrievoudigde de
+    driehoeken van een eend).
 
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.

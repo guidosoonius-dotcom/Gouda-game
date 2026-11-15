@@ -47,6 +47,11 @@ MATERIALS = {
     "Glass": ("#26323d", False),
     "Scarf": ("#8a5a4a", False),
     "CoatBrown": ("#5a4a3e", False),
+    "Feather": ("#948670", False),
+    "FeatherDark": ("#3a3329", False),
+    "FeatherGrey": ("#7b8088", False),
+    "DuckGreen": ("#2a4636", False),
+    "Beak": ("#c49a3a", False),
 }
 
 
@@ -124,9 +129,11 @@ class Builder:
         if cap_last:
             self.bm.faces.new(vs[-1]).material_index = idx
 
-    def build(self, recalc=True, bevel=0.0):
+    def build(self, recalc=True, bevel=0.0, smooth=False):
         """`bevel` (metres) rounds every hard edge and shades the object smooth: edges catch the
-        light instead of ending in a knife line. Large flat architecture keeps bevel=0."""
+        light instead of ending in a knife line. Large flat architecture keeps bevel=0. `smooth`
+        shades smooth without bevelling: for small round things (birds) where bevels only add
+        triangles."""
         if recalc:
             bmesh.ops.recalc_face_normals(self.bm, faces=self.bm.faces)
         mesh = bpy.data.meshes.new(self.name)
@@ -136,6 +143,9 @@ class Builder:
             mesh.materials.append(material(m))
         obj = bpy.data.objects.new(self.name, mesh)
         bpy.context.scene.collection.objects.link(obj)
+        if smooth and bevel == 0:
+            for poly in mesh.polygons:
+                poly.use_smooth = True
         if bevel > 0:
             for poly in mesh.polygons:
                 poly.use_smooth = True

@@ -51,7 +51,8 @@ Read only the section you need; do not load whole documents by default.
 - Screens: `src/components/screens/*`; chapter 1 puzzle `src/components/packing/*`;
   Nachtvaart `src/components/canal/*`, Over de daken `src/components/rooftop/*`, Vluchtspoor
   `src/components/bike/*`
-  (each a pure `sim.ts` tested by a bot; shared model helpers in `canal/Kit.tsx`).
+  (each a pure `sim.ts` tested by a bot; shared model helpers in `canal/Kit.tsx`, lighting in
+  `canal/Night.tsx`, generated sky plus environment map in `canal/Sky.tsx`).
 - State of the work: `docs/progress.md`; why things are the way they are: `docs/decisions.md`.
 
 ## Commands

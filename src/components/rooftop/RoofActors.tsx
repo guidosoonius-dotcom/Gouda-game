@@ -3,7 +3,7 @@
 import { useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { useModel } from "@/components/canal/Kit";
+import { spotCaster, useModel } from "@/components/canal/Kit";
 import { TUNING } from "@/game/tuning";
 import { sfx } from "@/lib/sound";
 import { houseAt, ridgeAt } from "./layout";
@@ -81,10 +81,10 @@ export function RoofActors({ sim }: { sim: React.RefObject<RoofSim> }) {
 
   return (
     <>
-      <group ref={(g) => void (a.current.group = g)} rotation-y={Math.PI / 2}>
+      <group ref={(g) => (spotCaster(g), void (a.current.group = g))} rotation-y={Math.PI / 2}>
         <primitive object={me.obj} />
       </group>
-      <group ref={(g) => void (b.current.group = g)} rotation-y={Math.PI / 2} visible={false}>
+      <group ref={(g) => (spotCaster(g), void (b.current.group = g))} rotation-y={Math.PI / 2} visible={false}>
         <primitive object={kees.obj} />
       </group>
     </>

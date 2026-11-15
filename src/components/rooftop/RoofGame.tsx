@@ -11,6 +11,9 @@ import { RoofActors } from "./RoofActors";
 import { RoofHud, ROOF_HUD_START, type RoofHudState } from "./RoofHud";
 import { RoofWorld } from "./RoofWorld";
 import { Cinema, Night } from "@/components/canal/Night";
+import { Sky } from "@/components/canal/Sky";
+import { useWindowGlow } from "@/components/canal/Kit";
+import { RoofLife } from "./RoofLife";
 import { ridgeAt } from "./layout";
 import { ROOF, createRoof, dashIsSafe, stepRoof, type RoofOutcome, type RoofSim } from "./sim";
 
@@ -62,6 +65,8 @@ export function RoofGame() {
   // Willem's key to the church attic (chapter 1): you start two roofs further.
   const startCover = useGameStore((s) => (s.flags["ch1.pass"] === "glazen" ? 2 : 0));
   const sim = useRef<RoofSim>(createRoof(kees, startCover));
+  // A dim lamp behind a few blackout curtains.
+  useWindowGlow(0.55);
   const input = useRef<Input>({ tap: false, downAt: 0 });
   const [phase, setPhase] = useState<"intro" | "play" | "caught" | "done">("intro");
   const [hud, setHud] = useState<RoofHudState>(ROOF_HUD_START);
@@ -111,10 +116,12 @@ export function RoofGame() {
   return (
     <div className="absolute inset-0 touch-none overflow-hidden bg-night">
       <Canvas shadows="soft" dpr={[1, 2]} style={{ filter: "contrast(1.07) saturate(1.1)" }} camera={{ fov: 58, near: 0.5, far: 420, position: [x0 - 12, ridgeAt(x0) + 5.2, 4.2] }} gl={{ antialias: true, powerPreference: "high-performance" }}>
-        <color attach="background" args={["#0e1a2a"]} />
-        <fogExp2 attach="fog" args={["#0e1a2a", 0.0085]} />
-        <Night moon={[-9, 24, -15]} focus={(out) => out.set(sim.current.x + 9, ridgeAt(sim.current.x), 0)} subject={(out) => out.set(sim.current.x - 0.6, ridgeAt(sim.current.x), 1.6)} extent={34} />
+        <color attach="background" args={["#1a2430"]} />
+        <fogExp2 attach="fog" args={["#1a2430", 0.0085]} />
+        <Night moon={[-9, 24, -15]} focus={(out) => out.set(sim.current.x + 9, ridgeAt(sim.current.x), 0)} subject={(out) => out.set(sim.current.x - 0.6, ridgeAt(sim.current.x), 1.6)} extent={34} skyEnv={false} />
+        <Sky url="/img/rooftop/sky.webp" yaw={-Math.PI / 2} dist={380} width={420} height={180} y={70} env={0.9} tint="#c8d0dc" />
         <RoofWorld sim={sim} />
+        <RoofLife sim={sim} />
         <RoofActors sim={sim} />
         <Loop sim={sim} input={input} onHud={setHud} onEvent={onEvent} />
       </Canvas>

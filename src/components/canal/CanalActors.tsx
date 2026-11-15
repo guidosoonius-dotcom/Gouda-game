@@ -3,7 +3,7 @@
 import { useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { useModel } from "./Kit";
+import { spotCaster, useModel } from "./Kit";
 import type { Sim } from "./sim";
 
 export interface Fx {
@@ -107,7 +107,7 @@ export function CanalActors({ sim, fx }: { sim: React.RefObject<Sim>; fx: React.
 
   return (
     <>
-      <group ref={boat}>
+      <group ref={(g) => (spotCaster(g), void (boat.current = g))}>
         <primitive object={schouw} />
       </group>
       {Array.from({ length: RINGS }, (_, i) => (

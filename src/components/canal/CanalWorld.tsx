@@ -87,7 +87,9 @@ function Water() {
 }
 
 const HOUSES: ModelName[] = ["gevel_trap", "gevel_klok", "gevel_tuit"];
-preload([...HOUSES, "kade", "riet", "schouw", "ophaalbrug", "sluisdeur", "soldaat", "zoeklicht", "lantaarn", "boom", "fiets", "meerpaal", "wachtpost", "vracht"]);
+/** Metres per culled block of the long rows along the canal. */
+const CHUNK = 50;
+preload([...HOUSES, "kade", "riet", "schouw", "ophaalbrug", "sluisdeur", "soldaat", "zoeklicht", "lantaarn", "boom", "fiets", "meerpaal", "wachtpost", "vracht", "eend"]);
 
 /** Three gable types, stretched and tinted per house so the street never repeats. */
 function Houses() {
@@ -105,7 +107,7 @@ function Houses() {
   return (
     <>
       {HOUSES.map((name, i) => (
-        <Instanced key={name} name={name} placements={sets[i].placements} tints={sets[i].tints} />
+        <Instanced key={name} name={name} placements={sets[i].placements} tints={sets[i].tints} chunk={CHUNK} />
       ))}
     </>
   );
@@ -146,11 +148,11 @@ function Props() {
   }, []);
   return (
     <>
-      <Instanced name="kade" placements={p.quays} />
-      <Instanced name="riet" placements={p.reeds} />
-      <Instanced name="boom" placements={p.trees} />
-      <Instanced name="meerpaal" placements={p.posts} />
-      <Instanced name="lantaarn" placements={p.lanterns} />
+      <Instanced name="kade" placements={p.quays} chunk={CHUNK} />
+      <Instanced name="riet" placements={p.reeds} spot chunk={CHUNK} />
+      <Instanced name="boom" placements={p.trees} chunk={CHUNK} />
+      <Instanced name="meerpaal" placements={p.posts} chunk={CHUNK} />
+      <Instanced name="lantaarn" placements={p.lanterns} chunk={CHUNK} />
       <Instanced name="fiets" placements={p.bikes} />
       <Instanced name="vracht" placements={p.cargo} />
     </>

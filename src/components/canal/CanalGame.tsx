@@ -13,6 +13,8 @@ import { CanalGuards } from "./CanalGuards";
 import { CanalLife } from "./CanalLife";
 import { CanalWorld } from "./CanalWorld";
 import { Cinema, Night } from "./Night";
+import { Sky } from "./Sky";
+import { useWindowGlow } from "./Kit";
 import { COURSE, createSim, step, type Outcome, type Side, type Sim } from "./sim";
 
 interface Input {
@@ -100,6 +102,8 @@ export function CanalGame() {
   const { go, finishTask, advance } = useGameStore();
   const crew = useGameStore((s) => (s.flags["ch4.broer"] === "mee" ? 3 : 2));
   const sim = useRef<Sim>(createSim(crew));
+  // A dim lamp behind a few blackout curtains.
+  useWindowGlow(0.55);
   const fx = useRef<Fx>({ rings: [], oar: { L: -9, R: -9 } });
   const input = useRef<Input>({ strokes: [], held: { L: 0, R: 0 } });
   const [phase, setPhase] = useState<"intro" | "play" | "caught" | "done">("intro");
@@ -162,12 +166,13 @@ export function CanalGame() {
         shadows="soft"
         dpr={[1, 2]}
         style={{ filter: "contrast(1.07) saturate(1.1)" }}
-        camera={{ fov: 64, near: 0.5, far: 220, position: [0, 11.5, 13] }}
+        camera={{ fov: 64, near: 0.5, far: 130, position: [0, 11.5, 13] }}
         gl={{ antialias: true, powerPreference: "high-performance" }}
       >
-        <color attach="background" args={["#0d1826"]} />
-        <fogExp2 attach="fog" args={["#0d1826", 0.013]} />
-        <Night moon={[-14, 26, 12]} focus={(out) => out.set(sim.current.x * 0.3, 0, sim.current.z - 12)} extent={32} />
+        <color attach="background" args={["#0f2232"]} />
+        <fogExp2 attach="fog" args={["#0f2232", 0.013]} />
+        <Night moon={[-14, 26, 12]} focus={(out) => out.set(sim.current.x * 0.3, 0, sim.current.z - 12)} extent={32} skyEnv={false} />
+        <Sky url="/img/canal/sky.webp" dist={120} width={180} height={77} y={28} env={0.9} tint="#c4cede" follow={0.9} />
         <CanalWorld />
         <CanalLife sim={sim} />
         <CanalGuards sim={sim} />

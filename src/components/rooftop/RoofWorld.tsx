@@ -4,7 +4,7 @@ import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { Post } from "@/components/canal/CanalGuards";
-import { Instanced, Model, place, preload, type ModelName } from "@/components/canal/Kit";
+import { Instanced, Model, place, preload, spotOnly, type ModelName } from "@/components/canal/Kit";
 import { rng } from "@/components/canal/layout";
 import { beamTexture, radialTexture } from "@/components/canal/textures";
 import { TUNING } from "@/game/tuning";
@@ -12,7 +12,7 @@ import { HOUSES, TOWERS, TOWER_TOP, ridgeAt } from "./layout";
 import { ROOF, beamX, type RoofSim } from "./sim";
 
 const GABLES: ModelName[] = ["gevel_trap", "gevel_klok", "gevel_tuit"];
-preload([...GABLES, "dakhuis", "schoorsteen", "koerier", "sintjan", "uitkijk", "soldaat", "zoeklicht", "boom"]);
+preload([...GABLES, "dakhuis", "schoorsteen", "koerier", "sintjan", "uitkijk", "soldaat", "zoeklicht", "boom", "duif"]);
 const UP = new THREE.Vector3(0, 1, 0);
 
 /** The row of roofs the courier crosses, the street behind it and the skyline. */
@@ -41,7 +41,7 @@ function Town() {
   return (
     <>
       <Instanced name="dakhuis" placements={p.roofs} tints={p.tints} />
-      <Instanced name="schoorsteen" placements={p.chimneys} />
+      <Instanced name="schoorsteen" placements={p.chimneys} spot />
       <Instanced name="uitkijk" placements={p.towers} />
       <Instanced name="boom" placements={p.trees} />
       {GABLES.map((name, i) => (
@@ -93,7 +93,7 @@ function Lights({ sim }: { sim: React.RefObject<RoofSim> }) {
         <group key={i}>
           <Post foot={feet[i]} aim={aimRefs[i]} />
           <primitive object={targets[i]} />
-          <spotLight position={[feet[i].x, TOWER_TOP + 1.35, feet[i].z]} target={targets[i]} color="#ffd27a" intensity={900} angle={0.13} penumbra={0.5} distance={90} decay={1.5} castShadow={TUNING.gfx.spotShadows} shadow-mapSize={[1024, 1024]} shadow-bias={-0.0004} />
+          <spotLight ref={spotOnly} position={[feet[i].x, TOWER_TOP + 1.35, feet[i].z]} target={targets[i]} color="#ffd27a" intensity={900} angle={0.13} penumbra={0.5} distance={90} decay={1.5} castShadow={TUNING.gfx.spotShadows} shadow-mapSize={[1024, 1024]} shadow-bias={-0.0004} />
           <sprite position={[feet[i].x, TOWER_TOP + 1.35, feet[i].z]} scale={1.6}>
             <spriteMaterial map={pool} {...glow} opacity={0.7} />
           </sprite>
@@ -111,14 +111,10 @@ function Lights({ sim }: { sim: React.RefObject<RoofSim> }) {
 }
 
 export function RoofWorld({ sim }: { sim: React.RefObject<RoofSim> }) {
-  const moon = useMemo(radialTexture, []);
   return (
     <group>
       <Town />
       <Lights sim={sim} />
-      <sprite position={[230, 78, -150]} scale={26}>
-        <spriteMaterial map={moon} color="#dfe8f5" transparent opacity={0.85} depthWrite={false} fog={false} />
-      </sprite>
     </group>
   );
 }

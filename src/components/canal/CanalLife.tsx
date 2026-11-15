@@ -7,6 +7,7 @@ import { Instanced, place, sway } from "./Kit";
 import { HW, LAYOUT } from "./layout";
 import { COURSE, type Sim } from "./sim";
 import { radialTexture, streakTexture } from "./textures";
+import { CanalDucks } from "./CanalDucks";
 
 type SimRef = React.RefObject<Sim>;
 const MIST = 8;
@@ -111,6 +112,7 @@ function Moored() {
     <Instanced
       name="schouw"
       only="Hull"
+      spot
       placements={placements}
       live={(t, out) =>
         COURSE.moored.forEach((b, i) =>
@@ -121,7 +123,7 @@ function Moored() {
   );
 }
 
-/** Everything that moves by itself: mist, leaves, light behind curtains, moored boats, wind. */
+/** Everything that moves by itself: mist, leaves, light behind curtains, moored boats, ducks, wind. */
 export function CanalLife({ sim }: { sim: SimRef }) {
   useFrame(({ clock }, delta) => {
     const s = sim.current;
@@ -135,6 +137,7 @@ export function CanalLife({ sim }: { sim: SimRef }) {
       <Leaves sim={sim} />
       <Slivers />
       <Moored />
+      <CanalDucks sim={sim} />
     </>
   );
 }

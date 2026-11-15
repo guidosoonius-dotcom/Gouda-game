@@ -86,7 +86,8 @@ async function packCrate(page, crateNo) {
     await page.waitForTimeout(2200);
     await shot("02-kaart");
 
-    await page.getByRole("button", { name: /Open het dossier/i }).click();
+    // during the map transition the old and new sheet can both be mounted for a moment
+    await page.getByRole("button", { name: /Open het dossier/i }).last().click();
     await expectText("Dossier 01");
     await page.waitForTimeout(5200);
     await shot("03a-dossier-scene");
@@ -131,7 +132,8 @@ async function packCrate(page, crateNo) {
 
     // Chapter 2: dossier, the dilemma about Kees, then the rooftop run mounts and takes input.
     await page.getByRole("button", { name: /Sluit/i }).click();
-    await page.getByRole("button", { name: /Open het dossier/i }).click();
+    // during the map transition the old and new sheet can both be mounted for a moment
+    await page.getByRole("button", { name: /Open het dossier/i }).last().click();
     await expectText("Dossier 02");
     await page.waitForTimeout(5500);
     await page.getByRole("button", { name: /Verder/i }).click();
@@ -154,7 +156,8 @@ async function packCrate(page, crateNo) {
 
     // Chapter 4: dossier, the dilemma about Jaap, then the WebGL crossing mounts and takes input.
     await page.getByRole("button", { name: /Hoofdstuk 4/i }).click();
-    await page.getByRole("button", { name: /Open het dossier/i }).click();
+    // during the map transition the old and new sheet can both be mounted for a moment
+    await page.getByRole("button", { name: /Open het dossier/i }).last().click();
     await expectText("Dossier 04");
     await page.waitForTimeout(5500);
     await shot("09a-dossier-4");
@@ -184,7 +187,8 @@ async function packCrate(page, crateNo) {
     await page.goto(base);
     await page.getByRole("button", { name: /thuis/i }).click();
     await expectText("Vluchtspoor bij het Station");
-    await page.getByRole("button", { name: /Open het dossier/i }).click();
+    // during the map transition the old and new sheet can both be mounted for a moment
+    await page.getByRole("button", { name: /Open het dossier/i }).last().click();
     await expectText("Dossier 05");
     await page.waitForTimeout(6000);
     await page.getByRole("button", { name: /Verder/i }).click();
