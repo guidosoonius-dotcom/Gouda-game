@@ -1,5 +1,6 @@
 import { ECHOES, type Flags } from "@/game/choices";
 import { CHAPTERS } from "./chapters";
+import { SIDES } from "./sides";
 
 export interface SatchelItem {
   id: string;
@@ -60,10 +61,20 @@ export function satchelItems(completed: number[], flags: Flags): SatchelItem[] {
       fiction: true,
     });
   }
-  const nextChapter = Math.max(0, ...completed) + 1;
+  const nextChapter = Math.max(0, ...completed.filter((c) => c <= 6)) + 1;
   for (const e of ECHOES) {
     if (e.slot === "satchel" && e.chapter <= nextChapter && completed.includes(e.chapter) && flags[e.when.flag] === e.when.is) {
       items.push({ id: e.id, kind: "voorwerp", title: "Briefje zonder afzender", note: e.text, fiction: true });
+    }
+  }
+  // side stories: their page can be re-read, and each leaves something in the satchel
+  for (const side of SIDES) {
+    if (!completed.includes(side.id)) continue;
+    if (side.mirror) {
+      items.push({ id: `zijspoor-${side.id}`, kind: "krant", title: `Zijspoor: ${side.title}`, note: `${side.place}. Jouw verhaal naast wat echt gebeurde.`, fiction: false, mirrorOf: side.id });
+      items.push({ id: `ding-${side.id}`, kind: "voorwerp", title: side.mirror.reward, note: "Uit een zijspoor.", fiction: true });
+    } else if (side.memorial) {
+      items.push({ id: `gedenken-${side.id}`, kind: "bron", title: `${side.memorial.title}: gedenkblad`, note: side.memorial.lead, fiction: false, mirrorOf: side.id });
     }
   }
   return items;

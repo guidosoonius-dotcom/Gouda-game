@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { chapterById } from "@/data/chapters";
+import { chapterById } from "@/data/places";
 import { useGameStore } from "@/store/useGameStore";
 import { sfx } from "@/lib/sound";
 import { Arrow, Satchel } from "@/components/ui/icons";

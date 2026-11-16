@@ -33,8 +33,18 @@ describe("recovery code", () => {
     }
   });
 
+  it("round-trips the side stories", () => {
+    const p: Progress = { completed: [1, 3, 11, 12, 14], flags: { "ch1.pass": "glazen" } };
+    expect(decodeSave(encodeSave(p))).toEqual(p);
+  });
+
+  it("still restores a code written down before the side stories existed (version 1)", () => {
+    // the empty game, as the satchel showed it in version 1
+    expect(decodeSave("KG-10000-A")).toEqual({ completed: [], flags: {} });
+  });
+
   it("is short enough to write down", () => {
-    expect(encodeSave({ completed: [1, 2, 3, 4, 5, 6], flags: {} }).length).toBeLessThanOrEqual(12);
+    expect(encodeSave({ completed: [1, 2, 3, 4, 5, 6, 11, 12, 13, 14], flags: {} }).length).toBeLessThanOrEqual(12);
   });
 
   it("accepts sloppy typing: lower case, spaces, O for 0, I/L for 1", () => {

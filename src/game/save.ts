@@ -2,14 +2,19 @@
  * Recovery code ("herstelcode"): the whole progress in a short code a player can write down.
  * iOS Safari may evict localStorage after ~7 days, so progress must be restorable.
  * Layout (LSB first): version(3) | completed chapters 1..6 (6) | choices (2 each) | outcomes (2 each)
+ *   | version 2 only: side stories 11..14 (4)
+ * Version 1 codes (written before the side stories existed) still decode.
  */
 import { CHOICES, OUTCOMES, type Flags } from "./choices";
 
 const ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"; // Crockford base32, no I L O U
-const VERSION = 1;
+const VERSION = 2;
 const OUTCOME_IDS = Object.keys(OUTCOMES) as (keyof typeof OUTCOMES)[];
-const BITS = 3 + 6 + CHOICES.length * 2 + OUTCOME_IDS.length * 2;
-const CHARS = Math.ceil(BITS / 5);
+/** Side stories, in bit order. Append only. */
+const SIDE_IDS = [11, 12, 13, 14];
+const BITS_V1 = 3 + 6 + CHOICES.length * 2 + OUTCOME_IDS.length * 2;
+const CHARS_BY_VERSION: Record<number, number> = { 1: Math.ceil(BITS_V1 / 5), 2: Math.ceil((BITS_V1 + SIDE_IDS.length) / 5) };
+const CHARS = CHARS_BY_VERSION[VERSION];
 
 export interface Progress {
   completed: number[];
@@ -39,6 +44,7 @@ export function encodeSave({ completed, flags }: Progress): string {
     const idx = (OUTCOMES[id] as readonly string[]).indexOf(flags[id] ?? "");
     push(idx + 1, 2);
   }
+  push(SIDE_IDS.reduce((m, id, i) => (completed.includes(id) ? m | (1 << i) : m), 0), SIDE_IDS.length);
   const digits: number[] = [];
   for (let i = 0; i < CHARS; i++) digits.push(Number((bits >> BigInt(i * 5)) & 31n));
   const body = digits.map((d) => ALPHABET[d]).join("");
@@ -52,7 +58,8 @@ export function decodeSave(code: string): Progress | null {
     .replace(/O/g, "0")
     .replace(/[IL]/g, "1");
   const raw = clean.startsWith("KG") ? clean.slice(2) : clean;
-  if (raw.length !== CHARS + 1) return null;
+  const length = raw.length - 1;
+  if (!Object.values(CHARS_BY_VERSION).includes(length)) return null;
   const digits = [...raw].map((ch) => ALPHABET.indexOf(ch));
   if (digits.some((d) => d < 0)) return null;
   const check = digits.pop()!;
@@ -66,7 +73,8 @@ export function decodeSave(code: string): Progress | null {
     shift += BigInt(width);
     return v;
   };
-  if (pull(3) !== VERSION) return null;
+  const version = pull(3);
+  if (CHARS_BY_VERSION[version] !== length) return null;
   const mask = pull(6);
   const completed = [1, 2, 3, 4, 5, 6].filter((ch) => mask & (1 << (ch - 1)));
   const flags: Flags = {};
@@ -81,6 +89,10 @@ export function decodeSave(code: string): Progress | null {
     const values = OUTCOMES[id] as readonly string[];
     if (v > values.length) return null;
     if (v > 0) flags[id] = values[v - 1];
+  }
+  if (version >= 2) {
+    const sides = pull(SIDE_IDS.length);
+    SIDE_IDS.forEach((id, i) => sides & (1 << i) && completed.push(id));
   }
   return { completed, flags };
 }

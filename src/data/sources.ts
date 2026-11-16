@@ -112,6 +112,107 @@ export const FACTS = {
     todo: "welke sluizen, welke periode, bronvermelding",
     verified: false,
   },
+  // ---------- zijsporen (research Nov 2026; sources found, not yet checked by a historian) ----------
+  "weeshuis.arrival": {
+    claim:
+      "Op 3 april 1939 kwamen veertig Joodse jongens, op de vlucht uit nazi-Duitsland, uit het quarantainekamp in Rotterdam naar het weeshuis aan de Spieringstraat.",
+    source: "joodserfgoedrotterdam.nl/gouda; NIW, ‘Wandelen in de mediene: Gouda’s glorie’",
+    todo: "datum en aantal nalezen in het archief van het vluchtelingencomité (Streekarchief Midden-Holland)",
+    verified: false,
+  },
+  "weeshuis.care": {
+    claim: "De keuken werd koosjer gemaakt en de jongens kregen les, ook in het Nederlands.",
+    source: "joodserfgoedrotterdam.nl/gouda",
+    verified: false,
+  },
+  "weeshuis.help": {
+    claim:
+      "Gouwenaren hielpen als vrijwilliger bij de verbouwing, de Goudsche Stoombleekerij deed gratis de was, en het personeel van de Garenspinnerij stond drie maanden lang 1 procent van het loon af.",
+    source: "NIW, ‘Wandelen in de mediene: Gouda’s glorie’ (citaat Dekker)",
+    todo: "originele bron van het citaat zoeken",
+    verified: false,
+  },
+  "weeshuis.end": {
+    claim:
+      "Er woonden uiteindelijk ruim honderd vluchtelingenkinderen. Eind 1939 werd de opvang opgeheven en gingen de kinderen naar tehuizen elders, vooral in Amsterdam. Twee op de drie overleefden de oorlog.",
+    source: "NIW (110 kinderen, tweederde overleefde); joodserfgoedrotterdam.nl (120 kinderen, december 1939, Amsterdam)",
+    todo: "aantal (110 of 120) en het aandeel overlevenden vaststellen",
+    verified: false,
+  },
+  "stadhuis.refuse": {
+    claim:
+      "Burgemeester K.F.O. James beriep zich in 1940 op het Landoorlogreglement en weigerde mee te werken aan het sturen van arbeiders voor het herstel van vliegveld Ypenburg.",
+    source: "Die Goude, ‘Gouda 1901–1965, Kroniek van Gouda’; L. de Jong, Het Koninkrijk der Nederlanden in de Tweede Wereldoorlog, deel 4",
+    verified: false,
+  },
+  "stadhuis.paratrooper": {
+    claim:
+      "In de meidagen zocht James een gevangen Duitse parachutist op in een cel van het politiebureau en zei hem: ‘Deutsche Pflicht, Deutsche Ehre, Deutsche Treue, ich kenne das, ich pfeife darauf.’",
+    source: "L. de Jong, Het Koninkrijk der Nederlanden in de Tweede Wereldoorlog, deel 4 (citaat van James zelf)",
+    verified: false,
+  },
+  "stadhuis.arrest": {
+    claim:
+      "Op 7 juni 1940 werd hij gearresteerd. Hij kreeg een jaar gevangenisstraf, die hij uitzat in Scheveningen, het ‘Oranjehotel’. Na zijn vrijlating in juni 1941 dook hij onder.",
+    source: "Digitaal Namenregister Oranjehotel (K.F.O. James); Canon van Gouda, ‘Tweede Wereldoorlog’",
+    verified: false,
+  },
+  "stadhuis.liera": {
+    claim: "De NSB’er E.A.A. Liera werd burgemeester van Gouda. Uit de toren van de Sint-Jan en uit het stadhuis werden klokken weggehaald.",
+    source: "Canon van Gouda, ‘Tweede Wereldoorlog’ (canonvannederland.nl)",
+    todo: "datum van de benoeming en van het weghalen van de klokken",
+    verified: false,
+  },
+  "stadhuis.return": {
+    claim: "Op 5 mei 1945 kwam James terug op het stadhuis en werd hij weer burgemeester.",
+    source: "Canon van Gouda, ‘Tweede Wereldoorlog’; Digitaal Namenregister Oranjehotel",
+    verified: false,
+  },
+  "synagoge.building": {
+    claim: "De synagoge aan de Turfmarkt werd in 1827 ingewijd. Al sinds 1798 kwam de Joodse gemeente van Gouda op deze plek bijeen.",
+    source: "joodserfgoedrotterdam.nl/gouda; Joods Cultureel Kwartier, ‘Gouda’",
+    verified: false,
+  },
+  "synagoge.war": {
+    claim:
+      "Van de ongeveer 500 Joodse Gouwenaars werden er tussen 1940 en 1945 zo’n 390 vermoord. In 1943 werd de synagoge geplunderd. De thorarollen waren verstopt en zijn na de oorlog teruggevonden.",
+    source: "Canon van Gouda, ‘Tweede Wereldoorlog’; Joods Cultureel Kwartier, ‘Gouda’",
+    verified: false,
+  },
+  "synagoge.after": {
+    claim: "In 1950 moest de kleine Joodse gemeente het gebouw verkopen. Sindsdien is het een kerk van de Vrije Evangelische Gemeente.",
+    source: "Wikipedia, ‘Synagoge (Gouda)’; veggouda.nl/turfmarkt",
+    verified: false,
+  },
+  "synagoge.plaque": {
+    claim:
+      "Sinds 9 september 1997 hangt op de deur een plaquette van Ralph Prins: het wapen van Gouda, waaruit één van de zes sterren is gescheurd. Elk jaar op 4 mei is hier een korte herdenking.",
+    source: "veggouda.nl/turfmarkt; Canon van Gouda, ‘Tweede Wereldoorlog’",
+    verified: false,
+  },
+  "brood.ships": {
+    claim:
+      "Het ‘Zweedse wittebrood’ werd niet uit vliegtuigen gegooid. Het werd in Nederlandse bakkerijen gebakken van meel dat het Zweedse Rode Kruis per schip aanvoerde; de eerste schepen kwamen op 28 januari 1945 in Delfzijl aan.",
+    source: "Andere Tijden, ‘Geschenk uit de hemel: de mythe van het Zweeds wittebrood’; Wikipedia, ‘Zweeds wittebrood’",
+    verified: false,
+  },
+  "brood.gouda": {
+    claim: "In Gouda werd het brood onder meer uitgedeeld bij Albert Heijn aan de Markt.",
+    source: "Canon van Gouda, ‘Tweede Wereldoorlog’; Geschiedenislokaal Midden-Holland, ‘Zweedse wittebrood in Gouda (1945)’ (foto)",
+    todo: "adres van de winkel in 1945",
+    verified: false,
+  },
+  "brood.gouka": {
+    claim: "Jan Gouka, toen een jongen, vond het brood ‘hemels gewoon’, vooral geroosterd.",
+    source: "Canon van Gouda, ‘Tweede Wereldoorlog’",
+    verified: false,
+  },
+  "markt.hunger": {
+    claim:
+      "Razzia’s en een ernstig tekort aan voedsel en brandstof maakten de laatste oorlogswinter zwaar. Eind april 1945 volgden voedseldroppings in de Zuidplaspolder, tussen Gouda en Moordrecht.",
+    source: "Canon van Gouda, ‘Tweede Wereldoorlog’",
+    verified: false,
+  },
 } as const satisfies Record<string, Fact>;
 
 export type FactId = keyof typeof FACTS;

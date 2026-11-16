@@ -38,7 +38,8 @@ export function ChapterCard({
   primary: CardAction;
   secondary?: CardAction;
 }) {
-  const stamp = state === "done" ? "VOLBRACHT" : chapter.status === "soon" ? "IN DE MAAK" : "GEHEIM";
+  const side = !!chapter.side;
+  const stamp = state === "done" ? "VOLBRACHT" : side ? "ZIJSPOOR" : chapter.status === "soon" ? "IN DE MAAK" : "GEHEIM";
   let distance: React.ReactNode = chapter.time;
   let distanceLabel = "TIJD";
   if (location) {
@@ -68,7 +69,7 @@ export function ChapterCard({
     >
       <div className="absolute bottom-0 left-10 top-0 w-px bg-[rgba(176,58,46,.35)]" />
       <div className="flex items-center justify-between pl-[34px]">
-        <span className="label text-[10.5px] text-[#5c5a52]">Kaart 0{chapter.id} / 05</span>
+        <span className="label text-[10.5px] text-[#5c5a52]">{side ? "Zijspoor" : `Kaart 0${chapter.id} / 05`}</span>
         <span className="rotate-3 whitespace-nowrap border-[1.5px] border-wax px-1.5 py-px font-stamp text-[12px] tracking-[0.16em] text-wax opacity-85">
           {stamp}
         </span>

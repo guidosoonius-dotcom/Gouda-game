@@ -110,6 +110,19 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   geblokkeerd). Op verzoek staat het jaartal niet meer op de kaart, maar onder "Over dit spel"
   (titelscherm en koerierstas): wie het maakte, wat echt is en wat verzonnen, AI-beelden, privacy.
 
+- **Vier zijsporen (sessie 3):** korte verhalen met een puzzel (geen 3D) op vier plekken in het
+  centrum, met een okerkleurige ruit op de kaart. Ze zijn optioneel: ze zetten geen keuzes en
+  houden de epiloog niet tegen. Het Weeshuis (april 1939, vanaf het begin open): veertig Joodse
+  jongens uit Duitsland en Oostenrijk; koppel Duitse aan Nederlandse woorden met "Max" (verzonnen).
+  Het Stadhuis (juni 1940, na hoofdstuk 1): burgemeester James weigert mee te werken en wordt
+  opgepakt; in een verduisteringsbekendmaking spellen de beginletters HOUD MOED. De Synagoge
+  (zomer 1943, na hoofdstuk 3): het wapen van Gouda met zes sterren, één valt eruit, zoals op de
+  plaquette van Ralph Prins aan de Turfmarkt; daarna een gedenkblad, zonder score. De Markt
+  (april 1945, na hoofdstuk 5): Zweeds wittebrood, knip de geldige bonnen. Code: `data/sides.ts`,
+  `data/places.ts`, `components/puzzles/*`. De herstelcode is versie 2 (vier bits erbij); oude
+  codes werken nog. De coördinaten van hoofdstuk 1–3 zijn gecorrigeerd (Oosthaven 31 lag 250 m
+  verkeerd); kaartposities volgen nu uit twee ijkpunten (stadhuis en Sint-Jan).
+
 ## Half af
 - Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).
 - De tekst van hoofdstuk 3 is een voorstel: laat die lezen door iemand van het Joods Monument
@@ -123,11 +136,12 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   deur liggen de Stolpersteine"); wat er precies te vinden is (jaartal, kisten, namen) moet ter
   plekke bekeken en in `sources.ts` gezet worden. De loopdetector en de 30 m zijn nooit op straat
   geprobeerd, alleen met een nagebootste gps (`node scripts/location-check.cjs`, na `npm run build`).
+- De zijsporen Synagoge en Markt hebben nog geen sfeerbeeld (Higgsfield-tegoed op).
 - Alle historische feiten staan op `verified: false` (`src/data/sources.ts`), ook de kaartverwijzing
   ("J. Blaeu, 1649") in "Over dit spel": herkomst van het kaartbestand en jaartal nog controleren.
 
 ## Controle
-- `npm run build` · `npm test` (60 tests) · `npm run test:e2e` (speelt hoofdstuk 1 door op 390×844,
+- `npm run build` · `npm test` (69 tests) · `npm run test:e2e` (speelt hoofdstuk 1 door op 390×844,
   speelt het dossier van hoofdstuk 4 tot in de vaart en zet screenshots in `test-results/`) · `npm run assets`.
 - Ontwikkelhulp (alleen in dev): `/?canal=1` opent de vaart direct, `&z=-60` start verderop;
   `/?roof=1` opent de daken, `&cover=8` start verderop; `/?bike=1` opent de fietstocht (`&bomb=1` laat direct een bom vallen, `&plane=1` toont een

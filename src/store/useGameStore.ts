@@ -4,6 +4,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { applyChoice, applyOutcome, type ChoiceId, type Flags, type OutcomeId, OUTCOMES } from "@/game/choices";
 import { CHAPTERS } from "@/data/chapters";
+import { chapterById } from "@/data/places";
 import type { Progress } from "@/game/save";
 
 export type View = "title" | "map" | "dossier" | "task" | "mirror" | "epilogue";
@@ -69,7 +70,7 @@ export const useGameStore = create<GameState>()(
       nextPage: () => set((s) => ({ page: s.page + 1 })),
       advance: () => {
         const { chapter, page } = get();
-        const pages = CHAPTERS.find((c) => c.id === chapter)!.pages;
+        const pages = chapterById(chapter).pages;
         set(page + 1 < pages.length ? { page: page + 1, view: "dossier" } : { view: "mirror" });
       },
       choose: (id, option) => {
@@ -82,12 +83,12 @@ export const useGameStore = create<GameState>()(
         const { chapter, completed, rereading } = get();
         if (rereading) return set({ view: "map", rereading: false });
         set({
-          completed: completed.includes(chapter) ? completed : [...completed, chapter].sort(),
+          completed: completed.includes(chapter) ? completed : [...completed, chapter].sort((a, b) => a - b),
           view: "map",
         });
       },
       finishEpilogue: (letter) =>
-        set((s) => ({ letter, completed: s.completed.includes(6) ? s.completed : [...s.completed, 6], view: "map" })),
+        set((s) => ({ letter, completed: s.completed.includes(6) ? s.completed : [...s.completed, 6].sort((a, b) => a - b), view: "map" })),
       rereadMirror: (id) => set({ chapter: id, view: "mirror", rereading: true }),
       toggleMute: () => set((s) => ({ muted: !s.muted })),
       restore: (p) => set({ completed: p.completed, flags: p.flags, view: "map" }),

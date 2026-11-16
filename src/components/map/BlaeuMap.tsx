@@ -2,6 +2,7 @@
 
 import { useLayoutEffect, useRef, useState } from "react";
 import { CHAPTERS, type Chapter } from "@/data/chapters";
+import { openSides } from "@/data/places";
 import { MAX_ZOOM, MIN_ZOOM, useMapView } from "./useMapView";
 
 /** Map image is 1100 x 1216; the SVG overlay uses the same units. */
@@ -85,6 +86,48 @@ function Seal({ chapter, state, onSelect, u: U }: { chapter: Chapter; state: "do
         >
           ← STATION
         </text>
+      )}
+    </g>
+  );
+}
+
+/** A side story (zijspoor): a small ochre diamond, filled when chosen, a tick when done. */
+function SideMark({ chapter, done, active, onSelect, u: U }: { chapter: Chapter; done: boolean; active: boolean; onSelect: () => void; u: number }) {
+  const p = px(chapter.map);
+  return (
+    <g
+      transform={`translate(${p.x} ${p.y})`}
+      role="button"
+      tabIndex={0}
+      aria-label={`Zijspoor: ${chapter.title}`}
+      onClick={onSelect}
+      onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onSelect()}
+      style={{ cursor: "pointer" }}
+    >
+      <circle r={24 * U} fill="transparent" />
+      {active && <circle className="anim-halo" r={19 * U} fill="#e2a93a" opacity=".3" />}
+      <rect
+        x={-8.5 * U}
+        y={-8.5 * U}
+        width={17 * U}
+        height={17 * U}
+        transform="rotate(45)"
+        fill={active ? "#e2a93a" : "rgba(10,13,17,.8)"}
+        stroke="#e2a93a"
+        strokeWidth={1.6 * U}
+      />
+      {done ? (
+        <path
+          transform={`scale(${U})`}
+          d="M-4.5 0.5 L-1.5 3.5 L4.5 -3"
+          fill="none"
+          stroke={active ? "#14181d" : "#e2a93a"}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      ) : (
+        <circle r={2.4 * U} fill={active ? "#14181d" : "#e2a93a"} />
       )}
     </g>
   );
@@ -232,6 +275,9 @@ export function BlaeuMap({
               u={U}
             />
           ))}
+            {openSides(completed).map((c) => (
+              <SideMark key={c.id} chapter={c} done={completed.includes(c.id)} active={c.id === selected.id} onSelect={() => onSelect(c.id)} u={U} />
+            ))}
         </svg>
       </div>
 

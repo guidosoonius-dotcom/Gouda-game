@@ -172,6 +172,15 @@ Formaat: beslissing · waarom · alternatief.
     een oude versie hangen), bestanden met hash en modellen uit de cache met verversing op de
     achtergrond. Alleen in productie geregistreerd.
 
+49. **Zijsporen zijn bewust zijtakken.** Stadhuis, Weeshuis, Synagoge en Markt vertellen wat de
+    hoofdlijn niet vertelt (het bestuur, de kinderen van vóór de oorlog, de Joodse gemeente, de
+    honger), maar ze veranderen de afloop niet. Zo kan een bezoeker ze in elke wandelvolgorde
+    meenemen en blijft de hoofdlijn kort. Ze gaan open na het hoofdstuk dat in de tijd ervóór ligt.
+50. **Een puzzel per plek, geen score.** Woorden koppelen, een verborgen boodschap lezen, sterren
+    aanraken, bonnen knippen: dingen die je met één duim doet en die iets over de plek vertellen.
+    Een fout geeft uitleg, geen straf. De synagoge krijgt geen spel maar een gebaar en een
+    gedenkblad, zoals hoofdstuk 3.
+
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.
 - Blaeu-kaart: pin-posities zijn op het oog geplaatst. Georefereren met controlepunten in M8.

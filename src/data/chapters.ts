@@ -1,7 +1,14 @@
 import type { ChoiceId, Flags } from "@/game/choices";
 import type { FactId } from "./sources";
 
-export type TaskKind = "packing" | "canal" | "rooftop" | "bicycle" | "witness";
+export type TaskKind = "packing" | "canal" | "rooftop" | "bicycle" | "witness" | "puzzle";
+
+/** The small paper puzzles of the side stories (zijsporen). All their contents are fiction. */
+export type Puzzle =
+  | { kind: "words"; intro: string; pairs: [string, string][]; done: string }
+  | { kind: "acrostic"; intro: string; heading: string; lines: string[]; signed: string; answer: string; hint: string; done: string }
+  | { kind: "stars"; intro: string; done: string }
+  | { kind: "coupons"; intro: string; board: string[]; coupons: { id: string; label: string; ok: boolean; why?: string }[]; done: string };
 
 export interface ArchiveSlot {
   /** What the licensed scan will show. Rendered by ArchivePlaceholder until it exists. */
@@ -61,7 +68,7 @@ export interface Chapter {
   place: string;
   placeHint: string;
   coords: { lat: number; lng: number };
-  /** Position on the Blaeu map image, in percent. Approximate until georeferenced. */
+  /** Position on the Blaeu map image, in percent, from `coords` (georeferenced on the town hall and the Sint-Jan). */
   map: { x: number; y: number };
   /** The railway station did not exist in 1649: shown as an edge marker. */
   offMap?: boolean;
@@ -74,9 +81,12 @@ export interface Chapter {
   mirror?: Mirror;
   witness?: Witness;
   memorial?: Memorial;
+  /** A side story (zijspoor): opens once main chapter `after` is done (0: from the start). */
+  side?: { after: number };
+  puzzle?: Puzzle;
 }
 
-const yearPos = (year: number, month: number) => (year - 1940 + (month - 1) / 12) / 5;
+export const yearPos = (year: number, month: number) => Math.max(0, (year - 1940 + (month - 1) / 12) / 5);
 
 export const CHAPTERS: Chapter[] = [
   {
@@ -88,8 +98,8 @@ export const CHAPTERS: Chapter[] = [
     timeline: yearPos(1940, 5),
     place: "Sint-Janskerk",
     placeHint: "Zuidzijde, Achter de Kerk",
-    coords: { lat: 52.0106, lng: 4.7105 },
-    map: { x: 60.5, y: 48.5 },
+    coords: { lat: 52.01083, lng: 4.71139 },
+    map: { x: 60.9, y: 46.5 },
     teaser: "De grond trilt. De laatste glazen moeten de kist in, en buiten wacht iemand op een antwoord.",
     status: "playable",
     task: "packing",
@@ -175,8 +185,8 @@ export const CHAPTERS: Chapter[] = [
     timeline: yearPos(1942, 11),
     place: "De Waag",
     placeHint: "Achterzijde, aan de Markt",
-    coords: { lat: 52.0118, lng: 4.7113 },
-    map: { x: 51.4, y: 34.9 },
+    coords: { lat: 52.01222, lng: 4.71111 },
+    map: { x: 55.7, y: 34.1 },
     teaser: "Acht minuten voor spertijd. De straten zijn afgezet, de daken niet.",
     status: "playable",
     task: "rooftop",
@@ -256,8 +266,8 @@ export const CHAPTERS: Chapter[] = [
     timeline: yearPos(1943, 4),
     place: "Oosthaven 31",
     placeHint: "Bij de stenen voor de deur",
-    coords: { lat: 52.0112, lng: 4.7138 },
-    map: { x: 75, y: 64 },
+    coords: { lat: 52.009053, lng: 4.712419 },
+    map: { x: 71.7, y: 61.4 },
     teaser: "Hier valt niets te winnen. Hier wordt herinnerd.",
     status: "playable",
     task: "witness",
@@ -476,4 +486,5 @@ export const CHAPTERS: Chapter[] = [
   },
 ];
 
-export const chapterById = (id: number) => CHAPTERS.find((c) => c.id === id)!;
+/** Main chapters only; use `chapterById` from `@/data/places` for side stories too. */
+export const mainChapterById = (id: number) => CHAPTERS.find((c) => c.id === id)!;

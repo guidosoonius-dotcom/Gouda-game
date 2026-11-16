@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { AnimatePresence } from "motion/react";
-import { CHAPTERS, chapterById } from "@/data/chapters";
+import { CHAPTERS } from "@/data/chapters";
+import { chapterById } from "@/data/places";
 import { currentChapterId, useGameStore, type Mode } from "@/store/useGameStore";
 import { formatMetres, useDistance } from "@/lib/geo";
 import { TUNING } from "@/game/tuning";

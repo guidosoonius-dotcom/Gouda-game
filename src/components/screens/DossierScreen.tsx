@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { chapterById } from "@/data/chapters";
+import { chapterById } from "@/data/places";
 import { echoesFor } from "@/game/choices";
 import { useGameStore } from "@/store/useGameStore";
 import { sfx } from "@/lib/sound";

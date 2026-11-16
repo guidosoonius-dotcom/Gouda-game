@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
 import { useGameStore, type View } from "@/store/useGameStore";
 import { setMuted } from "@/lib/sound";
-import { chapterById } from "@/data/chapters";
+import { chapterById } from "@/data/places";
 import { TitleScreen } from "./screens/TitleScreen";
 import { MapScreen } from "./screens/MapScreen";
 import { DossierScreen } from "./screens/DossierScreen";
@@ -13,6 +13,7 @@ import { EpilogueScreen } from "./screens/EpilogueScreen";
 import { MirrorScreen } from "./screens/MirrorScreen";
 import { MemorialScreen, WitnessScreen } from "./screens/WitnessScreen";
 import { PackingGame } from "./packing/PackingGame";
+import { PuzzleScreen } from "./puzzles/PuzzleScreen";
 import { WalkGuard } from "./ui/WalkGuard";
 import { useServiceWorker } from "./ui/PwaSetup";
 import { useWalkWatcher } from "@/lib/walk";
@@ -49,6 +50,7 @@ function Task() {
   if (kind === "rooftop") return <RoofGame />;
   if (kind === "bicycle") return <BikeGame />;
   if (kind === "witness") return <WitnessScreen />;
+  if (kind === "puzzle") return <PuzzleScreen />;
   return <Loading />;
 }
 
