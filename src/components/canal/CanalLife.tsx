@@ -44,6 +44,8 @@ function Leaves({ sim }: { sim: SimRef }) {
   const q = useMemo(() => new THREE.Quaternion(), []);
   const flat = useMemo(() => new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2), []);
   const spin = useMemo(() => new THREE.Quaternion(), []);
+  const pos = useMemo(() => new THREE.Vector3(), []);
+  const size = useMemo(() => new THREE.Vector3(), []);
   useLayoutEffect(() => {
     const tones = ["#b98a2e", "#8c5a24", "#c9a13a", "#6e4a22"];
     LAYOUT.leaves.forEach((_, i) => ref.current!.setColorAt(i, new THREE.Color(tones[i % tones.length])));
@@ -58,7 +60,7 @@ function Leaves({ sim }: { sim: SimRef }) {
       const z = front - ((((front - world) % 80) + 80) % 80);
       spin.setFromAxisAngle(THREE.Object3D.DEFAULT_UP, leaf.yaw + t * leaf.drift * 2);
       q.copy(spin).multiply(flat);
-      ref.current!.setMatrixAt(i, m.compose(new THREE.Vector3(leaf.x + Math.sin(t * 0.3 + i) * 0.12, 0.016, z), q, new THREE.Vector3(leaf.s, leaf.s * 0.7, 1)));
+      ref.current!.setMatrixAt(i, m.compose(pos.set(leaf.x + Math.sin(t * 0.3 + i) * 0.12, 0.016, z), q, size.set(leaf.s, leaf.s * 0.7, 1)));
     });
     ref.current!.instanceMatrix.needsUpdate = true;
   });

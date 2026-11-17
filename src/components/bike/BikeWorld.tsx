@@ -15,6 +15,8 @@ import { STREET, type BikeSim } from "./sim";
 
 const GABLES: ModelName[] = ["gevel_trap", "gevel_klok", "gevel_tuit", "gevel_trap_schade", "gevel_klok_schade", "gevel_tuit_schade"];
 preload([...GABLES, "puin", "ruine", "schuilkelder", "man", "vrouw", "fiets", "koerier", "lantaarn", "vliegtuig", "handkar", "vracht", "moves"]);
+/** Blocks of this many metres down the street are culled on their own (camera and shadow maps). */
+const CHUNK = 48;
 export const HW = STREET.halfWidth;
 const SIDEWALK = 1.7;
 
@@ -127,13 +129,13 @@ function Street() {
         </group>
       ))}
       {GABLES.map((name, i) => (
-        <Instanced key={name} name={name} placements={p.rows[i]} />
+        <Instanced key={name} name={name} placements={p.rows[i]} chunk={CHUNK} />
       ))}
-      <Instanced name="puin" placements={p.rubble} />
-      <Instanced name="lantaarn" placements={p.lamps} />
-      <Instanced name="fiets" placements={p.bikes} />
-      <Instanced name="handkar" placements={p.carts} />
-      <Instanced name="vracht" placements={p.crates} />
+      <Instanced name="puin" placements={p.rubble} chunk={CHUNK} />
+      <Instanced name="lantaarn" placements={p.lamps} chunk={CHUNK} />
+      <Instanced name="fiets" placements={p.bikes} chunk={CHUNK} />
+      <Instanced name="handkar" placements={p.carts} chunk={CHUNK} />
+      <Instanced name="vracht" placements={p.crates} chunk={CHUNK} />
       <Model name="ruine" position={[-(HW + 0.3), 0, STREET.ruin.z]} rotation-y={Math.PI} />
       <Model name="schuilkelder" position={[HW + 0.3, 0, STREET.shelterZ - 1]} />
       <ShelterSign />
@@ -173,8 +175,18 @@ function ShelterSign() {
   );
 }
 
+/**
+ * Real lights for the fires: fewer than there are fires, handed to the fires nearest the player and
+ * faded out with distance before they move on. Every point light costs every lit pixel of the street,
+ * and the number of lights must stay the same (a change recompiles every shader).
+ */
+export const FIRE_LIGHTS = 3;
+// At most three fires lie within twice this distance of each other, so no lit fire ever loses its light.
+export const FIRE_REACH = 44;
+const BY_DISTANCE = FIRES.map((_, i) => i);
+
 /** Flames, smoke columns and the light and glow on the ground that they throw. */
-function Fires() {
+function Fires({ sim }: { sim: React.RefObject<BikeSim> }) {
   const tex = useMemo(radialTexture, []);
   const flames = useRef<(THREE.Sprite | null)[]>([]);
   const smoke = useRef<(THREE.Sprite | null)[]>([]);
@@ -201,7 +213,6 @@ function Fires() {
         sp.position.set(f.x + 0.5 + Math.sin(t * 2.2 + ph) * 0.25, f.y + 0.2 + fl * 0.9 * f.s + k * 0.55 * f.s, f.z + (k - 1.5) * 0.8 * f.s);
         sp.scale.set((3.1 - k * 0.5) * f.s * fl, (5.2 - k * 0.8) * f.s * fl, 1);
       }
-      if (lights.current[i]) lights.current[i]!.intensity = 90 * f.s * (0.75 + 0.25 * Math.sin(t * 9 + i * 2) * Math.sin(t * 5.3 + i));
       for (let k = 0; k < SMOKE; k++) {
         const s = smoke.current[i * SMOKE + k];
         if (!s) continue;
@@ -213,11 +224,27 @@ function Fires() {
         m.color.setRGB(0.12 + 0.5 * (1 - rise) * (1 - rise), 0.1 + 0.2 * (1 - rise) * (1 - rise), 0.1 + 0.05 * (1 - rise));
       }
     });
+
+    // the fire lights go to the fires nearest to where the player looks
+    const focus = sim.current.z - 12;
+    BY_DISTANCE.sort((a, b) => Math.abs(FIRES[a].z - focus) - Math.abs(FIRES[b].z - focus));
+    for (let k = 0; k < FIRE_LIGHTS; k++) {
+      const light = lights.current[k];
+      const i = BY_DISTANCE[k];
+      const f = FIRES[i];
+      if (!light || f === undefined) continue;
+      const near = THREE.MathUtils.smoothstep(FIRE_REACH - Math.abs(f.z - focus), 0, FIRE_REACH * 0.5);
+      light.position.set(f.x * 0.9, f.y + 0.6, f.z);
+      light.intensity = near * 90 * f.s * (0.75 + 0.25 * Math.sin(t * 9 + i * 2) * Math.sin(t * 5.3 + i));
+    }
   });
 
   const add = { transparent: true, depthWrite: false, blending: THREE.AdditiveBlending } as const;
   return (
     <>
+      {Array.from({ length: FIRE_LIGHTS }, (_, k) => (
+        <pointLight key={k} ref={(m) => void (lights.current[k] = m)} color="#ff8a3a" intensity={0} distance={19} decay={1.5} />
+      ))}
       {FIRES.map((f, i) => (
         <group key={i}>
           {[0, 1, 2, 3].map((k) => (
@@ -229,7 +256,6 @@ function Fires() {
             <circleGeometry args={[7 * f.s, 28]} />
             <meshBasicMaterial color="#ff6a1c" {...add} opacity={0.1} />
           </mesh>
-          <pointLight ref={(m) => void (lights.current[i] = m)} position={[f.x * 0.9, f.y + 0.6, f.z]} color="#ff8a3a" distance={19} decay={1.5} />
           {Array.from({ length: SMOKE }, (_, k) => (
             <sprite key={k} ref={(m) => void (smoke.current[i * SMOKE + k] = m)}>
               <spriteMaterial map={tex} transparent depthWrite={false} />
@@ -246,7 +272,7 @@ export function BikeWorld({ sim }: { sim: React.RefObject<BikeSim> }) {
     <group>
       <BikeSky />
       <Street />
-      <Fires />
+      <Fires sim={sim} />
       <BikeBombs sim={sim} />
       {TUNING.gfx.life && <BikeLife sim={sim} />}
     </group>

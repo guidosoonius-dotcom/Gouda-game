@@ -1,8 +1,8 @@
 /** Animated film grain overlay for scene photographs. */
-export function Grain({ id, opacity = 0.22 }: { id: string; opacity?: number }) {
+export function Grain({ id, opacity = 0.22, blend = true }: { id: string; opacity?: number; blend?: boolean }) {
   return (
     <svg
-      className="anim-grain pointer-events-none absolute -left-5 -top-5 h-[calc(100%+40px)] w-[calc(100%+40px)] mix-blend-overlay"
+      className={`anim-grain pointer-events-none absolute -left-5 -top-5 h-[calc(100%+40px)] w-[calc(100%+40px)] ${blend ? "mix-blend-overlay" : ""}`}
       style={{ opacity }}
       aria-hidden="true"
     >

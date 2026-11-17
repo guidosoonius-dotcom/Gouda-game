@@ -189,6 +189,17 @@ Formaat: beslissing · waarom · alternatief.
     dat verandert het verhaal (hoofdstuk 4, de krant), het blokkeert niets. Dinsdag staat er
     bewust geen fout in het bevel: niet elk bevel van de bezetter was onwettig.
 
+53. **De filmlook zit in de tone mapping, niet in een CSS-filter.** Een `filter` of blend mode
+    boven een WebGL-canvas laat de browser elke frame het hele scherm via een extra laag
+    samenstellen, op de volle schermresolutie (3× op een iPhone). Contrast, verzadiging en
+    split-toning kosten in de tone mapping een paar instructies per pixel. Vignet en korrel blijven
+    CSS, maar met gewone transparantie.
+54. **Resolutie past zich aan, lichten niet.** Te weinig fps → lagere resolutie (in stappen van
+    0,25, met afkoeltijd; een stand die twee keer te zwaar bleek, komt niet terug). Het aantal
+    lichten blijft gelijk: een licht erbij of eraf hercompileert alle shaders (een hapering van
+    seconden). Daarom verhuizen de vuurlichten naar het vuur bij de speler in plaats van aan en uit
+    te gaan.
+
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.
 - Blaeu-kaart: pin-posities zijn op het oog geplaatst. Georefereren met controlepunten in M8.

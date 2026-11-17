@@ -136,6 +136,21 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   terug, opnieuw, en een brief van Max tussen de kamers. Tests bewijzen dat elk niveau oplosbaar is.
   Herstelcode versie 3 (uitkomsten die later kwamen; oude codes werken nog).
 
+- **3D-minigames sneller en vloeiender (sessie 3):** gemeten met `night-shots`-achtige scripts
+  (draw calls, driehoeken, shaders, JS per frame, lange taken). Gevonden en verholpen: (1) de
+  CSS-filmlaag (filter op de canvas, korrel en split-toning met blend modes) kostte elke frame extra
+  beeldvullende compositing-passes: de kleurcorrectie zit nu in de tone mapping, korrel en gloed
+  zijn gewone transparantie; (2) de HUD (10× per seconde) liet de hele 3D-scène in React opnieuw
+  renderen: de scène is nu gememoïseerd in `canal/GameCanvas.tsx`; (3) `place()` maakte per
+  aanroep nieuwe vectoren (afval voor de garbage collector, elke frame): nu hergebruikt; (4) daken
+  en fietsstraat waren één groot instanced-blok zonder culling, ook in elke schaduwpass: nu in
+  blokken van 48 m (daken 144k → 108k driehoeken, straat 272k → 224k); (5) acht puntlichten in de
+  fietsstraat → vijf (drie vuurlichten die met de speler meegaan, één flits voor alle bommen);
+  (6) shaders worden vooraf gecompileerd, ook van wat pas later verschijnt, en in productie zonder
+  synchrone foutcontrole. Nieuw: adaptieve resolutie (start op 1,5, omhoog tot 2 als er ruimte is,
+  omlaag tot 1 onder 50 fps). De camerabeving bij een inslag is vloeiend en valt weg bij
+  ‘minder beweging’.
+
 ## Half af
 - Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).
 - De tekst van hoofdstuk 3 is een voorstel: laat die lezen door iemand van het Joods Monument
@@ -143,6 +158,8 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
 - Over de daken en Nachtvaart zijn op de testbot afgesteld, niet op mensen.
 - De Waag en De Zalm zijn naar foto's van nu gemaakt; of De Zalm er in 1942 zo uitzag, is niet nagegaan.
 - De springtiming (venster 2,6 m, schoon in de laatste 1,3 m) is op de bot afgesteld; speeltest met 12-jarigen.
+- De 3D-scènes zijn na de optimalisatie nog steeds niet op een echte telefoon gemeten; de
+  adaptieve resolutie vangt zwakkere toestellen op. Meet op een iPhone: `window.__quality` (dev).
 - De zwaarste scène (Vluchtspoor) is niet op een telefoon gemeten. In software haalt hij 1 beeld
   per seconde; schakel anders `gfx.life`, schaduwen of details uit in `src/game/tuning.ts`.
 - Locatiemodus: ankers ontbreken nog. Het dossier toont alleen een zin ("zoek in de kerk…", "voor de
@@ -157,7 +174,7 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   ("J. Blaeu, 1649") in "Over dit spel": herkomst van het kaartbestand en jaartal nog controleren.
 
 ## Controle
-- `npm run build` · `npm test` (81 tests) · `npm run test:e2e` (speelt hoofdstuk 1 door op 390×844,
+- `npm run build` · `npm test` (82 tests) · `npm run test:e2e` (speelt hoofdstuk 1 door op 390×844,
   speelt het dossier van hoofdstuk 4 tot in de vaart en zet screenshots in `test-results/`) · `npm run assets`.
 - Ontwikkelhulp (alleen in dev): `/?canal=1` opent de vaart direct, `&z=-60` start verderop;
   `/?roof=1` opent de daken, `&cover=8` start verderop; `/?bike=1` opent de fietstocht (`&bomb=1` laat direct een bom vallen, `&plane=1` toont een

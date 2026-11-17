@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useFrame } from "@react-three/fiber";
 import { AnimatePresence, motion } from "motion/react";
 import { TUNING } from "@/game/tuning";
 import { useGameStore } from "@/store/useGameStore";
@@ -14,6 +14,7 @@ import { CanalLife } from "./CanalLife";
 import { CanalWorld } from "./CanalWorld";
 import { Cinema, Night } from "./Night";
 import { Sky } from "./Sky";
+import { GameCanvas, type Grade } from "./GameCanvas";
 import { useWindowGlow } from "./Kit";
 import { COURSE, createSim, step, type Outcome, type Side, type Sim } from "./sim";
 import { isWalkBlocked } from "@/lib/walk";
@@ -42,6 +43,10 @@ function clock(t: number) {
   const minutes = 19 * 60 + 45 + Math.floor(t / 10);
   return `${Math.floor(minutes / 60)}:${String(minutes % 60).padStart(2, "0")}`;
 }
+
+const CAMERA = { fov: 64, near: 0.5, far: 130, position: [0, 11.5, 13] as [number, number, number] };
+const GRADE: Grade = { contrast: 1.07, saturate: 1.1 };
+const MOON: [number, number, number] = [-14, 26, 12];
 
 /** Runs the simulation inside the render loop and reports to the DOM at 10 Hz. */
 function Loop({ sim, fx, input, onHud, onEvent }: {
@@ -161,25 +166,29 @@ export function CanalGame() {
     [finishTask],
   );
 
-  return (
-    <div className="absolute inset-0 touch-none overflow-hidden bg-night">
-      <Canvas
-        shadows="soft"
-        dpr={[1, 2]}
-        style={{ filter: "contrast(1.07) saturate(1.1)" }}
-        camera={{ fov: 64, near: 0.5, far: 130, position: [0, 11.5, 13] }}
-        gl={{ antialias: true, powerPreference: "high-performance" }}
-      >
+  // Memoised so the HUD (10 updates a second) never re-renders the 3D scene.
+  const scene = useMemo(
+    () => (
+      <>
         <color attach="background" args={["#0f2232"]} />
         <fogExp2 attach="fog" args={["#0f2232", 0.013]} />
-        <Night moon={[-14, 26, 12]} focus={(out) => out.set(sim.current.x * 0.3, 0, sim.current.z - 12)} extent={32} skyEnv={false} />
+        <Night moon={MOON} focus={(out) => out.set(sim.current.x * 0.3, 0, sim.current.z - 12)} extent={32} skyEnv={false} />
         <Sky url="/img/canal/sky.webp" dist={120} width={180} height={77} y={28} env={0.9} tint="#c4cede" follow={0.9} />
         <CanalWorld />
         <CanalLife sim={sim} />
         <CanalGuards sim={sim} />
         <CanalActors sim={sim} fx={fx} />
         <Loop sim={sim} fx={fx} input={input} onHud={setHud} onEvent={onEvent} />
-      </Canvas>
+      </>
+    ),
+    [onEvent],
+  );
+
+  return (
+    <div className="absolute inset-0 touch-none overflow-hidden bg-night">
+      <GameCanvas camera={CAMERA} grade={GRADE}>
+        {scene}
+      </GameCanvas>
 
       <Cinema />
       {phase !== "intro" && phase !== "done" && <CanalHud hud={hud} onDown={down} onUp={up} />}

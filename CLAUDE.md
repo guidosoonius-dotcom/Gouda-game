@@ -26,12 +26,16 @@ Read only the section you need; do not load whole documents by default.
    phone-sized by `assets/blender/_figure.py` (decimate, 512 px WebP texture, shared skeleton and
    clips). Original characters only, never a real person. In the game they are `canal/Figure.ts`
    (skinned mesh, clips, two-bone reach) with hand-made poses in `canal/poses.ts`.
-4. Mount `<Canvas>` only in the minigame view; dispose on exit. Preload the minigame chunk
-   while the dossier is open. Cap DPR at 2. Measured budget per frame (shadow pass included):
+4. Mount the canvas only in the minigame view (always through `canal/GameCanvas.tsx`, with memoised
+   children so the HUD never re-renders the scene); dispose on exit. Preload the minigame chunk
+   while the dossier is open. Resolution is adaptive (`TUNING.gfx.dpr*`: starts at 1.5, max 2).
+   Keep the number of lights constant during play (a change recompiles every shader). Measured budget per frame (shadow pass included):
    about 200 draw calls and 270k triangles for the bicycle street, the heaviest scene; keep new
    work inside that, and keep architecture models unbevelled (bevels multiply triangles by ~8). Shadows: one 1024 moon map that follows the player
-   plus one per searchlight, all switchable in `TUNING.gfx`; no post-processing passes (the film
-   look is CSS: vignette, grain, colour filter).
+   plus one per searchlight, all switchable in `TUNING.gfx`; no post-processing passes. The film
+   look: vignette and grain in CSS with plain alpha only (no CSS `filter` or blend modes over the
+   canvas: each costs a full-screen compositing pass), colour grade and split toning in the tone
+   mapping (`Grade` in `GameCanvas`).
 5. All movement and damping is frame-rate independent (`1 - Math.exp(-k * dt)`), never per-frame factors.
 6. Gameplay numbers live in `src/game/tuning.ts`, never inline.
 7. History: never present fiction as fact. Every factual claim and real name lives in

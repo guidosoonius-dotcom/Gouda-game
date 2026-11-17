@@ -10,6 +10,22 @@ export const TUNING = {
     detail: true,
     /** Ambient life in the bicycle chapter: extra people, aircraft, debris, embers and ash. */
     life: true,
+    /** Render resolution (device pixels per CSS pixel): starts at dprStart (or the device's own if
+     *  lower), climbs by dprStep up to dprMax while there is room, and steps down (to dprMin) when
+     *  the frame rate stays under fpsLow. */
+    dprStart: 1.5,
+    dprMax: 2,
+    dprMin: 1,
+    dprStep: 0.25,
+    fpsLow: 50,
+    /** Above this for adaptRise windows in a row the resolution steps back up. */
+    fpsHigh: 58,
+    adaptRise: 4,
+    /** Seconds per measurement window, and seconds ignored at the start (shaders, loading). */
+    adaptWindow: 1,
+    adaptWarmup: 2.5,
+    /** Seconds without judging after a change (the resize itself costs a frame or two). */
+    adaptCooldown: 2,
   },
   /** Side story at the town hall: stalling orders at the messenger's desk. */
   bureau: {

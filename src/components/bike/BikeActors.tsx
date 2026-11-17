@@ -102,6 +102,9 @@ export function BikeActors({ sim, kees, shake }: { sim: React.RefObject<BikeSim>
   const look = useRef(new THREE.Vector3(0, 3.6, -14));
   const prevX = useRef(0);
   const lean = useRef(0);
+  const baseX = useRef(0);
+  // no camera shake for players who asked the system for less motion
+  const still = useRef(typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
 
   useFrame((_, delta) => {
     const s = sim.current;
@@ -110,17 +113,25 @@ export function BikeActors({ sim, kees, shake }: { sim: React.RefObject<BikeSim>
     prevX.current = s.x;
     // Camera behind and above the bike; it shakes when a bomb lands.
     shake.current = Math.max(0, shake.current - dt * 1.6);
-    const j = shake.current * 0.45;
+    // trauma squared: a near miss shakes hard, the tail dies away gently; smooth sines rather than a
+    // fresh random number each frame, which buzzes and depends on the frame rate
+    const now = performance.now() / 1000;
+    const j = still.current ? 0 : shake.current * shake.current * 0.5;
+    const shakeX = j * (Math.sin(now * 37) * 0.6 + Math.sin(now * 23 + 1.3) * 0.4);
+    const shakeY = j * (Math.sin(now * 31 + 0.7) * 0.6 + Math.sin(now * 19 + 2.1) * 0.4);
     const ease = 1 - Math.exp(-3.2 * dt);
-    camera.position.x += (s.x * 0.4 - camera.position.x) * ease + (Math.random() - 0.5) * j;
+    // the shake is added on top of a separate base, so it never builds up into a drift
+    baseX.current += (s.x * 0.4 - baseX.current) * ease;
+    camera.position.x = baseX.current;
     // a little handheld sway, and the view dips lower the faster you ride
-    const sway = Math.sin(performance.now() / 700) * 0.06 * (0.4 + s.v * 0.12);
-    camera.position.y = 5.8 - Math.min(1, s.v / 5) * 0.5 + sway + (Math.random() - 0.5) * j;
+    const sway = Math.sin(now / 0.7) * 0.06 * (0.4 + s.v * 0.12);
+    camera.position.y = 5.8 - Math.min(1, s.v / 5) * 0.5 + sway + shakeY;
     camera.position.z += (s.z + 11.4 - camera.position.z) * ease;
     look.current.x += (s.x * 0.4 - look.current.x) * ease;
     look.current.y = 3.6;
     look.current.z += (s.z - 14 - look.current.z) * ease;
     camera.lookAt(look.current);
+    camera.position.x = baseX.current + shakeX;
     // Dev aid: /?bike=1&cam=side looks at the rider from the side (ignored in production builds).
     if (SIDE_VIEW) {
       camera.position.set(s.x + 3.2, 1.5, s.z - 1.2);

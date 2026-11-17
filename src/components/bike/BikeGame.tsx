@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useFrame } from "@react-three/fiber";
 import { AnimatePresence, motion } from "motion/react";
 import { TUNING } from "@/game/tuning";
 import { echoesFor } from "@/game/choices";
@@ -9,6 +9,7 @@ import { useGameStore } from "@/store/useGameStore";
 import { ambience, sfx, unlockAudio } from "@/lib/sound";
 import { Arrow } from "@/components/ui/icons";
 import { Cinema, Night } from "@/components/canal/Night";
+import { GameCanvas, type Grade } from "@/components/canal/GameCanvas";
 import { Dilemma } from "@/components/dossier/Dilemma";
 import { BikeActors } from "./BikeActors";
 import { BikeHud, BIKE_HUD_START, type BikeHudState } from "./BikeHud";
@@ -27,6 +28,11 @@ const ENDINGS: Record<BikeOutcome, { title: string; body: string }> = {
   enkelen: { title: "Niet iedereen heeft je gehoord", body: "De kelder is vol, maar er ontbreken gezichten. Gerrit pakt zijn helm en gaat de rook weer in." },
   telaat: { title: "Het wordt stil boven het spoor", body: "De aanval is voorbij voordat je er bent. Gerrit heeft de laatsten zelf naar binnen gebracht. Je hebt gedaan wat je kon." },
 };
+
+const CAMERA = { fov: 54, near: 0.5, far: 420, position: [0, 5.8, 11.4] as [number, number, number] };
+/** Split toning (warm highlights, cold shadows) used to be two blended CSS layers over the canvas. */
+const GRADE: Grade = { contrast: 1.08, saturate: 1.05, split: 1 };
+const MOON: [number, number, number] = [-5, 11, -30];
 
 function Loop({ sim, input, shake, onHud, onEvent }: {
   sim: React.RefObject<BikeSim>;
@@ -140,14 +146,15 @@ export function BikeGame() {
     setPhase("play");
   };
 
-  return (
-    <div className="absolute inset-0 touch-none overflow-hidden bg-night">
-      <Canvas shadows="soft" dpr={[1, 2]} style={{ filter: "contrast(1.08) saturate(1.05)" }} camera={{ fov: 54, near: 0.5, far: 420, position: [0, 5.8, 11.4] }} gl={{ antialias: true, powerPreference: "high-performance" }}>
+  // Memoised so the HUD (10 updates a second) never re-renders the 3D scene.
+  const scene = useMemo(
+    () => (
+      <>
         <color attach="background" args={["#352a35"]} />
         <fog attach="fog" args={["#3d2d38", 22, 330]} />
         {/* the low sun behind the burning yard rakes down the street: long shadows toward the camera */}
         <Night
-          moon={[-5, 11, -30]}
+          moon={MOON}
           focus={(out) => out.set(sim.current.x * 0.4, 0, sim.current.z - 12)}
           extent={34}
           keyColor="#ffb274"
@@ -159,7 +166,16 @@ export function BikeGame() {
         <BikeWorld sim={sim} />
         <BikeActors sim={sim} kees={kees} shake={shake} />
         <Loop sim={sim} input={input} shake={shake} onHud={setHud} onEvent={onEvent} />
-      </Canvas>
+      </>
+    ),
+    [kees, onEvent],
+  );
+
+  return (
+    <div className="absolute inset-0 touch-none overflow-hidden bg-night">
+      <GameCanvas camera={CAMERA} grade={GRADE}>
+        {scene}
+      </GameCanvas>
       <Cinema warm />
       <div className="pointer-events-none absolute inset-0 transition-opacity duration-300" style={{ background: "radial-gradient(ellipse at 50% 45%, rgba(255,230,190,.95), rgba(255,160,70,.6) 60%, rgba(255,120,40,.3))", opacity: flash ? 0.85 : 0, transitionDuration: flash ? "40ms" : "500ms" }} />
       {phase === "play" && <BikeHud hud={hud} onSteer={steer} onBell={bell} />}

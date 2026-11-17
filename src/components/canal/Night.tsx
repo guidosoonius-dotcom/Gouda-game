@@ -121,19 +121,24 @@ export function Night({
   );
 }
 
-/** Film look laid over the canvas in CSS: a vignette and fine grain cost the GPU almost nothing. */
+/**
+ * Film look laid over the canvas in CSS: a vignette and fine grain. Only plain alpha blending: a
+ * blend mode (overlay, soft-light, screen) or a CSS filter over a WebGL canvas makes the browser
+ * composite the whole screen through an extra offscreen pass every frame. The colour grade and the
+ * split toning live in the tone mapping instead (see `GameCanvas`).
+ */
 export function Cinema({ warm = false }: { warm?: boolean }) {
   return (
     <div className="pointer-events-none absolute inset-0" aria-hidden="true">
       {warm && (
         <>
-          {/* split toning: firelight in the highlights, cold blue in the shadows */}
-          <div className="absolute inset-0 mix-blend-soft-light" style={{ background: "linear-gradient(180deg, rgba(255,140,60,.3) 0%, rgba(255,120,40,.04) 38%, rgba(30,60,150,.55) 100%)" }} />
-          <div className="absolute inset-0 mix-blend-screen" style={{ background: "radial-gradient(ellipse 70% 38% at 50% 24%, rgba(255,120,40,.12), rgba(255,120,40,0) 70%)" }} />
+          {/* the fire behind the yard: a warm glow high in the picture, a cold fall-off below */}
+          <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 70% 38% at 50% 24%, rgba(255,120,40,.1), rgba(255,120,40,0) 70%)" }} />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(255,130,50,.07) 0%, rgba(255,120,40,0) 38%, rgba(20,40,110,0) 62%, rgba(20,40,110,.22) 100%)" }} />
         </>
       )}
       <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 85% 70% at 50% 46%, rgba(4,6,10,0) 52%, rgba(4,6,10,.62) 100%)" }} />
-      <Grain id="cinema-grain" opacity={0.13} />
+      <Grain id="cinema-grain" opacity={0.06} blend={false} />
     </div>
   );
 }

@@ -29,7 +29,7 @@ export function BikeBombs({ sim }: { sim: React.RefObject<BikeSim> }) {
   const tex = useMemo(radialTexture, []);
   const marks = useRef<(THREE.Group | null)[]>([]);
   const dust = useRef<(THREE.Sprite | null)[]>([]);
-  const flash = useRef<(THREE.PointLight | null)[]>([]);
+  const flash = useRef<THREE.PointLight>(null);
   const chunks = useRef<(THREE.InstancedMesh | null)[]>([]);
   const last = useRef(Array.from({ length: SLOTS }, () => ({ x: 0, z: 0, t: -99, fired: true })));
   const pieces = useMemo(
@@ -54,6 +54,8 @@ export function BikeBombs({ sim }: { sim: React.RefObject<BikeSim> }) {
   useFrame((_, delta) => {
     const s = sim.current;
     const dt = Math.min(delta, 0.05);
+    let flashT = -Infinity;
+    if (flash.current) flash.current.intensity = 0;
     for (let i = 0; i < SLOTS; i++) {
       const b = s.bombs[i];
       const g = marks.current[i];
@@ -91,10 +93,11 @@ export function BikeBombs({ sim }: { sim: React.RefObject<BikeSim> }) {
         m.opacity = Math.max(0, 0.8 - age * 0.28);
         m.color.set(age < 0.1 ? "#fff1c8" : age < 0.5 ? "#c88a50" : "#6a5f55");
       }
-      const light = flash.current[i];
-      if (light) {
-        light.position.set(L.x, 3, L.z);
-        light.intensity = age >= 0 && age < 0.6 ? 900 * Math.pow(1 - age / 0.6, 2) : 0;
+      // one flash light for all bombs: the most recent impact takes it
+      if (flash.current && age >= 0 && age < 0.6 && L.t >= flashT) {
+        flashT = L.t;
+        flash.current.position.set(L.x, 3, L.z);
+        flash.current.intensity = 900 * Math.pow(1 - age / 0.6, 2);
       }
       const mesh = chunks.current[i];
       if (mesh) {
@@ -121,6 +124,7 @@ export function BikeBombs({ sim }: { sim: React.RefObject<BikeSim> }) {
 
   return (
     <>
+      <pointLight ref={flash} color="#ffd9a0" intensity={0} distance={40} decay={1.6} />
       {Array.from({ length: SLOTS }, (_, i) => (
         <group key={i}>
           <group ref={(g) => void (marks.current[i] = g)} visible={false}>
@@ -140,7 +144,6 @@ export function BikeBombs({ sim }: { sim: React.RefObject<BikeSim> }) {
           <sprite ref={(m) => void (dust.current[i] = m)} visible={false}>
             <spriteMaterial map={tex} transparent depthWrite={false} />
           </sprite>
-          <pointLight ref={(m) => void (flash.current[i] = m)} color="#ffd9a0" intensity={0} distance={40} decay={1.6} />
           {TUNING.gfx.life && (
             <instancedMesh ref={(m) => void (chunks.current[i] = m)} args={[undefined, undefined, PIECES]} frustumCulled={false} visible={false} castShadow>
               <boxGeometry />

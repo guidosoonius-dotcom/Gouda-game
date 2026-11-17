@@ -147,14 +147,15 @@ interface InstancedProps {
   /** Also casts searchlight shadows. */
   spot?: boolean;
   /**
-   * Split a long row into blocks of this many metres along Z, each culled on its own, so the camera
-   * and the moon's shadow map only draw the blocks they see. Not with `live`.
+   * Split a long row into blocks of this many metres along `axis` (Z unless told otherwise), each
+   * culled on its own, so the camera and the shadow maps only draw the blocks they see. Not with `live`.
    */
   chunk?: number;
+  axis?: "x" | "z";
 }
 
 /** Many copies of one kit model: one draw call per material kind (per block when chunked). */
-export function Instanced({ name, placements, tints, only, live, spot, chunk }: InstancedProps) {
+export function Instanced({ name, placements, tints, only, live, spot, chunk, axis = "z" }: InstancedProps) {
   const { scene } = useGLTF(url(name));
   const parts = useMemo(() => {
     const root = flatten(scene);
@@ -167,14 +168,14 @@ export function Instanced({ name, placements, tints, only, live, spot, chunk }: 
     if (!chunk) return [{ placements, tints }];
     const map = new Map<number, { placements: THREE.Matrix4[]; tints?: THREE.Color[] }>();
     placements.forEach((p, i) => {
-      const key = Math.floor(p.elements[14] / chunk);
+      const key = Math.floor(p.elements[axis === "x" ? 12 : 14] / chunk);
       const b = map.get(key) ?? { placements: [], tints: tints ? [] : undefined };
       b.placements.push(p);
       if (tints) b.tints!.push(tints[i]);
       map.set(key, b);
     });
     return [...map.values()];
-  }, [placements, tints, chunk]);
+  }, [placements, tints, chunk, axis]);
   if (placements.length === 0) return null;
   return (
     <>
@@ -189,9 +190,14 @@ export function Instanced({ name, placements, tints, only, live, spot, chunk }: 
 
 const Y = new THREE.Vector3(0, 1, 0);
 const Z = new THREE.Vector3(0, 0, 1);
+// Scratch objects for `place`: it runs for every animated instance every frame, so it must not allocate.
+const PQ = new THREE.Quaternion();
+const PR = new THREE.Quaternion();
+const PP = new THREE.Vector3();
+const PS = new THREE.Vector3();
 export function place(x: number, y: number, z: number, o: { yaw?: number; roll?: number; s?: number; sy?: number } = {}, into = new THREE.Matrix4()) {
-  const q = new THREE.Quaternion().setFromAxisAngle(Y, o.yaw ?? 0);
-  if (o.roll) q.multiply(new THREE.Quaternion().setFromAxisAngle(Z, o.roll));
+  PQ.setFromAxisAngle(Y, o.yaw ?? 0);
+  if (o.roll) PQ.multiply(PR.setFromAxisAngle(Z, o.roll));
   const s = o.s ?? 1;
-  return into.compose(new THREE.Vector3(x, y, z), q, new THREE.Vector3(s, s * (o.sy ?? 1), s));
+  return into.compose(PP.set(x, y, z), PQ, PS.set(s, s * (o.sy ?? 1), s));
 }
