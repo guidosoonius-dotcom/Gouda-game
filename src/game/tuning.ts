@@ -11,6 +11,20 @@ export const TUNING = {
     /** Ambient life in the bicycle chapter: extra people, aircraft, debris, embers and ash. */
     life: true,
   },
+  /** Side story at the town hall: stalling orders at the messenger's desk. */
+  bureau: {
+    /** Suspicion runs from 0 to this; at the top the messenger is moved to another office. */
+    suspicionMax: 5,
+    /** From this much suspicion on, the messenger is on a list. */
+    listedAt: 3,
+    /** Sending an order back over something that is not wrong. */
+    wrongGuess: 1,
+    /** Leaving an order on the desk: costs suspicion, wins a day. */
+    leave: 2,
+    leaveGain: 1,
+    /** Signing calms the occupier down a little. */
+    signRelief: 1,
+  },
   packing: {
     /** Seconds between distant shock waves. */
     rumbleInterval: 30,

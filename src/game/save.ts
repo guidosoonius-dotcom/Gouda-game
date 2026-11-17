@@ -2,18 +2,23 @@
  * Recovery code ("herstelcode"): the whole progress in a short code a player can write down.
  * iOS Safari may evict localStorage after ~7 days, so progress must be restorable.
  * Layout (LSB first): version(3) | completed chapters 1..6 (6) | choices (2 each) | outcomes (2 each)
- *   | version 2 only: side stories 11..14 (4)
- * Version 1 codes (written before the side stories existed) still decode.
+ *   | version >= 2: side stories 11..14 (4) | version >= 3: outcomes added later (2 each)
+ * Codes of older versions (written before the side stories, or before their outcomes) still decode.
  */
 import { CHOICES, OUTCOMES, type Flags } from "./choices";
 
 const ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"; // Crockford base32, no I L O U
-const VERSION = 2;
-const OUTCOME_IDS = Object.keys(OUTCOMES) as (keyof typeof OUTCOMES)[];
+const VERSION = 3;
+const ALL_OUTCOMES = Object.keys(OUTCOMES) as (keyof typeof OUTCOMES)[];
+/** The outcomes version 1 knew; the rest are stored after the side stories (version 3). */
+const OUTCOME_IDS = ALL_OUTCOMES.slice(0, 4);
+const LATER_OUTCOMES = ALL_OUTCOMES.slice(4);
 /** Side stories, in bit order. Append only. */
 const SIDE_IDS = [11, 12, 13, 14];
 const BITS_V1 = 3 + 6 + CHOICES.length * 2 + OUTCOME_IDS.length * 2;
-const CHARS_BY_VERSION: Record<number, number> = { 1: Math.ceil(BITS_V1 / 5), 2: Math.ceil((BITS_V1 + SIDE_IDS.length) / 5) };
+const BITS_V2 = BITS_V1 + SIDE_IDS.length;
+const BITS_V3 = BITS_V2 + LATER_OUTCOMES.length * 2;
+const CHARS_BY_VERSION: Record<number, number> = { 1: Math.ceil(BITS_V1 / 5), 2: Math.ceil(BITS_V2 / 5), 3: Math.ceil(BITS_V3 / 5) };
 const CHARS = CHARS_BY_VERSION[VERSION];
 
 export interface Progress {
@@ -40,11 +45,10 @@ export function encodeSave({ completed, flags }: Progress): string {
     const v = flags[c.id];
     push(v === c.A.value ? 1 : v === c.B.value ? 2 : 0, 2);
   }
-  for (const id of OUTCOME_IDS) {
-    const idx = (OUTCOMES[id] as readonly string[]).indexOf(flags[id] ?? "");
-    push(idx + 1, 2);
-  }
+  const outcome = (id: keyof typeof OUTCOMES) => push((OUTCOMES[id] as readonly string[]).indexOf(flags[id] ?? "") + 1, 2);
+  OUTCOME_IDS.forEach(outcome);
   push(SIDE_IDS.reduce((m, id, i) => (completed.includes(id) ? m | (1 << i) : m), 0), SIDE_IDS.length);
+  LATER_OUTCOMES.forEach(outcome);
   const digits: number[] = [];
   for (let i = 0; i < CHARS; i++) digits.push(Number((bits >> BigInt(i * 5)) & 31n));
   const body = digits.map((d) => ALPHABET[d]).join("");
@@ -84,15 +88,18 @@ export function decodeSave(code: string): Progress | null {
     if (v === 1) flags[c.id] = c.A.value;
     if (v === 2) flags[c.id] = c.B.value;
   }
-  for (const id of OUTCOME_IDS) {
+  const outcome = (id: keyof typeof OUTCOMES) => {
     const v = pull(2);
     const values = OUTCOMES[id] as readonly string[];
-    if (v > values.length) return null;
+    if (v > values.length) return false;
     if (v > 0) flags[id] = values[v - 1];
-  }
+    return true;
+  };
+  if (!OUTCOME_IDS.every(outcome)) return null;
   if (version >= 2) {
     const sides = pull(SIDE_IDS.length);
     SIDE_IDS.forEach((id, i) => sides & (1 << i) && completed.push(id));
   }
+  if (version >= 3 && !LATER_OUTCOMES.every(outcome)) return null;
   return { completed, flags };
 }

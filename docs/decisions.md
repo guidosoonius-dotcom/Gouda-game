@@ -181,6 +181,14 @@ Formaat: beslissing · waarom · alternatief.
     Een fout geeft uitleg, geen straf. De synagoge krijgt geen spel maar een gebaar en een
     gedenkblad, zoals hoofdstuk 3.
 
+51. **Een zijspoor krijgt een spel, geen menu.** Kiezen uit vier knoppen en een gevolg lezen
+    voelde als een formulier. Nu herhaal je één handeling (een fout zoeken, een plek kiezen) tegen
+    regels die zelf zeggen of ze kloppen. Het leren zit in het gereedschap en de regels: de
+    Aanwijzingen van 1937, een kalender, echte straten, de koosjere keuken.
+52. **Argwaan is geen score en geen game over.** Bij te veel argwaan wordt de bode overgeplaatst;
+    dat verandert het verhaal (hoofdstuk 4, de krant), het blokkeert niets. Dinsdag staat er
+    bewust geen fout in het bevel: niet elk bevel van de bezetter was onwettig.
+
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.
 - Blaeu-kaart: pin-posities zijn op het oog geplaatst. Georefereren met controlepunten in M8.

@@ -74,6 +74,8 @@ export const OUTCOMES = {
   // Appended, not inserted: the recovery code stores outcomes in this order.
   "ch2.task": ["ongezien", "gezien", "telaat"],
   "ch5.task": ["allen", "enkelen", "telaat"],
+  // Side story at the town hall: how much the occupier noticed the slow messenger.
+  "side12.bode": ["stil", "lijstje", "weg"],
 } as const;
 export type OutcomeId = keyof typeof OUTCOMES;
 
@@ -123,6 +125,27 @@ export const ECHOES: readonly Echo[] = [
     slot: "scene",
     when: { flag: "ch1.task", is: "alleen" },
     text: "‘Wie glas kan pakken, kan ook een boodschap dragen,’ zegt Willem.",
+  },
+  {
+    id: "bode-stil-paper",
+    chapter: 4,
+    slot: "route",
+    when: { flag: "side12.bode", is: "stil" },
+    text: "De bode van het stadhuis heeft je een getekend papier voor de sluis meegegeven. De wacht kijkt er niet eens naar.",
+  },
+  {
+    id: "bode-lijstje-paper",
+    chapter: 4,
+    slot: "route",
+    when: { flag: "side12.bode", is: "lijstje" },
+    text: "De bode kon nog één papier voor de sluis regelen. Er staat geen stempel op, maar het ziet er officieel uit.",
+  },
+  {
+    id: "bode-weg-none",
+    chapter: 4,
+    slot: "route",
+    when: { flag: "side12.bode", is: "weg" },
+    text: "De bode van het stadhuis zit nu bij de distributie. Een papier voor de sluis is er dit keer niet.",
   },
   {
     id: "kees-mee-courier",

@@ -168,6 +168,13 @@ export const FACTS = {
     source: "Canon van Gouda, ‘Tweede Wereldoorlog’; Digitaal Namenregister Oranjehotel",
     verified: false,
   },
+  "stadhuis.aanwijzingen": {
+    claim:
+      "Volgens de Aanwijzingen van 1937 bleven ambtenaren in oorlogstijd op hun post, zolang dat in het belang van de bevolking was. De bezetter mocht goederen en diensten vorderen en soldaten inkwartieren, maar niets eisen wat rechtstreeks met de oorlogvoering te maken had.",
+    source: "Verzetsmuseum, kennisbank ‘Duits bestuur’; Berghapedia, ‘Aanwijzingen van 1937’; R. Bakker, ‘Landoorlogreglement en Aanwijzingen’ (Verbum)",
+    todo: "tekst van de Aanwijzingen zelf nalezen (artikel 1 en de bepalingen over vorderingen)",
+    verified: false,
+  },
   "synagoge.building": {
     claim: "De synagoge aan de Turfmarkt werd in 1827 ingewijd. Al sinds 1798 kwam de Joodse gemeente van Gouda op deze plek bijeen.",
     source: "joodserfgoedrotterdam.nl/gouda; Joods Cultureel Kwartier, ‘Gouda’",

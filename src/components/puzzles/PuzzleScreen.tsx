@@ -11,6 +11,8 @@ import { WordsPuzzle } from "./WordsPuzzle";
 import { AcrosticPuzzle } from "./AcrosticPuzzle";
 import { StarsPuzzle } from "./StarsPuzzle";
 import { CouponsPuzzle } from "./CouponsPuzzle";
+import { BureauPuzzle } from "./BureauPuzzle";
+import { RoomsPuzzle } from "./RoomsPuzzle";
 
 /**
  * The small paper puzzle of a side story. No clock, no score, no way to fail: a wrong try gets a
@@ -19,7 +21,9 @@ import { CouponsPuzzle } from "./CouponsPuzzle";
 export function PuzzleScreen() {
   const { chapter: chapterId, go, advance } = useGameStore();
   const chapter = chapterById(chapterId);
-  const puzzle = chapter.puzzle!;
+  // A warm-up puzzle first (if any), then the main one.
+  const [stage, setStage] = useState<"warmup" | "main">(chapter.warmup ? "warmup" : "main");
+  const puzzle = stage === "warmup" ? chapter.warmup! : chapter.puzzle!;
   const [solved, setSolved] = useState(false);
   const solve = () => {
     sfx.chime();
@@ -41,21 +45,29 @@ export function PuzzleScreen() {
         </button>
         <div className="flex flex-col gap-0.5">
           <span className="label text-[10.5px] text-ochre">Zijspoor · {chapter.place}</span>
-          <h1 className="m-0 font-fell text-[24px] font-normal leading-tight">{task?.kind === "task" ? task.title : chapter.title}</h1>
+          <h1 className="m-0 font-fell text-[24px] font-normal leading-tight">{"title" in puzzle ? puzzle.title : task?.kind === "task" ? task.title : chapter.title}</h1>
         </div>
       </header>
-      <div className="relative flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-5 pb-[calc(24px+env(safe-area-inset-bottom))]">
+      <div key={stage} className="relative flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-5 pb-[calc(24px+env(safe-area-inset-bottom))]">
         <p className="m-0 font-news text-[15.5px] italic leading-snug text-bone">{puzzle.intro}</p>
         {puzzle.kind === "words" && <WordsPuzzle pairs={puzzle.pairs} onSolved={solve} />}
         {puzzle.kind === "acrostic" && <AcrosticPuzzle puzzle={puzzle} onSolved={solve} />}
         {puzzle.kind === "stars" && <StarsPuzzle onSolved={solve} />}
         {puzzle.kind === "coupons" && <CouponsPuzzle puzzle={puzzle} onSolved={solve} />}
+        {puzzle.kind === "bureau" && <BureauPuzzle onSolved={solve} />}
+        {puzzle.kind === "rooms" && <RoomsPuzzle onSolved={solve} />}
         {solved && (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-auto flex flex-col gap-3 pt-2">
             <p className="m-0 border-l-2 border-ochre pl-3 font-news text-[16px] leading-snug">{puzzle.done}</p>
             <button
               type="button"
-              onClick={() => (sfx.paper(), advance())}
+              onClick={() => {
+                sfx.paper();
+                if (stage === "warmup") {
+                  setStage("main");
+                  setSolved(false);
+                } else advance();
+              }}
               className="flex h-[54px] items-center justify-between bg-ochre px-[18px] font-label text-[14px] font-bold tracking-[0.17em] text-slate"
             >
               VERDER

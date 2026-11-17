@@ -1,0 +1,111 @@
+/**
+ * The rooms of the orphanage, April to October 1939: one level a month, one new kind of rule each
+ * time. The boys, their quirks and Max's letters are invented; the kosher kitchen, the Dutch lessons
+ * and the growing number of children are in `sources.ts` (`weeshuis.*`).
+ */
+import type { Level } from "@/game/rooms";
+
+export const ROOM_LEVELS: Level[] = [
+  {
+    id: "slaapzaal",
+    month: "April",
+    title: "De eerste nacht",
+    intro: "Zes jongens, zes bedden. Tik op een jongen en dan op een bed.",
+    cols: 3,
+    rows: 2,
+    cells: ["raam", "raam", "raam", "deur", "", ""],
+    tokens: [
+      { id: "max", name: "Max", note: "heeft heimwee" },
+      { id: "jakob", name: "Jakob", note: "vriend van Max" },
+      { id: "kurt", name: "Kurt", note: "broer van Paul" },
+      { id: "paul", name: "Paul", note: "broer van Kurt" },
+      { id: "erich", name: "Erich", note: "snurkt" },
+      { id: "leo", name: "Leo", note: "de jongste" },
+    ],
+    rules: [
+      { kind: "next", a: "kurt", b: "paul", text: "Kurt en Paul slapen naast elkaar." },
+      { kind: "next", a: "max", b: "jakob", text: "Max ligt naast zijn vriend Jakob." },
+      { kind: "at", a: "leo", cells: [3], text: "Leo, de jongste, ligt bij de deur." },
+      { kind: "apart", a: "erich", b: "max", text: "Erich snurkt: niet naast Max." },
+    ],
+    letter: "Liebe Mama, ich schlafe neben Jakob. Hij kent al veel Nederlandse woorden. Euer Max",
+  },
+  {
+    id: "keuken",
+    month: "Mei",
+    title: "De keuken wordt koosjer",
+    intro: "De keuken wordt koosjer gemaakt: vlees en melk blijven gescheiden. Zet alles op de planken.",
+    cols: 3,
+    rows: 3,
+    cells: ["", "", "", "", "", "", "", "", ""],
+    rowLabels: ["bovenste plank", "middelste plank", "onderste plank"],
+    tokens: [
+      { id: "worst", name: "Worst", note: "vlees", tags: ["vlees"] },
+      { id: "kip", name: "Kip", note: "vlees", tags: ["vlees"] },
+      { id: "vleesborden", name: "Borden", note: "voor vlees", tags: ["vlees"] },
+      { id: "melk", name: "Melk", note: "melk", tags: ["melk"] },
+      { id: "kaas", name: "Kaas", note: "melk", tags: ["melk"] },
+      { id: "pan", name: "Melkpan", note: "zwaar", tags: ["melk"] },
+      { id: "brood", name: "Brood", note: "parve" },
+      { id: "appels", name: "Appels", note: "parve" },
+    ],
+    rules: [
+      { kind: "rowsApart", tags: ["vlees", "melk"], text: "Vlees en melk nooit op dezelfde plank." },
+      { kind: "at", a: "pan", cells: [6, 7, 8], text: "De zware melkpan staat onderop." },
+      { kind: "at", a: "appels", cells: [0, 1, 2], text: "De appels liggen bovenop, weg van de muizen." },
+      { kind: "next", a: "brood", b: "kip", text: "Het brood ligt naast de kip: brood is parve, het mag overal bij." },
+    ],
+    letter: "Liebe Mama, wir haben eine koschere Küche! De kok zegt: melk en vlees nooit samen. Euer Max",
+  },
+  {
+    id: "klas",
+    month: "Juni",
+    title: "Het klaslokaal",
+    intro: "Elke ochtend Nederlandse les. Wie net is aangekomen, zit naast iemand die het al een beetje kan.",
+    cols: 3,
+    rows: 2,
+    cells: ["vooraan", "vooraan", "vooraan", "", "", ""],
+    tokens: [
+      { id: "jakob", name: "Jakob", note: "spreekt al Nederlands", tags: ["nl"] },
+      { id: "walter", name: "Walter", note: "spreekt al Nederlands", tags: ["nl"] },
+      { id: "max", name: "Max", note: "leert nog", tags: ["nieuw"] },
+      { id: "hans", name: "Hans", note: "net aangekomen", tags: ["nieuw"] },
+      { id: "ernst", name: "Ernst", note: "net aangekomen", tags: ["nieuw"] },
+      { id: "leo", name: "Leo", note: "ziet het bord slecht" },
+    ],
+    rules: [
+      { kind: "eachNext", tag: "nieuw", to: "nl", text: "Wie nog leert, zit naast iemand die al Nederlands spreekt." },
+      { kind: "at", a: "leo", cells: [0, 1, 2], text: "Leo zit vooraan, bij het bord." },
+      { kind: "apart", a: "max", b: "jakob", text: "Max en Jakob kletsen: niet naast elkaar." },
+    ],
+    letter: "Mama, heute habe ich een heel boek gelezen. In het Nederlands! Bijna. Euer Max",
+  },
+  {
+    id: "zalen",
+    month: "Oktober",
+    title: "Twee zalen",
+    intro: "Er zijn veel meer kinderen gekomen. Twee zalen, en alle regels tegelijk. Over de muur heen ben je geen buren.",
+    cols: 4,
+    rows: 2,
+    cells: ["raam", "raam", "raam", "raam", "deur", "", "", ""],
+    groups: ["zaal 1", "zaal 1", "zaal 2", "zaal 2", "zaal 1", "zaal 1", "zaal 2", "zaal 2"],
+    tokens: [
+      { id: "max", name: "Max", note: "heeft heimwee" },
+      { id: "jakob", name: "Jakob", note: "vriend van Max" },
+      { id: "kurt", name: "Kurt", note: "broer van Paul" },
+      { id: "paul", name: "Paul", note: "broer van Kurt" },
+      { id: "erich", name: "Erich", note: "snurkt" },
+      { id: "leo", name: "Leo", note: "de jongste" },
+      { id: "hans", name: "Hans", note: "net aangekomen" },
+      { id: "walter", name: "Walter", note: "spreekt al Nederlands" },
+    ],
+    rules: [
+      { kind: "together", a: "kurt", b: "paul", text: "Kurt en Paul in dezelfde zaal." },
+      { kind: "next", a: "max", b: "jakob", text: "Max ligt naast Jakob." },
+      { kind: "at", a: "leo", cells: [4], text: "Leo ligt bij de deur." },
+      { kind: "apart", a: "erich", b: "max", text: "Erich niet naast Max." },
+      { kind: "next", a: "hans", b: "walter", text: "Hans, net aangekomen, naast Walter." },
+    ],
+    letter: "",
+  },
+];

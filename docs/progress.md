@@ -123,6 +123,19 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   codes werken nog. De coördinaten van hoofdstuk 1–3 zijn gecorrigeerd (Oosthaven 31 lag 250 m
   verkeerd); kaartposities volgen nu uit twee ijkpunten (stadhuis en Sint-Jan).
 
+- **Stadhuis en Weeshuis als echte minigames (sessie 3):** ontworpen met de skills prototype-fast,
+  puzzle, card-game en game-feel (één kernhandeling, regels die terugduwen, voelbare feedback).
+  Het puzzeltje van eerst is nu de opwarmer (`warmup` in `sides.ts`). *Op het bureau*
+  (`game/bureau.ts`, `data/bureau.ts`): de week van 3 tot 7 juni 1940; elke dag een verzonnen
+  bevel. Vind de regel die niet klopt en stuur het zonder gevaar terug, laat het liggen (dag winst,
+  argwaan omhoog) of teken. Elke dag komt er een gereedschap bij: de regels van 1937, een kalender
+  van juni 1940, het adresboek met echte Goudse straten. De argwaan bepaalt uitkomst `side12.bode`
+  (stil, lijstje, weg), die terugkomt bij de opdracht van hoofdstuk 4 en in de krant. *Het huis vult
+  zich* (`game/rooms.ts`, `data/rooms.ts`): elke maand een kamer, één nieuw soort regel per keer
+  (slaapzaal, koosjere keuken, klaslokaal, twee zalen), tik een naam en dan een plek; met stap
+  terug, opnieuw, en een brief van Max tussen de kamers. Tests bewijzen dat elk niveau oplosbaar is.
+  Herstelcode versie 3 (uitkomsten die later kwamen; oude codes werken nog).
+
 ## Half af
 - Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).
 - De tekst van hoofdstuk 3 is een voorstel: laat die lezen door iemand van het Joods Monument
@@ -136,12 +149,15 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   deur liggen de Stolpersteine"); wat er precies te vinden is (jaartal, kisten, namen) moet ter
   plekke bekeken en in `sources.ts` gezet worden. De loopdetector en de 30 m zijn nooit op straat
   geprobeerd, alleen met een nagebootste gps (`node scripts/location-check.cjs`, na `npm run build`).
+- Op het bureau leunt op het feit `stadhuis.aanwijzingen` (de regels van 1937): zolang dat niet
+  geverifieerd is, ziet een speler in productie bij ‘Regels van 1937’ alleen de spelregel.
+- De bureau- en kamerpuzzels zijn op een bot en op het oog afgesteld, niet op 12-jarigen.
 - De zijsporen Synagoge en Markt hebben nog geen sfeerbeeld (Higgsfield-tegoed op).
 - Alle historische feiten staan op `verified: false` (`src/data/sources.ts`), ook de kaartverwijzing
   ("J. Blaeu, 1649") in "Over dit spel": herkomst van het kaartbestand en jaartal nog controleren.
 
 ## Controle
-- `npm run build` · `npm test` (69 tests) · `npm run test:e2e` (speelt hoofdstuk 1 door op 390×844,
+- `npm run build` · `npm test` (81 tests) · `npm run test:e2e` (speelt hoofdstuk 1 door op 390×844,
   speelt het dossier van hoofdstuk 4 tot in de vaart en zet screenshots in `test-results/`) · `npm run assets`.
 - Ontwikkelhulp (alleen in dev): `/?canal=1` opent de vaart direct, `&z=-60` start verderop;
   `/?roof=1` opent de daken, `&cover=8` start verderop; `/?bike=1` opent de fietstocht (`&bomb=1` laat direct een bom vallen, `&plane=1` toont een

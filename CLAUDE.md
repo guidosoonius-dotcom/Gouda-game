@@ -53,7 +53,7 @@ Read only the section you need; do not load whole documents by default.
 
 ## Where things are
 - Content: `src/data/chapters.ts`, side stories `src/data/sides.ts` (puzzles in
-  `src/components/puzzles/*`, all places in `src/data/places.ts`), facts `src/data/sources.ts`, choices and echoes `src/game/choices.ts`.
+  `src/components/puzzles/*`, desk and rooms logic in `src/game/bureau.ts` and `src/game/rooms.ts`, all places in `src/data/places.ts`), facts `src/data/sources.ts`, choices and echoes `src/game/choices.ts`.
 - Screens: `src/components/screens/*`; chapter 1 puzzle `src/components/packing/*`;
   Nachtvaart `src/components/canal/*`, Over de daken `src/components/rooftop/*`, Vluchtspoor
   `src/components/bike/*`

@@ -43,8 +43,16 @@ describe("recovery code", () => {
     expect(decodeSave("KG-10000-A")).toEqual({ completed: [], flags: {} });
   });
 
+  it("round-trips the messenger's week at the town hall, and still reads a code from before it (version 2)", () => {
+    for (const bode of OUTCOMES["side12.bode"]) {
+      const p: Progress = { completed: [1, 12], flags: { "side12.bode": bode, "ch4.task": "omweg" } };
+      expect(decodeSave(encodeSave(p))).toEqual(p);
+    }
+    expect(decodeSave("KG-T01043-E")).toEqual({ completed: [1, 2, 11, 12], flags: { "ch1.pass": "glazen", "ch2.task": "gezien" } });
+  });
+
   it("is short enough to write down", () => {
-    expect(encodeSave({ completed: [1, 2, 3, 4, 5, 6, 11, 12, 13, 14], flags: {} }).length).toBeLessThanOrEqual(12);
+    expect(encodeSave({ completed: [1, 2, 3, 4, 5, 6, 11, 12, 13, 14], flags: { "side12.bode": "weg" } }).length).toBeLessThanOrEqual(12);
   });
 
   it("accepts sloppy typing: lower case, spaces, O for 0, I/L for 1", () => {

@@ -8,7 +8,11 @@ export type Puzzle =
   | { kind: "words"; intro: string; pairs: [string, string][]; done: string }
   | { kind: "acrostic"; intro: string; heading: string; lines: string[]; signed: string; answer: string; hint: string; done: string }
   | { kind: "stars"; intro: string; done: string }
-  | { kind: "coupons"; intro: string; board: string[]; coupons: { id: string; label: string; ok: boolean; why?: string }[]; done: string };
+  | { kind: "coupons"; intro: string; board: string[]; coupons: { id: string; label: string; ok: boolean; why?: string }[]; done: string }
+  /** The messenger's desk at the town hall: a week of orders to stall (`game/bureau.ts`). */
+  | { kind: "bureau"; title: string; intro: string; done: string }
+  /** The rooms of the orphanage: a placement puzzle a month (`game/rooms.ts`). */
+  | { kind: "rooms"; title: string; intro: string; done: string };
 
 export interface ArchiveSlot {
   /** What the licensed scan will show. Rendered by ArchivePlaceholder until it exists. */
@@ -84,6 +88,8 @@ export interface Chapter {
   /** A side story (zijspoor): opens once main chapter `after` is done (0: from the start). */
   side?: { after: number };
   puzzle?: Puzzle;
+  /** A short paper puzzle played before `puzzle`, as a way in. */
+  warmup?: Puzzle;
 }
 
 export const yearPos = (year: number, month: number) => Math.max(0, (year - 1940 + (month - 1) / 12) / 5);

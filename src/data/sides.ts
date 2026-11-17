@@ -45,11 +45,17 @@ export const SIDES: Chapter[] = [
         image: "/img/scenes/weeshuis.webp",
         title: "Een schrift met twee talen",
         brief:
-          "Max, een van de jongens, schrijft woorden in een schrift: links Duits, rechts Nederlands. Help hem de juiste paren te vinden.",
+          "Max, een van de jongens, schrijft woorden in een schrift: links Duits, rechts Nederlands. Help hem eerst met de woorden. Daarna help je het huis in te richten, maand na maand, tot december.",
         cta: "Pak het schrift",
       },
     ],
     puzzle: {
+      kind: "rooms",
+      title: "Het huis vult zich",
+      intro: "Elke maand een kamer: de slaapzaal, de keuken, de klas. Tik op een naam en dan op een plek. Elke regel zegt zelf of hij klopt.",
+      done: "December 1939. De opvang gaat dicht; de jongens gaan naar tehuizen in Amsterdam. Max schrijft nog één brief: ‘Wir gehen nach Amsterdam. Het schrift neem ik mee.’",
+    },
+    warmup: {
       kind: "words",
       intro: "Tik een Duits woord en daarna het Nederlandse woord dat erbij hoort.",
       pairs: [
@@ -60,7 +66,7 @@ export const SIDES: Chapter[] = [
         ["Schule", "school"],
         ["danke", "dank je"],
       ],
-      done: "Onder de laatste regel schrijft Max nog één woord, in het Nederlands: ‘thuis?’ Met een vraagteken.",
+      done: "Onder de laatste regel schrijft Max nog één woord, in het Nederlands: ‘thuis?’ Met een vraagteken. Dan roept de directrice: er moeten bedden worden verdeeld.",
     },
     mirror: {
       edition: "Zijspoor",
@@ -117,11 +123,17 @@ export const SIDES: Chapter[] = [
         kind: "task",
         image: "/img/scenes/stadhuis.webp",
         title: "Een bekendmaking met een geheim",
-        brief: "De bode heeft iets in de tekst verstopt, voor wie goed kijkt. Vind zijn boodschap voordat je hem ophangt.",
+        brief: "De bode heeft iets in de tekst verstopt, voor wie goed kijkt. Vind zijn boodschap. Daarna neem je zijn plaats aan het bureau in, de week voordat ze de burgemeester komen halen.",
         cta: "Lees de bekendmaking",
       },
     ],
     puzzle: {
+      kind: "bureau",
+      title: "Op het bureau",
+      intro: "Elke dag komt er een bevel van de bezetter. Wie traag is en fouten vindt, wint tijd voor de stad.",
+      done: "Het bureau is leeg. Buiten op de Markt staat een auto met draaiende motor.",
+    },
+    warmup: {
       kind: "acrostic",
       intro: "Een nagemaakte bekendmaking: de tekst is voor dit spel verzonnen. Wat zegt de bode tegen de stad?",
       heading: "BEKENDMAKING · VERDUISTERING",
@@ -138,17 +150,28 @@ export const SIDES: Chapter[] = [
       signed: "Gouda, juni 1940",
       answer: "HOUD MOED",
       hint: "Kijk niet naar de zinnen, maar naar hoe ze beginnen.",
-      done: "Je hangt de bekendmaking op de deur. Wie hem van boven naar beneden leest, ziet het staan.",
+      done: "Je hangt de bekendmaking op de deur. Wie hem van boven naar beneden leest, ziet het staan. ‘Kom morgen terug,’ zegt de bode. ‘Dan leer ik je mijn vak: traag zijn.’",
     },
     mirror: {
       edition: "Zijspoor",
       dateline: "GOUDA · JUNI 1940",
-      story: () => ({
-        headline: "Bekendmaking op de deur; ‘houd moed’ staat erin, voor wie het ziet",
-        body: "De bode zei niets meer en ging naar binnen. Twee vrouwen bleven voor de deur staan lezen, van boven naar beneden. Een van hen glimlachte, en liep snel door.",
-      }),
+      story: (flags) =>
+        flags["side12.bode"] === "weg"
+          ? {
+              headline: "Bode overgeplaatst; bevelen liepen dagen vertraging op",
+              body: "Je hebt de Ortskommandant een week lang laten wachten, en dat heeft hij gemerkt. Op maandag zit er een nieuwe bode aan het bureau, een die snel tekent. Jij telt bonkaarten bij de distributie.",
+            }
+          : flags["side12.bode"] === "lijstje"
+            ? {
+                headline: "Trage bode mag blijven; ‘maar we kijken mee’",
+                body: "Een sergeant kwam twee keer langs om naar je bureau te kijken. Je glimlachte en zocht een pen. Op de deur hangt nog steeds de bekendmaking, en wie hem van boven naar beneden leest, ziet het staan.",
+              }
+            : {
+                headline: "Bekendmaking op de deur; op het stadhuis gaat alles heel traag",
+                body: "Een bevel met een datum die niet bestaat, een adres dat niet klopt: het stadhuis stuurde ze keurig terug. Niemand verdenkt de saaie bode. Op de deur staat ‘houd moed’, voor wie het ziet.",
+              },
       factsTitle: "Een burgemeester die weigerde",
-      facts: ["stadhuis.refuse", "stadhuis.arrest", "stadhuis.liera", "stadhuis.return"],
+      facts: ["stadhuis.refuse", "stadhuis.aanwijzingen", "stadhuis.arrest", "stadhuis.liera", "stadhuis.return"],
       scan: { label: "SCAN · stadhuis van Gouda met zandzakken, 1940", credit: "Bron volgt: Streekarchief Midden-Holland" },
       notice: {
         title: "Wat hij zei",

@@ -1,3 +1,4 @@
+import { SIDES } from "@/data/sides";
 import { describe, expect, it } from "vitest";
 import {
   CHOICES,
@@ -24,7 +25,9 @@ describe("choice system", () => {
 
   it("echoes never surface before their flag can be set", () => {
     for (const e of ECHOES) {
-      const setIn = Number(e.when.flag.slice(2, 3));
+      // "ch4.x" is set in chapter 4; "side12.x" in a side story, which opens after the chapter it follows
+      const side = e.when.flag.match(/^side(\d+)\./);
+      const setIn = side ? SIDES.find((s) => s.id === Number(side[1]))!.side!.after : Number(e.when.flag.slice(2, 3));
       expect(e.chapter, e.id).toBeGreaterThan(setIn);
       expect(e.chapter, e.id).toBeLessThanOrEqual(EPILOGUE);
     }

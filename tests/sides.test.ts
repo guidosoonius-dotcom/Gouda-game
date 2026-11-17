@@ -32,8 +32,7 @@ describe("side stories (zijsporen)", () => {
   });
 
   it("puzzles can be solved: the hidden message reads down the first letters, there are coupons to cut", () => {
-    for (const s of SIDES) {
-      const p = s.puzzle!;
+    for (const p of SIDES.flatMap((s) => [s.puzzle!, ...(s.warmup ? [s.warmup] : [])])) {
       if (p.kind === "acrostic") expect(p.lines.map((l) => l[0]).join("")).toBe(p.answer.replace(/\s/g, ""));
       if (p.kind === "coupons") {
         expect(p.coupons.some((c) => c.ok)).toBe(true);
