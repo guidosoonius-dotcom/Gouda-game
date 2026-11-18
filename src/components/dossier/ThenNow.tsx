@@ -22,9 +22,11 @@ export function ThenNow({
     setPos(Math.max(6, Math.min(94, ((clientX - r.left) / r.width) * 100)));
   };
 
+  // the credit is shown only for photographs that really loaded
+  const [lost, setLost] = useState({ then: false, now: false });
   const credits = [
-    then.image && `Toen: ${then.image.credit}`,
-    now.image && `Nu: ${now.image.credit}`,
+    then.image && !lost.then && `Toen: ${then.image.credit}`,
+    now.image && !lost.now && `Nu: ${now.image.credit}`,
   ].filter(Boolean);
   return (
     <div className="flex flex-col gap-1.5">
@@ -41,7 +43,7 @@ export function ThenNow({
           slot={now}
           tone="light"
           caption={false}
-          className="absolute inset-0"
+          className="absolute inset-0" onBroken={() => setLost((l) => ({ ...l, now: true }))}
         />
         <div
           className="absolute inset-y-0 left-0 overflow-hidden"
@@ -55,7 +57,7 @@ export function ThenNow({
               slot={then}
               tone="dark"
               caption={false}
-              className="absolute inset-0"
+              className="absolute inset-0" onBroken={() => setLost((l) => ({ ...l, then: true }))}
             />
           </div>
         </div>
