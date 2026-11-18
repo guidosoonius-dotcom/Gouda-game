@@ -27,6 +27,16 @@ export const TUNING = {
     /** Seconds without judging after a change (the resize itself costs a frame or two). */
     adaptCooldown: 2,
   },
+  /**
+   * Hulpmodus (a setting): gentler minigames for younger or less practised players. Factors on
+   * the values above; the story and its outcomes stay the same. Never for chapter 3 (no game).
+   */
+  assist: {
+    canal: { exposureLimit: 1.6, strokeNoise: 0.8, noiseAlert: 1.15, sweepPeriod: 1.25 },
+    rooftop: { exposureLimit: 1.8, jumpWindow: 1.3, jumpClean: 1.5, time: 1.2 },
+    bike: { time: 1.25, bombEvery: 1.35, bombWarn: 1.4, bellRange: 1.25 },
+    packing: { rumbleInterval: 1.5 },
+  },
   ui: {
     /** Text size steps (multiplier on every font size): normal, large, largest. */
     textScales: [1, 1.15, 1.3],

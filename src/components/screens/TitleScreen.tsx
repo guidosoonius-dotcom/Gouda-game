@@ -4,9 +4,11 @@ import { useGameStore, type Mode } from "@/store/useGameStore";
 import { sfx, unlockAudio } from "@/lib/sound";
 import { Arrow, Headphones } from "@/components/ui/icons";
 import { InstallHint } from "@/components/ui/PwaSetup";
+import { SettingsSheet } from "@/components/ui/SettingsSheet";
 import { AboutSheet } from "@/components/ui/AboutSheet";
 import { AnimatePresence } from "motion/react";
 import { useState } from "react";
+import { CHAPTERS } from "@/data/chapters";
 
 function ModeButton({
   mode,
@@ -46,9 +48,14 @@ function ModeButton({
 }
 
 export function TitleScreen() {
-  const hasProgress = useGameStore((s) => s.completed.length > 0);
+  const completed = useGameStore((s) => s.completed);
+  const hasProgress = completed.length > 0;
+  // where "Ga verder" goes: the next evening, the epilogue, or nothing left to do
+  const next = CHAPTERS.find((c) => !completed.includes(c.id));
+  const resume = next ? `Verder met: ${next.title}` : completed.includes(6) ? "Alles gelezen. Lees terug in je koerierstas." : "Verder met: de epiloog op de Markt";
   const mode = useGameStore((s) => s.mode);
   const [about, setAbout] = useState(false);
+  const [settings, setSettings] = useState(false);
 
   return (
     <div className="absolute inset-0 overflow-hidden bg-night text-parchment">
@@ -97,32 +104,35 @@ export function TitleScreen() {
           <ModeButton
             mode="location"
             title={hasProgress && mode === "location" ? "Ga verder op locatie" : "Speel op locatie"}
-            sub="Een wandeling door de binnenstad van Gouda"
+            sub={hasProgress && mode === "location" ? resume : "Een wandeling door de binnenstad van Gouda"}
             primary
           />
           <ModeButton
             mode="home"
             title={hasProgress && mode === "home" ? "Ga verder thuis" : "Speel thuis"}
-            sub="Met de kaart, de beelden en een koptelefoon"
+            sub={hasProgress && mode === "home" ? resume : "Met de kaart, de beelden en een koptelefoon"}
           />
         </div>
 
         <InstallHint />
 
-        <div className="flex items-center justify-between font-label text-[length:calc(11px*var(--ts,1))] font-semibold tracking-[0.15em] text-ash">
+        <div className="flex flex-col gap-1 font-label text-[length:calc(11px*var(--ts,1))] font-semibold tracking-[0.15em] text-ash">
           <span className="flex items-center gap-2">
             <Headphones color="#8f989f" />
-            KOPTELEFOON AANBEVOLEN
+            KOPTELEFOON AANBEVOLEN · 12+
           </span>
-          <span className="flex items-center gap-4">
-            <button type="button" onClick={() => setAbout(true)} className="-my-3 py-3 tracking-[0.15em] underline decoration-dotted underline-offset-4">
+          <span className="flex flex-wrap items-center gap-x-5">
+            <button type="button" onClick={() => setSettings(true)} className="py-3 tracking-[0.15em] underline decoration-dotted underline-offset-4">
+              INSTELLINGEN
+            </button>
+            <button type="button" onClick={() => setAbout(true)} className="py-3 tracking-[0.15em] underline decoration-dotted underline-offset-4">
               OVER DIT SPEL
             </button>
-            12+
           </span>
         </div>
       </div>
       <AnimatePresence>{about && <AboutSheet onClose={() => setAbout(false)} />}</AnimatePresence>
+      <AnimatePresence>{settings && <SettingsSheet onClose={() => setSettings(false)} />}</AnimatePresence>
     </div>
   );
 }

@@ -1,7 +1,8 @@
 "use client";
 
 import { Fragment } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
+import { useStill } from "@/lib/still";
 import type { Level, Placement, RuleState } from "@/game/rooms";
 
 interface Props {
@@ -17,7 +18,7 @@ const MARK = { 1: { icon: "✓", word: "klopt", color: "#8fc79a" }, 0: { icon: "
 
 /** The room as a grid of beds, desks or shelf places, with the rules and whether each one holds. */
 export function RoomBoard({ level, p, sel, rules, bad, onCell }: Props) {
-  const still = useReducedMotion();
+  const still = useStill();
   const name = (id: string | null) => level.tokens.find((t) => t.id === id);
   const rows = Array.from({ length: level.rows }, (_, r) => r);
   const cols = Array.from({ length: level.cols }, (_, c) => c);

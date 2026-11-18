@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { sfx } from "./sound";
+import { prefersStill } from "./still";
 
 /** Typewriter reveal. Returns the visible part of `text`, whether it is done, and a skip function. */
 export function useTyped(text: string, cps = 38) {
@@ -9,7 +10,7 @@ export function useTyped(text: string, cps = 38) {
   const reduced = useRef(false);
 
   useEffect(() => {
-    reduced.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    reduced.current = prefersStill();
     if (reduced.current) return setCount(text.length);
     setCount(0);
     let i = 0;

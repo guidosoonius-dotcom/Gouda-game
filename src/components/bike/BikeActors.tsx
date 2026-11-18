@@ -1,5 +1,6 @@
 "use client";
 
+import { prefersStill } from "@/lib/still";
 import { useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
@@ -103,8 +104,6 @@ export function BikeActors({ sim, kees, shake }: { sim: React.RefObject<BikeSim>
   const prevX = useRef(0);
   const lean = useRef(0);
   const baseX = useRef(0);
-  // no camera shake for players who asked the system for less motion
-  const still = useRef(typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
 
   useFrame((_, delta) => {
     const s = sim.current;
@@ -116,7 +115,8 @@ export function BikeActors({ sim, kees, shake }: { sim: React.RefObject<BikeSim>
     // trauma squared: a near miss shakes hard, the tail dies away gently; smooth sines rather than a
     // fresh random number each frame, which buzzes and depends on the frame rate
     const now = performance.now() / 1000;
-    const j = still.current ? 0 : shake.current * shake.current * 0.5;
+    // no camera shake for players who asked for less motion
+    const j = prefersStill() ? 0 : shake.current * shake.current * 0.5;
     const shakeX = j * (Math.sin(now * 37) * 0.6 + Math.sin(now * 23 + 1.3) * 0.4);
     const shakeY = j * (Math.sin(now * 31 + 0.7) * 0.6 + Math.sin(now * 19 + 2.1) * 0.4);
     const ease = 1 - Math.exp(-3.2 * dt);

@@ -27,7 +27,18 @@ const zone =
   "pointer-events-auto absolute -bottom-[70px] h-60 w-60 touch-none rounded-full border border-parchment/35 bg-night/45 p-0 transition-colors active:border-ochre active:bg-ochre/15";
 
 /** DOM overlay of the bicycle run: the raid clock, who is safe, steering thumbs and the bell. */
-export function BikeHud({ hud, onSteer, onBell }: { hud: BikeHudState; onSteer: (side: "L" | "R", down: boolean) => void; onBell: () => void }) {
+export function BikeHud({
+  hud,
+  onSteer,
+  onBell,
+  onBrake,
+}: {
+  hud: BikeHudState;
+  onSteer: (side: "L" | "R", down: boolean) => void;
+  onBell: () => void;
+  /** One-button setting: a brake button instead of holding both sides. */
+  onBrake?: (down: boolean) => void;
+}) {
   const m = Math.floor(hud.timeLeft / 60);
   const sec = String(Math.floor(hud.timeLeft % 60)).padStart(2, "0");
   const thumb = (side: "L" | "R") => ({
@@ -90,7 +101,20 @@ export function BikeHud({ hud, onSteer, onBell }: { hud: BikeHudState; onSteer: 
         </svg>
         <span className="label text-[length:calc(11px*var(--ts,1))] tracking-[0.2em]">Bel</span>
       </button>
-      <span className="absolute inset-x-0 bottom-[118px] text-center font-fell text-[length:calc(12.5px*var(--ts,1))] italic tracking-normal text-bone">beide vast: remmen</span>
+      {onBrake ? (
+        <button
+          type="button"
+          aria-label="Remmen (vasthouden)"
+          onPointerDown={(e) => (e.currentTarget.setPointerCapture(e.pointerId), onBrake(true))}
+          onPointerUp={() => onBrake(false)}
+          onPointerCancel={() => onBrake(false)}
+          className="pointer-events-auto absolute bottom-[calc(118px+env(safe-area-inset-bottom))] left-1/2 flex h-11 w-24 -translate-x-1/2 touch-none items-center justify-center border border-parchment/50 bg-night/70 active:bg-ochre active:text-slate"
+        >
+          <span className="label text-[length:calc(12px*var(--ts,1))] tracking-[0.18em]">Rem</span>
+        </button>
+      ) : (
+        <span className="absolute inset-x-0 bottom-[118px] text-center font-fell text-[length:calc(12.5px*var(--ts,1))] italic tracking-normal text-bone">beide vast: remmen</span>
+      )}
     </div>
   );
 }

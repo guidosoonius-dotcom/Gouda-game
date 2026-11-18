@@ -9,10 +9,11 @@ import { PaperTexture } from "@/components/ui/Grain";
 import { FactBlock, FactLegend } from "@/components/ui/Fact";
 import { ArchivePlaceholder } from "@/components/ui/ArchivePlaceholder";
 import { SHOW_UNVERIFIED } from "@/data/sources";
+import { encodeSave } from "@/game/save";
 
 /** De Historische Spiegel: the player's fiction, stamped as fiction, next to what really happened. */
 export function MirrorScreen() {
-  const { chapter: chapterId, flags, rereading, completeChapter } = useGameStore();
+  const { chapter: chapterId, flags, rereading, completeChapter, completed } = useGameStore();
   const chapter = chapterById(chapterId);
   const mirror = chapter.mirror!;
   const story = mirror.story(flags);
@@ -82,6 +83,14 @@ export function MirrorScreen() {
           <span className="text-[length:calc(12.5px*var(--ts,1))] italic leading-[1.4] text-[#3c3b37]">{mirror.notice.body}</span>
         </aside>
         <FactLegend ids={[...mirror.facts, mirror.notice.fact]} />
+        {!rereading && (
+          // iOS can wipe a site's storage: the code (with this chapter in it) brings the game back
+          <p className="m-0 border border-dashed border-press/50 px-3 py-2 text-[length:calc(13px*var(--ts,1))] leading-snug text-[#3c3b37]">
+            Je herstelcode: <span className="font-type text-[length:calc(15px*var(--ts,1))] text-press">{encodeSave({ completed: [...completed, chapter.id], flags })}</span>
+            <br />
+            Schrijf hem op. Daarmee haal je je voortgang terug, ook op een ander toestel.
+          </p>
+        )}
 
       </div>
       <div className="flex flex-none flex-col gap-3 px-5 pb-[calc(22px+env(safe-area-inset-bottom))] shadow-[0_-14px_14px_-6px_#ece5d3]">

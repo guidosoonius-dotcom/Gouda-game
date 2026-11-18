@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
+import { useStill } from "@/lib/still";
 import { decide, messenger, nextDay, START, toolsOn, type DeskState, type Result, type Tool, type Verdict } from "@/game/bureau";
 import { FRIDAY_FACT, ORDERS, OUTCOME_TEXT } from "@/data/bureau";
 import { TUNING } from "@/game/tuning";
@@ -23,7 +24,7 @@ const STAMP: Record<Verdict, { label: string; color: string }> = {
  */
 export function BureauPuzzle({ onSolved }: { onSolved: () => void }) {
   const finishTask = useGameStore((s) => s.finishTask);
-  const still = useReducedMotion();
+  const still = useStill();
   const [desk, setDesk] = useState<DeskState>(START);
   const [line, setLine] = useState(-1);
   const [tool, setTool] = useState<Tool | null>(null);

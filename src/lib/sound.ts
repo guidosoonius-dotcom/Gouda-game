@@ -6,6 +6,9 @@
  */
 let ctx: AudioContext | null = null;
 let master: GainNode | null = null;
+/** The background beds (water, wind) on their own bus, so they can be off while effects stay on. */
+let beds: GainNode | null = null;
+let bedsOn = true;
 let muted = false;
 
 function ac(): AudioContext | null {
@@ -17,6 +20,9 @@ function ac(): AudioContext | null {
     master = ctx.createGain();
     master.gain.value = muted ? 0 : 0.9;
     master.connect(ctx.destination);
+    beds = ctx.createGain();
+    beds.gain.value = bedsOn ? 1 : 0;
+    beds.connect(master);
   }
   return ctx;
 }
@@ -32,6 +38,11 @@ export function setSuspended(value: boolean) {
   if (!ctx) return;
   if (value && ctx.state === "running") void ctx.suspend();
   if (!value && ctx.state === "suspended") void ctx.resume();
+}
+
+export function setAmbience(on: boolean) {
+  bedsOn = on;
+  if (beds && ctx) beds.gain.setTargetAtTime(on ? 1 : 0, ctx.currentTime, 0.05);
 }
 
 export function setMuted(value: boolean) {
@@ -251,7 +262,7 @@ export const ambience = {
     const depth = c.createGain();
     depth.gain.value = 0.05;
     lfo.connect(depth).connect(gain.gain);
-    src.connect(filter).connect(gain).connect(master);
+    src.connect(filter).connect(gain).connect(beds ?? master);
     src.start();
     lfo.start();
     bed = { src, lfo, gain };

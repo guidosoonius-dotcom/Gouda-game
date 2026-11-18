@@ -184,6 +184,14 @@
   }
   .anim-slam { opacity: 0.88; transform: rotate(-9deg); }
 }
+/* the same for the in-game setting "Minder beweging" (class on <html>) */
+.still :is(.anim-kenburns, .anim-sweep, .anim-fog, .anim-caret, .anim-grain, .anim-lantern,
+  .anim-lantern-inv, .anim-seal, .anim-halo, .anim-route, .anim-ping, .anim-slam,
+  .anim-print, .anim-print-late, .anim-tremble) {
+  animation: none;
+}
+.still .anim-slam { opacity: 0.88; transform: rotate(-9deg); }
+.still .map-lantern { animation: none; transition: none; }
 
 /* ---------- map lantern ---------- */
 @property --mx { syntax: "<length-percentage>"; inherits: false; initial-value: 50%; }

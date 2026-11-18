@@ -1,5 +1,6 @@
 "use client";
 
+import { prefersStill } from "@/lib/still";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 
 export interface View {
@@ -23,7 +24,7 @@ const TOP_ROOM = 64;
 /** A finger must move this far before it is a drag and not a tap on a seal. */
 const SLOP = 7;
 
-const reduced = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const reduced = prefersStill;
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
 
 /**

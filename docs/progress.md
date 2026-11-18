@@ -163,6 +163,17 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   (`archive-files.json`). (4) *Terugknop*: terug gaat een pagina of scherm terug in plaats van het
   spel uit (de krant telt dan als gelezen; in een 3D-spel pauzeert het).
 
+- **Tweede reviewronde (sessie 3):** *Instellingen* (`ui/SettingsSheet.tsx`), te openen vanaf het
+  titelscherm, de koerierstas en de pauze: tekstgrootte, geluid en achtergrondgeluid apart (een
+  eigen bus in `lib/sound.ts`), Minder beweging (bovenop de systeeminstelling; `lib/still.ts`),
+  Hulpmodus en Eén knop. *Hulpmodus* (`game/assist.ts`, factoren in `TUNING.assist`): meer tijd,
+  tragere zoeklichten, ruimere sprongen, minder bommen, minder schokgolven; het verhaal blijft
+  gelijk. *Eén knop*: een knop Stil (Nachtvaart) en Rem (Vluchtspoor) in plaats van twee duimen
+  tegelijk. *Opslag versie 2*: instellingen, en waar je was: na herladen (of als iOS het tabblad
+  sloot) kom je terug in het dossier, een minigame begint dan opnieuw bij zijn opdracht.
+  *Menu's*: "Ga verder" noemt het volgende hoofdstuk; de kaart toont 2/5 avonden en de zijsporen
+  met het ruitje als uitleg; onder elke krant staat de herstelcode.
+
 ## Half af
 - Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).
 - De tekst van hoofdstuk 3 is een voorstel: laat die lezen door iemand van het Joods Monument
@@ -186,7 +197,7 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   ("J. Blaeu, 1649") in "Over dit spel": herkomst van het kaartbestand en jaartal nog controleren.
 
 ## Controle
-- `npm run build` · `npm test` (93 tests) · `npm run test:e2e` (speelt hoofdstuk 1 door op 390×844,
+- `npm run build` · `npm test` (97 tests) · `npm run test:e2e` (speelt hoofdstuk 1 door op 390×844,
   speelt het dossier van hoofdstuk 4 tot in de vaart en zet screenshots in `test-results/`) · `npm run assets`.
 - Ontwikkelhulp (alleen in dev): `/?canal=1` opent de vaart direct, `&z=-60` start verderop;
   `/?roof=1` opent de daken, `&cover=8` start verderop; `/?bike=1` opent de fietstocht (`&bomb=1` laat direct een bom vallen, `&plane=1` toont een

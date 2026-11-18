@@ -1,6 +1,5 @@
 "use client";
 
-import { TextSize } from "./TextSize";
 import { motion } from "motion/react";
 
 /** Who made what, and what is real and what is not. Reached from the satchel and the title screen. */
@@ -67,7 +66,6 @@ export function AboutSheet({ onClose }: { onClose: () => void }) {
           </button>
         </header>
         <div className="flex flex-col gap-5 overflow-y-auto px-5 pb-[calc(24px+env(safe-area-inset-bottom))] pt-4">
-          <TextSize />
           {BLOCKS.map((b) => (
             <div key={b.title} className="flex flex-col gap-1.5">
               <span className="label text-[length:calc(11px*var(--ts,1))] text-bone">{b.title}</span>

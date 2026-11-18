@@ -85,6 +85,7 @@ export function BikeGame() {
   const input = useRef<Input>({ L: false, R: false, bell: false });
   const shake = useRef(0);
   const [phase, setPhase] = useState<"intro" | "play" | "dilemma" | "done">("intro");
+  const oneButton = useGameStore((s) => s.settings.oneButton);
   const [hud, setHud] = useState<BikeHudState>(BIKE_HUD_START);
   const [outcome, setOutcome] = useState<BikeOutcome>("allen");
   const [flash, setFlash] = useState(false);
@@ -180,7 +181,9 @@ export function BikeGame() {
       <Cinema warm />
       <PauseLayer active={phase === "play"} title="Vluchtspoor bij het Station" onRestart={start} />
       <div className="pointer-events-none absolute inset-0 transition-opacity duration-300" style={{ background: "radial-gradient(ellipse at 50% 45%, rgba(255,230,190,.95), rgba(255,160,70,.6) 60%, rgba(255,120,40,.3))", opacity: flash ? 0.85 : 0, transitionDuration: flash ? "40ms" : "500ms" }} />
-      {phase === "play" && <BikeHud hud={hud} onSteer={steer} onBell={bell} />}
+      {phase === "play" && (
+        <BikeHud hud={hud} onSteer={steer} onBell={bell} onBrake={oneButton ? (on) => (steer("L", on), steer("R", on)) : undefined} />
+      )}
 
       <AnimatePresence>
         {phase === "dilemma" && (

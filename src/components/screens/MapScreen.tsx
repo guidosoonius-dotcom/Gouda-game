@@ -1,5 +1,6 @@
 "use client";
 
+import { SIDES } from "@/data/sides";
 import { useState } from "react";
 import { AnimatePresence } from "motion/react";
 import { CHAPTERS } from "@/data/chapters";
@@ -124,6 +125,14 @@ export function MapScreen() {
               <ModeTab mode="location" label="OP LOCATIE" />
               <ModeTab mode="home" label="THUIS" />
             </div>
+            {/* progress, and what the diamonds on the map are */}
+            <span className="label mt-2.5 flex items-center gap-1.5 text-[length:calc(11px*var(--ts,1))] tracking-[0.14em] text-bone">
+              {CHAPTERS.filter((c) => completed.includes(c.id)).length}/{CHAPTERS.length} avonden ·
+              <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+                <path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#e2a93a" strokeWidth="1.4" />
+              </svg>
+              {SIDES.filter((s) => completed.includes(s.id)).length}/{SIDES.length} zijsporen
+            </span>
           </div>
           <button
             type="button"

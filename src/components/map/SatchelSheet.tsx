@@ -8,7 +8,7 @@ import { CHOICES } from "@/game/choices";
 import { decodeSave, encodeSave } from "@/game/save";
 import { sfx } from "@/lib/sound";
 import { Arrow, Speaker } from "@/components/ui/icons";
-import { TextSize } from "@/components/ui/TextSize";
+import { SettingsSheet } from "@/components/ui/SettingsSheet";
 import { AboutSheet } from "@/components/ui/AboutSheet";
 
 const KIND_LABEL: Record<SatchelItem["kind"], string> = { krant: "KRANT", voorwerp: "VOORWERP", bron: "BRON" };
@@ -46,6 +46,7 @@ export function SatchelSheet({ onClose }: { onClose: () => void }) {
   const [error, setError] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
   const [about, setAbout] = useState(false);
+  const [settings, setSettings] = useState(false);
 
   const tryRestore = () => {
     const p = decodeSave(entry);
@@ -151,9 +152,9 @@ export function SatchelSheet({ onClose }: { onClose: () => void }) {
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-x-4 border-t border-rule pt-4">
-            <div className="basis-full pb-1">
-              <TextSize />
-            </div>
+            <button type="button" onClick={() => setSettings(true)} className="label h-11 text-[length:calc(11px*var(--ts,1))] text-ochre">
+              Instellingen
+            </button>
             <button type="button" onClick={toggleMute} className="label flex h-11 items-center gap-2.5 text-[length:calc(11px*var(--ts,1))]">
               <Speaker off={muted} color="#ede6d6" />
               Geluid {muted ? "uit" : "aan"}
@@ -174,6 +175,7 @@ export function SatchelSheet({ onClose }: { onClose: () => void }) {
         </div>
       </motion.section>
       <AnimatePresence>{about && <AboutSheet onClose={() => setAbout(false)} />}</AnimatePresence>
+      <AnimatePresence>{settings && <SettingsSheet onClose={() => setSettings(false)} />}</AnimatePresence>
     </motion.div>
   );
 }

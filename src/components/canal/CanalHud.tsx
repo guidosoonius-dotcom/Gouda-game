@@ -69,7 +69,18 @@ function Thumb({ side, onDown, onUp }: { side: Side; onDown: (s: Side) => void; 
 }
 
 /** DOM overlay of the Nachtvaart minigame: every sound cue has a visual twin here. */
-export function CanalHud({ hud, onDown, onUp }: { hud: HudState; onDown: (s: Side) => void; onUp: (s: Side) => void }) {
+export function CanalHud({
+  hud,
+  onDown,
+  onUp,
+  onStill,
+}: {
+  hud: HudState;
+  onDown: (s: Side) => void;
+  onUp: (s: Side) => void;
+  /** One-button setting: a "lie still" button instead of holding both oars. */
+  onStill?: (down: boolean) => void;
+}) {
   const bars = Math.round(hud.noise * 10);
   const alertBar = Math.round(TUNING.canal.noiseAlert * 10);
   const ring = 113;
@@ -164,11 +175,24 @@ export function CanalHud({ hud, onDown, onUp }: { hud: HudState; onDown: (s: Sid
         <Thumb side="L" onDown={onDown} onUp={onUp} />
         <Thumb side="R" onDown={onDown} onUp={onUp} />
       </div>
-      <span className="absolute inset-x-0 bottom-[calc(22px+env(safe-area-inset-bottom))] text-center font-fell text-[length:calc(13px*var(--ts,1))] italic leading-tight text-bone">
-        beide vast:
-        <br />
-        stil liggen
-      </span>
+      {onStill ? (
+        <button
+          type="button"
+          aria-label="Stil liggen (vasthouden)"
+          onPointerDown={(e) => (e.currentTarget.setPointerCapture(e.pointerId), onStill(true))}
+          onPointerUp={() => onStill(false)}
+          onPointerCancel={() => onStill(false)}
+          className="pointer-events-auto absolute bottom-[calc(18px+env(safe-area-inset-bottom))] left-1/2 flex h-14 w-24 -translate-x-1/2 touch-none items-center justify-center border border-parchment/50 bg-night/70 active:bg-ochre active:text-slate"
+        >
+          <span className="label text-[length:calc(12px*var(--ts,1))] tracking-[0.18em]">Stil</span>
+        </button>
+      ) : (
+        <span className="absolute inset-x-0 bottom-[calc(22px+env(safe-area-inset-bottom))] text-center font-fell text-[length:calc(13px*var(--ts,1))] italic leading-tight text-bone">
+          beide vast:
+          <br />
+          stil liggen
+        </span>
+      )}
     </div>
   );
 }

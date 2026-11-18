@@ -207,6 +207,12 @@ Formaat: beslissing · waarom · alternatief.
     het spel sluiten midden in een hoofdstuk. In een 3D-spel betekent terug "pauze", want daar is
     het spel zelf het scherm.
 
+57. **De hulpmodus verandert de moeilijkheid, niet het verhaal.** Een klas speelt met sterke en
+    zwakke spelers; voor de geschiedenis maakt het niet uit of je in drie of vijf pogingen de sluis
+    haalt. De uitkomst van een minigame (en dus de krant) hangt nog steeds af van hoe het ging.
+58. **Geen gelijktijdige knoppen als enige manier.** Twee duimen tegelijk vasthouden is voor
+    sommige spelers niet te doen; de instelling Eén knop geeft dezelfde handeling op één knop.
+
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.
 - Blaeu-kaart: pin-posities zijn op het oog geplaatst. Georefereren met controlepunten in M8.

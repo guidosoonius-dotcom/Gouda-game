@@ -9,6 +9,16 @@ import type { Progress } from "@/game/save";
 
 export type View = "title" | "map" | "dossier" | "task" | "mirror" | "epilogue";
 export type Mode = "location" | "home";
+export interface Settings {
+  assist: boolean;
+  oneButton: boolean;
+  still: boolean;
+  ambience: boolean;
+}
+export const DEFAULT_SETTINGS: Settings = { assist: false, oneButton: false, still: false, ambience: true };
+
+/** Where a reload brings the player back: a minigame restarts from its dossier page. */
+const RESUME: Record<View, View> = { title: "title", map: "map", dossier: "dossier", task: "dossier", mirror: "mirror", epilogue: "epilogue" };
 
 interface GameState {
   view: View;
@@ -21,6 +31,10 @@ interface GameState {
   muted: boolean;
   /** Multiplier on all text sizes (`TUNING.ui.textScales`). */
   textScale: number;
+  /** Settings (see SettingsSheet). `assist`: gentler minigames (`TUNING.assist`); `oneButton`: a
+   *  single button instead of holding two at once; `still`: less motion, on top of the system
+   *  setting; `ambience`: the background sound beds. */
+  settings: Settings;
   /** The player's "letter to later", written in the epilogue. Stays on this device. */
   letter: string;
   /** True when the mirror is re-read from the satchel (no progress change on close). */
@@ -45,6 +59,7 @@ interface GameState {
   back: () => void;
   toggleMute: () => void;
   setTextScale: (scale: number) => void;
+  setSetting: <K extends keyof Settings>(key: K, value: Settings[K]) => void;
   restore: (p: Progress) => void;
   reset: () => void;
 }
@@ -65,6 +80,7 @@ export const useGameStore = create<GameState>()(
       flags: {},
       muted: false,
       textScale: 1,
+      settings: DEFAULT_SETTINGS,
       letter: "",
       rereading: false,
 
@@ -106,13 +122,37 @@ export const useGameStore = create<GameState>()(
       },
       toggleMute: () => set((s) => ({ muted: !s.muted })),
       setTextScale: (textScale) => set({ textScale }),
+      setSetting: (key, value) => set((s) => ({ settings: { ...s.settings, [key]: value } })),
       restore: (p) => set({ completed: p.completed, flags: p.flags, view: "map" }),
       reset: () => set({ completed: [], flags: {}, letter: "", chapter: 1, page: 0, view: "title", rereading: false }),
     }),
     {
       name: "koerier-aan-de-gouwe",
-      version: 1,
-      partialize: (s) => ({ mode: s.mode, completed: s.completed, flags: s.flags, muted: s.muted, textScale: s.textScale, letter: s.letter }),
+      // 2: settings, and where the player was (iOS discards tabs in the background)
+      version: 2,
+      migrate: (old, version) => {
+        const s = (old ?? {}) as Partial<GameState>;
+        // version 1 had no settings and no saved position: start those fresh
+        if (version < 2) return { ...s, settings: DEFAULT_SETTINGS, textScale: s.textScale ?? 1 } as GameState;
+        return s as GameState;
+      },
+      merge: (persisted, current) => {
+        const p = (persisted ?? {}) as Partial<GameState>;
+        return { ...current, ...p, settings: { ...DEFAULT_SETTINGS, ...p.settings } };
+      },
+      partialize: (s) => ({
+        mode: s.mode,
+        completed: s.completed,
+        flags: s.flags,
+        muted: s.muted,
+        textScale: s.textScale,
+        settings: s.settings,
+        letter: s.letter,
+        view: RESUME[s.view],
+        chapter: s.chapter,
+        page: s.page,
+        rereading: s.rereading,
+      }),
     },
   ),
 );

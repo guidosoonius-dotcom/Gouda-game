@@ -23,6 +23,8 @@ import { isFrozen } from "@/lib/pause";
 interface Input {
   strokes: Side[];
   held: Record<Side, number>;
+  /** The single "lie still" button of the one-button setting: the same as holding both oars. */
+  still?: boolean;
 }
 
 const ENDINGS: Record<Outcome, { title: string; body: string }> = {
@@ -63,7 +65,7 @@ function Loop({ sim, fx, input, onHud, onEvent }: {
     const dt = isFrozen() ? 0 : Math.min(delta, 0.05);
     const now = performance.now();
     const { L, R } = input.current.held;
-    const holdBoth = L > 0 && R > 0 && now - Math.max(L, R) > 220;
+    const holdBoth = !!input.current.still || (L > 0 && R > 0 && now - Math.max(L, R) > 220);
     for (const e of step(s, { strokes: input.current.strokes.splice(0), holdBoth }, dt)) {
       if (e.type === "stroke") {
         sfx.oar(e.masked ? 0.15 : 0.7);
@@ -114,6 +116,7 @@ export function CanalGame() {
   const fx = useRef<Fx>({ rings: [], oar: { L: -9, R: -9 } });
   const input = useRef<Input>({ strokes: [], held: { L: 0, R: 0 } });
   const [phase, setPhase] = useState<"intro" | "play" | "caught" | "done">("intro");
+  const oneButton = useGameStore((s) => s.settings.oneButton);
   const [hud, setHud] = useState<HudState>(HUD_START);
   const [outcome, setOutcome] = useState<Outcome>("stil");
 
@@ -193,7 +196,9 @@ export function CanalGame() {
 
       <Cinema />
       <PauseLayer active={phase === "play" || phase === "caught"} title="Nachtvaart bij het Verlaat" onRestart={start} />
-      {phase !== "intro" && phase !== "done" && <CanalHud hud={hud} onDown={down} onUp={up} />}
+      {phase !== "intro" && phase !== "done" && (
+        <CanalHud hud={hud} onDown={down} onUp={up} onStill={oneButton ? (on) => void (input.current.still = on) : undefined} />
+      )}
 
       <AnimatePresence>
         {phase === "caught" && (

@@ -148,8 +148,11 @@ async function packCrate(page, crateNo) {
     await page.waitForTimeout(1500);
     await expectText("Spertijd om acht uur");
     await shot("09-over-de-daken");
+    // A reload in the middle of a minigame brings the player back to its dossier (iOS discards
+    // background tabs); from there the back arrow leads to the map.
     await page.goto(base);
-    await page.getByRole("button", { name: /thuis/i }).click();
+    await expectText("Dossier 02");
+    await page.getByRole("button", { name: /Terug naar de kaart/i }).click();
 
     // Chapter 4: dossier, the dilemma about Jaap, then the WebGL crossing mounts and takes input.
     await page.getByRole("button", { name: /Hoofdstuk 4/i }).click();
@@ -179,6 +182,7 @@ async function packCrate(page, crateNo) {
     await page.evaluate(() => {
       const raw = JSON.parse(localStorage.getItem("koerier-aan-de-gouwe"));
       raw.state.completed = [1, 2, 3, 4];
+      raw.state.view = "title";
       localStorage.setItem("koerier-aan-de-gouwe", JSON.stringify(raw));
     });
     await page.goto(base);
@@ -200,6 +204,7 @@ async function packCrate(page, crateNo) {
       const raw = JSON.parse(localStorage.getItem("koerier-aan-de-gouwe"));
       raw.state.completed = [1, 2, 3, 4, 5];
       raw.state.flags["ch5.puin"] = "zoeken";
+      raw.state.view = "title";
       localStorage.setItem("koerier-aan-de-gouwe", JSON.stringify(raw));
     });
     await page.goto(base);

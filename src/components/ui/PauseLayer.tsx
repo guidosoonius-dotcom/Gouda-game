@@ -1,12 +1,13 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useGameStore } from "@/store/useGameStore";
 import { setBackOverride, setPaused, usePaused } from "@/lib/pause";
 import { setSuspended, sfx, unlockAudio } from "@/lib/sound";
 import { Arrow, Pause, Speaker } from "@/components/ui/icons";
 import { TextSize } from "@/components/ui/TextSize";
+import { SettingsSheet } from "@/components/ui/SettingsSheet";
 
 /**
  * Pause for the 3D minigames: a button at the top, the Escape key, the phone's back button, and
@@ -31,6 +32,7 @@ export function PauseLayer({
   const go = useGameStore((s) => s.go);
   const muted = useGameStore((s) => s.muted);
   const toggleMute = useGameStore((s) => s.toggleMute);
+  const [settings, setSettings] = useState(false);
 
   const pause = useCallback(() => {
     setPaused(true);
@@ -115,12 +117,16 @@ export function PauseLayer({
               </button>
               <TextSize />
             </div>
+            <button type="button" onClick={() => setSettings(true)} className="label h-11 self-start text-[length:calc(11px*var(--ts,1))] text-ochre">
+              Alle instellingen · hulpmodus
+            </button>
             <p className="m-0 font-news text-[length:calc(13px*var(--ts,1))] text-ash">
               Naar de kaart: je speelt dit hoofdstuk later opnieuw vanaf het begin van de opdracht.
             </p>
           </motion.div>
         )}
       </AnimatePresence>
+      <AnimatePresence>{active && paused && settings && <SettingsSheet onClose={() => setSettings(false)} />}</AnimatePresence>
     </>
   );
 }
