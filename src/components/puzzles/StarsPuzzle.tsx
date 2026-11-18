@@ -132,7 +132,7 @@ export function StarsPuzzle({ onSolved }: { onSolved: () => void }) {
           );
         })}
       </svg>
-      <span className="font-news text-[14px] italic text-bone" aria-live="polite">
+      <span className="font-news text-[length:calc(14px*var(--ts,1))] italic text-bone" aria-live="polite">
         {all ? "Vijf sterren. Eén is gevallen." : `${touched.length} van de 6`}
       </span>
     </div>

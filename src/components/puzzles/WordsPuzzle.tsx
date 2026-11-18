@@ -28,11 +28,11 @@ export function WordsPuzzle({ pairs, onSolved }: { pairs: [string, string][]; on
     }
   };
 
-  const tile = "flex min-h-11 items-center px-3 py-2 text-left font-type text-[16px] transition-colors";
+  const tile = "flex min-h-11 items-center px-3 py-2 text-left font-type text-[length:calc(16px*var(--ts,1))] transition-colors";
   return (
     <div className="grid grid-cols-2 gap-x-3 gap-y-2 bg-parchment p-3 text-ink" style={{ backgroundImage: "repeating-linear-gradient(transparent 0 31px, rgba(70,110,150,.22) 31px 32px)" }}>
-      <span className="label text-[10px] text-[#5c5a52]">Duits</span>
-      <span className="label text-[10px] text-[#5c5a52]">Nederlands</span>
+      <span className="label text-[length:calc(11px*var(--ts,1))] text-[#5c5a52]">Duits</span>
+      <span className="label text-[length:calc(11px*var(--ts,1))] text-[#5c5a52]">Nederlands</span>
       {pairs.map(([de], i) => (
         <div key={de} className="contents">
           <button
@@ -54,7 +54,7 @@ export function WordsPuzzle({ pairs, onSolved }: { pairs: [string, string][]; on
           </button>
         </div>
       ))}
-      <span className="col-span-2 font-news text-[13px] italic text-[#5c5a52]" aria-live="polite">
+      <span className="col-span-2 font-news text-[length:calc(13px*var(--ts,1))] italic text-[#5c5a52]" aria-live="polite">
         {matched.length === pairs.length ? "Alle woorden staan goed." : picked === null ? "Tik eerst een Duits woord." : `Welk woord hoort bij ‘${pairs[picked][0]}’?`}
       </span>
     </div>

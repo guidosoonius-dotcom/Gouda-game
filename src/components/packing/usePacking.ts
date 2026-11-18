@@ -5,7 +5,7 @@ import { TUNING } from "@/game/tuning";
 import { sfx } from "@/lib/sound";
 import { LEVELS, canPlace, dims, initPieces, isPacked, type Piece } from "./levels";
 import type { Hover } from "./Crate";
-import { isWalkBlocked } from "@/lib/walk";
+import { isFrozen } from "@/lib/pause";
 
 export type Phase = "play" | "lid" | "helping" | "done";
 const T = TUNING.packing;
@@ -33,7 +33,7 @@ export function usePacking(cell: number, stage: React.RefObject<HTMLDivElement |
   useEffect(() => {
     if (phase !== "play") return;
     const id = window.setInterval(() => {
-      if (isWalkBlocked()) return; // location mode: the clock waits while the player walks
+      if (isFrozen()) return; // the clock waits while the player walks (location mode) or the page is hidden
       elapsed.current += 0.25;
       const n = Math.floor(elapsed.current / T.rumbleInterval);
       setToNext((elapsed.current % T.rumbleInterval) / T.rumbleInterval);

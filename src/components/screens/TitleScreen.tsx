@@ -33,9 +33,9 @@ function ModeButton({
       }`}
     >
       <span className="flex flex-col gap-[3px]">
-        <span className="label text-[15px] tracking-[0.16em]">{title}</span>
+        <span className="label text-[length:calc(15px*var(--ts,1))] tracking-[0.16em]">{title}</span>
         <span
-          className={`font-label text-[12.5px] font-medium tracking-wide ${primary ? "text-[#3a2e14]" : "text-[#a9a396]"}`}
+          className={`font-label text-[length:calc(12.5px*var(--ts,1))] font-medium tracking-wide ${primary ? "text-[#3a2e14]" : "text-[#a9a396]"}`}
         >
           {sub}
         </span>
@@ -77,17 +77,17 @@ export function TitleScreen() {
       />
 
       <div className="absolute inset-x-6 top-[max(54px,env(safe-area-inset-top))] flex items-center gap-3">
-        <span className="label text-[11px] tracking-[0.27em] text-bone">Vijf avonden in Gouda</span>
+        <span className="label text-[length:calc(11px*var(--ts,1))] tracking-[0.27em] text-bone">Vijf avonden in Gouda</span>
         <span className="h-px flex-1 bg-bone/40" />
-        <span className="label text-[11px] tracking-[0.27em] text-bone">1940—1945</span>
+        <span className="label text-[length:calc(11px*var(--ts,1))] tracking-[0.27em] text-bone">1940—1945</span>
       </div>
 
       <div className="absolute inset-x-6 bottom-[max(30px,env(safe-area-inset-bottom))] flex flex-col gap-[22px]">
         <h1 className="m-0 flex flex-col font-normal">
-          <span className="font-fell text-[76px] leading-[0.86] tracking-[-1.5px]">Koerier</span>
-          <span className="pl-1 font-fell text-[36px] italic leading-[1.1] text-ochre">aan de Gouwe</span>
+          <span className="font-fell text-[length:calc(76px*var(--ts,1))] leading-[0.86] tracking-[-1.5px]">Koerier</span>
+          <span className="pl-1 font-fell text-[length:calc(36px*var(--ts,1))] italic leading-[1.1] text-ochre">aan de Gouwe</span>
         </h1>
-        <p className="m-0 max-w-[310px] font-type text-[15px] leading-[1.55] text-[#d8d0be]">
+        <p className="m-0 max-w-[310px] font-type text-[length:calc(15px*var(--ts,1))] leading-[1.55] text-[#d8d0be]">
           Gouda, mei 1940. De grond trilt, het glas moet weg, en iemand vraagt je om een papier dat je maar één keer
           kunt geven.
           <span className="anim-caret text-ochre">▍</span>
@@ -109,7 +109,7 @@ export function TitleScreen() {
 
         <InstallHint />
 
-        <div className="flex items-center justify-between font-label text-[11px] font-semibold tracking-[0.15em] text-ash">
+        <div className="flex items-center justify-between font-label text-[length:calc(11px*var(--ts,1))] font-semibold tracking-[0.15em] text-ash">
           <span className="flex items-center gap-2">
             <Headphones color="#8f989f" />
             KOPTELEFOON AANBEVOLEN

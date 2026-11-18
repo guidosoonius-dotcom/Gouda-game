@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { ARCHIVE } from "@/data/archive";
+import present from "@/data/archive-files.json";
 import { PLACES } from "@/data/places";
 import type { Chapter } from "@/data/chapters";
 
@@ -29,9 +30,11 @@ describe("archive photographs", () => {
     }
   });
 
-  it("every photograph is used in a slot, and no slot reuses a file of another subject", () => {
+  it("every photograph is wired to a slot, and a listed file exists", () => {
+    const data = ["chapters.ts", "sides.ts"].map((f) => fs.readFileSync(path.join(__dirname, "..", "src", "data", f), "utf8")).join("\n");
+    for (const key of Object.keys(ARCHIVE)) expect(data, key).toContain(`shown(ARCHIVE.${key})`);
+    for (const f of present as string[]) expect(fs.existsSync(path.join(DIR, f)), `${f} is listed but missing`).toBe(true);
     const used = PLACES.flatMap(slots).flatMap((s) => (s.image ? [s.image.file] : []));
-    for (const img of Object.values(ARCHIVE)) expect(used, img.file).toContain(img.file);
     expect(new Set(used).size).toBe(used.length);
   });
 

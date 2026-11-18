@@ -34,7 +34,7 @@ export function Slip({
         <path d="M5 40V8a4 4 0 0 1 8 0v28a2.5 2.5 0 0 1-5 0V12" fill="none" stroke="#8c9298" strokeWidth="1.8" strokeLinecap="round" />
       </svg>
       {/* Full text reserves the height, so the slip does not grow while typing. */}
-      <p className="relative m-0 font-type text-[14.5px] leading-[1.55]">
+      <p className="relative m-0 font-type text-[length:calc(14.5px*var(--ts,1))] leading-[1.55]">
         <span className="invisible" aria-hidden="true">
           {text}▍
         </span>
@@ -46,7 +46,7 @@ export function Slip({
       </p>
       {quote && (
         <p
-          className="m-0 mt-2.5 font-news text-[17px] italic leading-[1.4] transition-opacity duration-700"
+          className="m-0 mt-2.5 font-news text-[length:calc(17px*var(--ts,1))] italic leading-[1.4] transition-opacity duration-700"
           style={{ opacity: done ? 1 : 0 }}
         >
           {quote}
@@ -54,7 +54,7 @@ export function Slip({
       )}
       {echo && (
         <p
-          className="m-0 mt-2.5 border-l-2 border-wax pl-2.5 font-news text-[14.5px] italic leading-snug text-[#4a4842] transition-opacity delay-300 duration-700"
+          className="m-0 mt-2.5 border-l-2 border-wax pl-2.5 font-news text-[length:calc(14.5px*var(--ts,1))] italic leading-snug text-[#4a4842] transition-opacity delay-300 duration-700"
           style={{ opacity: done ? 1 : 0 }}
         >
           {echo}

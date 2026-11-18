@@ -2,7 +2,9 @@
 
 Originals of the licensed photographs of the game (see `src/data/archive.ts` for rights and credits).
 They are not committed: `npm run archive` downloads them from Wikimedia Commons into this folder and
-writes the game's webp files (960 px, under 250 KB) to `public/img/archive/`.
+writes the game's webp files (960 px, under 250 KB) to `public/img/archive/`. It also writes
+`src/data/archive-files.json`: the game shows a photograph only when its file is listed there, so
+commit that file together with the webp files.
 
 If Commons is rate-limiting you, save the original by hand (the file page links to it, "Original file")
 as `assets/archive/<name>.jpg` and run `npm run archive` again:

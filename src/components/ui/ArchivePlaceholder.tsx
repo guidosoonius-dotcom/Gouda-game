@@ -42,7 +42,7 @@ export function ArchivePlaceholder({
           style={{ objectPosition: image.focus ?? "50% 50%" }}
         />
         {caption && (
-          <figcaption className="absolute inset-x-0 bottom-0 bg-press/85 px-1.5 py-[3px] font-label text-[10px] leading-tight text-parchment">
+          <figcaption className="absolute inset-x-0 bottom-0 bg-press/85 px-1.5 py-[3px] font-label text-[length:calc(11px*var(--ts,1))] leading-tight text-parchment">
             {image.credit}
           </figcaption>
         )}
@@ -62,7 +62,7 @@ export function ArchivePlaceholder({
       aria-label={`Nog geen beeld: ${slot.label}`}
     >
       <span
-        className="font-label text-[10px] font-semibold leading-tight tracking-wide"
+        className="font-label text-[length:calc(11px*var(--ts,1))] font-semibold leading-tight tracking-wide"
         style={{
           background: dark ? "#1a1b1c" : "#ece5d3",
           color: dark ? "#ece5d3" : "#1a1b1c",

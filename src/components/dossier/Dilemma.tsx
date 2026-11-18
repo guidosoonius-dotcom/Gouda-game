@@ -27,7 +27,7 @@ export function Dilemma({ id, ready, onPick }: { id: ChoiceId; ready: boolean; o
       transition={{ duration: 0.6 }}
       style={{ pointerEvents: ready ? "auto" : "none" }}
     >
-      <h1 className="m-0 font-fell text-[28px] font-normal leading-[1.12]">
+      <h1 className="m-0 font-fell text-[length:calc(28px*var(--ts,1))] font-normal leading-[1.12]">
         {def.question}
         <br />
         <span className="italic text-ochre">{def.questionAccent}</span>
@@ -47,7 +47,7 @@ export function Dilemma({ id, ready, onPick }: { id: ChoiceId; ready: boolean; o
           >
             <span className="flex w-[58px] flex-none items-center justify-center border-r-2 border-dotted border-ink/35">
               <span
-                className={`flex h-[34px] w-[34px] items-center justify-center rounded-full border-2 font-stamp text-[17px] ${
+                className={`flex h-[34px] w-[34px] items-center justify-center rounded-full border-2 font-stamp text-[length:calc(17px*var(--ts,1))] ${
                   key === "A" ? "-rotate-[8deg] border-wax text-wax" : "rotate-[6deg] border-ink text-ink"
                 }`}
               >
@@ -55,15 +55,15 @@ export function Dilemma({ id, ready, onPick }: { id: ChoiceId; ready: boolean; o
               </span>
             </span>
             <span className="flex flex-col justify-center gap-[3px] px-3.5 py-2.5">
-              <span className="font-news text-[17px] font-semibold leading-tight">{opt.title}</span>
-              <span className="font-news text-[14px] italic leading-[1.35] text-[#55534d]">{opt.sub}</span>
+              <span className="font-news text-[length:calc(17px*var(--ts,1))] font-semibold leading-tight">{opt.title}</span>
+              <span className="font-news text-[length:calc(14px*var(--ts,1))] italic leading-[1.35] text-[#55534d]">{opt.sub}</span>
             </span>
             {chosen && (
               <motion.span
                 initial={{ opacity: 0, scale: 1.9, rotate: -16 }}
                 animate={{ opacity: 0.9, scale: 1, rotate: -8 }}
                 transition={{ duration: 0.28, ease: [0.3, 1.6, 0.5, 1] }}
-                className="absolute right-3 top-1/2 -mt-4 border-[2.5px] border-wax bg-parchment/80 px-2 py-0.5 font-stamp text-[15px] tracking-[0.18em] text-wax"
+                className="absolute right-3 top-1/2 -mt-4 border-[2.5px] border-wax bg-parchment/80 px-2 py-0.5 font-stamp text-[length:calc(15px*var(--ts,1))] tracking-[0.18em] text-wax"
               >
                 GEKOZEN
               </motion.span>
@@ -71,7 +71,7 @@ export function Dilemma({ id, ready, onPick }: { id: ChoiceId; ready: boolean; o
           </motion.button>
         );
       })}
-      <div className="label flex items-center gap-2.5 pt-1 text-[10.5px] tracking-[0.16em] text-ash">
+      <div className="label flex items-center gap-2.5 pt-1 text-[length:calc(11px*var(--ts,1))] tracking-[0.16em] text-ash">
         <span className="h-px flex-1 bg-rule" />
         Geen goed antwoord · je keuze komt terug
         <span className="h-px flex-1 bg-rule" />

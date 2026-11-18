@@ -56,24 +56,24 @@ export function RoofHud({ hud, onDown, onUp }: { hud: RoofHudState; onDown: () =
 
       <div className="absolute inset-x-5 top-[max(46px,env(safe-area-inset-top))] flex items-start justify-between">
         <div className="flex flex-col gap-1.5">
-          <span className="label text-[10.5px] text-bone">Spertijd om acht uur</span>
+          <span className="label text-[length:calc(11px*var(--ts,1))] text-bone">Spertijd om acht uur</span>
           <div className="h-[3px] w-[150px] bg-parchment/20" role="img" aria-label={`Nog ${Math.ceil(hud.timeLeft)} seconden`}>
             <div className={`h-full ${urgent ? "bg-alarm" : "bg-ochre"}`} style={{ width: `${left * 100}%` }} />
           </div>
-          <span className="label text-[10.5px] text-bone">
+          <span className="label text-[length:calc(11px*var(--ts,1))] text-bone">
             Schoorsteen {hud.cover} van {ROOF.covers.length - 1}
           </span>
         </div>
         <div className="flex flex-col items-end gap-0.5">
-          <span className={`font-fell text-[34px] leading-none ${urgent ? "text-[#f2c1b8]" : ""}`}>{clock(hud.timeLeft)}</span>
-          <span className="label text-[10.5px] text-bone">Nov 1942</span>
+          <span className={`font-fell text-[length:calc(34px*var(--ts,1))] leading-none ${urgent ? "text-[#f2c1b8]" : ""}`}>{clock(hud.timeLeft)}</span>
+          <span className="label text-[length:calc(11px*var(--ts,1))] text-bone">Nov 1942</span>
         </div>
       </div>
 
       <div className="absolute inset-x-5 top-[calc(max(46px,env(safe-area-inset-top))+78px)] flex h-9 items-center justify-between gap-2">
         {hud.leap === "open" ? (
           <div className="flex flex-1 items-center gap-2.5 border-l-2 border-ochre bg-night/65 px-2 py-1.5" role="img" aria-label="Springen: tik als de streep in het gele deel is">
-            <span className="label text-[10px] text-ochre">Spring</span>
+            <span className="label text-[length:calc(11px*var(--ts,1))] text-ochre">Spring</span>
             <span className="relative h-[10px] flex-1 bg-parchment/15">
               <span className="absolute inset-y-0 right-0 bg-ochre/45" style={{ left: `${CLEAN * 100}%` }} />
               <span className="absolute inset-y-0 right-0 w-[3px] bg-alarm" />
@@ -81,29 +81,29 @@ export function RoofHud({ hud, onDown, onUp }: { hud: RoofHudState; onDown: () =
             </span>
           </div>
         ) : hud.leap === "balk" ? (
-          <span className="label border-l-2 border-alarm bg-night/65 px-2 py-1.5 text-[10px] text-[#f2c1b8]">Aan de rand · in het open</span>
+          <span className="label border-l-2 border-alarm bg-night/65 px-2 py-1.5 text-[length:calc(11px*var(--ts,1))] text-[#f2c1b8]">Aan de rand · in het open</span>
         ) : hud.lit ? (
           <div className="flex flex-1 items-center gap-2.5 border-l-2 border-alarm bg-night/65 px-2 py-1.5">
-            <span className="label text-[10px] text-[#f2c1b8]">In het licht</span>
+            <span className="label text-[length:calc(11px*var(--ts,1))] text-[#f2c1b8]">In het licht</span>
             <span className="h-[3px] flex-1 bg-parchment/15">
               <span className="block h-full bg-alarm" style={{ width: `${Math.min(1, hud.exposure) * 100}%` }} />
             </span>
           </div>
         ) : !hud.moving ? (
-          <span className="label border-l-2 border-ochre bg-night/65 px-2 py-1.5 text-[10px] text-ochre">Achter de schoorsteen · onzichtbaar</span>
+          <span className="label border-l-2 border-ochre bg-night/65 px-2 py-1.5 text-[length:calc(11px*var(--ts,1))] text-ochre">Achter de schoorsteen · onzichtbaar</span>
         ) : hud.flat ? (
-          <span className="label border-l-2 border-ochre bg-night/65 px-2 py-1.5 text-[10px] text-ochre">Plat op het dak</span>
+          <span className="label border-l-2 border-ochre bg-night/65 px-2 py-1.5 text-[length:calc(11px*var(--ts,1))] text-ochre">Plat op het dak</span>
         ) : (
           <span />
         )}
         {hud.kees && !hud.moving && (
-          <span className={`label flex-none border px-2 py-1.5 text-[10px] ${hud.safe ? "border-ochre bg-ochre text-slate" : "border-parchment/25 bg-night/60"}`} style={{ textShadow: "none" }}>
+          <span className={`label flex-none border px-2 py-1.5 text-[length:calc(11px*var(--ts,1))] ${hud.safe ? "border-ochre bg-ochre text-slate" : "border-parchment/25 bg-night/60"}`} style={{ textShadow: "none" }}>
             Kees: {hud.safe ? "nu!" : "wacht"}
           </span>
         )}
       </div>
 
-      <p className="absolute inset-x-10 bottom-[196px] m-0 text-center font-fell text-[16px] italic leading-snug tracking-normal">{caption(hud)}</p>
+      <p className="absolute inset-x-10 bottom-[196px] m-0 text-center font-fell text-[length:calc(16px*var(--ts,1))] italic leading-snug tracking-normal">{caption(hud)}</p>
 
       <button
         type="button"
@@ -119,13 +119,13 @@ export function RoofHud({ hud, onDown, onUp }: { hud: RoofHudState; onDown: () =
         style={{ textShadow: "none" }}
       >
         <span className="flex flex-col items-center gap-1">
-          <span className="label text-[13px] tracking-[0.2em]">Tik</span>
-          <span className="font-fell text-[15px] italic tracking-normal text-bone">{hud.leap === "open" || hud.leap === "balk" ? "spring over de steeg" : "ren naar de volgende schoorsteen"}</span>
+          <span className="label text-[length:calc(13px*var(--ts,1))] tracking-[0.2em]">Tik</span>
+          <span className="font-fell text-[length:calc(15px*var(--ts,1))] italic tracking-normal text-bone">{hud.leap === "open" || hud.leap === "balk" ? "spring over de steeg" : "ren naar de volgende schoorsteen"}</span>
         </span>
         <span className="h-16 w-px bg-parchment/25" />
         <span className="flex flex-col items-center gap-1">
-          <span className="label text-[13px] tracking-[0.2em]">Houd vast</span>
-          <span className="font-fell text-[15px] italic tracking-normal text-bone">plat op de pannen</span>
+          <span className="label text-[length:calc(13px*var(--ts,1))] tracking-[0.2em]">Houd vast</span>
+          <span className="font-fell text-[length:calc(15px*var(--ts,1))] italic tracking-normal text-bone">plat op de pannen</span>
         </span>
       </button>
     </div>

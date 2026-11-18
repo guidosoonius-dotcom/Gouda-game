@@ -27,6 +27,10 @@ export const TUNING = {
     /** Seconds without judging after a change (the resize itself costs a frame or two). */
     adaptCooldown: 2,
   },
+  ui: {
+    /** Text size steps (multiplier on every font size): normal, large, largest. */
+    textScales: [1, 1.15, 1.3],
+  },
   /** Side story at the town hall: stalling orders at the messenger's desk. */
   bureau: {
     /** Suspicion runs from 0 to this; at the top the messenger is moved to another office. */

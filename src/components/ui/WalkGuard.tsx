@@ -13,17 +13,17 @@ export function WalkGuard() {
   return (
     <div role="alertdialog" aria-modal="true" aria-labelledby="walk-title" className="absolute inset-0 z-50 flex flex-col justify-end bg-night/88 px-5 pb-[calc(28px+env(safe-area-inset-bottom))] backdrop-blur-[3px]">
       <div className="flex flex-col gap-3.5 bg-parchment px-[18px] py-5 text-ink shadow-[0_18px_40px_rgba(0,0,0,.6)]">
-        <span className="label text-[10.5px] text-wax">Stop even</span>
-        <h2 id="walk-title" className="m-0 font-fell text-[28px] font-normal leading-[1.05]">
+        <span className="label text-[length:calc(11px*var(--ts,1))] text-wax">Stop even</span>
+        <h2 id="walk-title" className="m-0 font-fell text-[length:calc(28px*var(--ts,1))] font-normal leading-[1.05]">
           Blijf even staan
         </h2>
-        <p className="m-0 font-news text-[16px] leading-[1.45]">
+        <p className="m-0 font-news text-[length:calc(16px*var(--ts,1))] leading-[1.45]">
           Je loopt. Speel pas als je stilstaat: kijk uit voor fietsers, verkeer en het water. Het spel wacht op je.
         </p>
         <button
           type="button"
           onClick={overrideWalkGuard}
-          className="flex h-11 items-center justify-between border border-press/60 px-[18px] font-label text-[12.5px] font-bold tracking-[0.17em] text-press"
+          className="flex h-11 items-center justify-between border border-press/60 px-[18px] font-label text-[length:calc(12.5px*var(--ts,1))] font-bold tracking-[0.17em] text-press"
         >
           IK STA OF ZIT STIL
         </button>

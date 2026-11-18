@@ -4,7 +4,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { applyChoice, applyOutcome, type ChoiceId, type Flags, type OutcomeId, OUTCOMES } from "@/game/choices";
 import { CHAPTERS } from "@/data/chapters";
-import { chapterById } from "@/data/places";
+import { chapterById, dossierPages } from "@/data/places";
 import type { Progress } from "@/game/save";
 
 export type View = "title" | "map" | "dossier" | "task" | "mirror" | "epilogue";
@@ -19,6 +19,8 @@ interface GameState {
   completed: number[];
   flags: Flags;
   muted: boolean;
+  /** Multiplier on all text sizes (`TUNING.ui.textScales`). */
+  textScale: number;
   /** The player's "letter to later", written in the epilogue. Stays on this device. */
   letter: string;
   /** True when the mirror is re-read from the satchel (no progress change on close). */
@@ -39,7 +41,10 @@ interface GameState {
   completeChapter: () => void;
   finishEpilogue: (letter: string) => void;
   rereadMirror: (id: number) => void;
+  /** The phone's back button: one step back (a page, a screen), never out of the game by accident. */
+  back: () => void;
   toggleMute: () => void;
+  setTextScale: (scale: number) => void;
   restore: (p: Progress) => void;
   reset: () => void;
 }
@@ -59,6 +64,7 @@ export const useGameStore = create<GameState>()(
       completed: [],
       flags: {},
       muted: false,
+      textScale: 1,
       letter: "",
       rereading: false,
 
@@ -69,8 +75,8 @@ export const useGameStore = create<GameState>()(
       openTask: (id) => set({ chapter: id, view: "task", rereading: false }),
       nextPage: () => set((s) => ({ page: s.page + 1 })),
       advance: () => {
-        const { chapter, page } = get();
-        const pages = chapterById(chapter).pages;
+        const { chapter, page, mode } = get();
+        const pages = dossierPages(chapterById(chapter), mode);
         set(page + 1 < pages.length ? { page: page + 1, view: "dossier" } : { view: "mirror" });
       },
       choose: (id, option) => {
@@ -90,14 +96,23 @@ export const useGameStore = create<GameState>()(
       finishEpilogue: (letter) =>
         set((s) => ({ letter, completed: s.completed.includes(6) ? s.completed : [...s.completed, 6].sort((a, b) => a - b), view: "map" })),
       rereadMirror: (id) => set({ chapter: id, view: "mirror", rereading: true }),
+      back: () => {
+        const { view, page } = get();
+        if (view === "map") return set({ view: "title" });
+        if (view === "dossier") return set(page > 0 ? { page: page - 1 } : { view: "map" });
+        // leaving the newspaper counts as reading it, as the button at its foot does
+        if (view === "mirror") return get().completeChapter();
+        if (view === "task" || view === "epilogue") return set({ view: "map" });
+      },
       toggleMute: () => set((s) => ({ muted: !s.muted })),
+      setTextScale: (textScale) => set({ textScale }),
       restore: (p) => set({ completed: p.completed, flags: p.flags, view: "map" }),
       reset: () => set({ completed: [], flags: {}, letter: "", chapter: 1, page: 0, view: "title", rereading: false }),
     }),
     {
       name: "koerier-aan-de-gouwe",
       version: 1,
-      partialize: (s) => ({ mode: s.mode, completed: s.completed, flags: s.flags, muted: s.muted, letter: s.letter }),
+      partialize: (s) => ({ mode: s.mode, completed: s.completed, flags: s.flags, muted: s.muted, textScale: s.textScale, letter: s.letter }),
     },
   ),
 );

@@ -8,7 +8,7 @@ import { FACTS, SHOW_UNVERIFIED, type Fact, type FactId } from "@/data/sources";
 export function FactLegend({ ids, dark = false }: { ids: FactId[]; dark?: boolean }) {
   if (!SHOW_UNVERIFIED || ids.every((id) => FACTS[id].verified)) return null;
   return (
-    <span className={`font-label text-[10px] font-semibold tracking-wide ${dark ? "text-[#f0b5aa]" : "text-wax-dark"}`}>
+    <span className={`font-label text-[length:calc(11px*var(--ts,1))] font-semibold tracking-wide ${dark ? "text-[#f0b5aa]" : "text-wax-dark"}`}>
       [?] ROOD GESTIPPELD = NOG NIET GEVERIFIEERD, BRON VOLGT
     </span>
   );
@@ -23,7 +23,7 @@ export function FactText({ id, dark = false }: { id: FactId; dark?: boolean }) {
   return (
     <span className={dark ? "tbc-dark" : "tbc"} title={`Te verifiëren: ${fact.todo ?? fact.source}`}>
       {fact.claim}
-      <sup className="ml-0.5 font-label text-[9px] font-bold">[?]</sup>
+      <sup className="ml-0.5 font-label text-[length:calc(11px*var(--ts,1))] font-bold">[?]</sup>
     </span>
   );
 }

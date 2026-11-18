@@ -1,5 +1,6 @@
 "use client";
 
+import { TextSize } from "./TextSize";
 import { motion } from "motion/react";
 
 /** Who made what, and what is real and what is not. Reached from the satchel and the title screen. */
@@ -58,19 +59,20 @@ export function AboutSheet({ onClose }: { onClose: () => void }) {
       >
         <header className="flex items-end justify-between border-b border-rule px-5 pb-3 pt-5">
           <div className="flex flex-col gap-1">
-            <span className="label text-[10.5px] text-bone">Koerier aan de Gouwe</span>
-            <h2 className="m-0 font-fell text-[30px] font-normal leading-none">Over dit spel</h2>
+            <span className="label text-[length:calc(11px*var(--ts,1))] text-bone">Koerier aan de Gouwe</span>
+            <h2 className="m-0 font-fell text-[length:calc(30px*var(--ts,1))] font-normal leading-none">Over dit spel</h2>
           </div>
-          <button type="button" onClick={onClose} className="label h-11 px-1 text-[11px] text-ochre">
+          <button type="button" onClick={onClose} className="label h-11 px-1 text-[length:calc(11px*var(--ts,1))] text-ochre">
             Sluit
           </button>
         </header>
         <div className="flex flex-col gap-5 overflow-y-auto px-5 pb-[calc(24px+env(safe-area-inset-bottom))] pt-4">
+          <TextSize />
           {BLOCKS.map((b) => (
             <div key={b.title} className="flex flex-col gap-1.5">
-              <span className="label text-[10.5px] text-bone">{b.title}</span>
+              <span className="label text-[length:calc(11px*var(--ts,1))] text-bone">{b.title}</span>
               {b.lines.map((l) => (
-                <p key={l} className="m-0 font-news text-[15px] leading-[1.5] text-[#d8d0be]">
+                <p key={l} className="m-0 font-news text-[length:calc(15px*var(--ts,1))] leading-[1.5] text-[#d8d0be]">
                   {l}
                 </p>
               ))}

@@ -151,6 +151,18 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   omlaag tot 1 onder 50 fps). De camerabeving bij een inslag is vloeiend en valt weg bij
   ‘minder beweging’.
 
+- **Eerste reviewronde (sessie 3):** (1) *Pauze* in de drie 3D-spellen (`ui/PauseLayer.tsx`):
+  knop, Escape, de terugknop van de telefoon, en vanzelf als de pagina naar de achtergrond gaat.
+  Gepauzeerd staat de klok stil, zwijgt het geluid en tekent de scène niet; vandaar Verder,
+  Opnieuw of Naar de kaart, plus geluid en tekstgrootte. (2) *Tekst schaalbaar*: elke tekstmaat is
+  `calc(px * var(--ts))`, met drie standen (100/115/130 %) in de koerierstas, in "Over dit spel"
+  en in de pauze; niets kleiner dan 11 px; knijpzoomen mag weer (dubbeltik zoomt niet).
+  (3) *Geen placeholders voor spelers*: Toen-en-nu verschijnt alleen met een echte archieffoto,
+  of op locatie met een afgemaakte opdracht (`dossierPages`); lege scan- en fotovakken alleen in
+  dev en preview. Een archieffoto verschijnt pas als `npm run archive` het bestand maakte
+  (`archive-files.json`). (4) *Terugknop*: terug gaat een pagina of scherm terug in plaats van het
+  spel uit (de krant telt dan als gelezen; in een 3D-spel pauzeert het).
+
 ## Half af
 - Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).
 - De tekst van hoofdstuk 3 is een voorstel: laat die lezen door iemand van het Joods Monument
@@ -174,7 +186,7 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   ("J. Blaeu, 1649") in "Over dit spel": herkomst van het kaartbestand en jaartal nog controleren.
 
 ## Controle
-- `npm run build` · `npm test` (82 tests) · `npm run test:e2e` (speelt hoofdstuk 1 door op 390×844,
+- `npm run build` · `npm test` (93 tests) · `npm run test:e2e` (speelt hoofdstuk 1 door op 390×844,
   speelt het dossier van hoofdstuk 4 tot in de vaart en zet screenshots in `test-results/`) · `npm run assets`.
 - Ontwikkelhulp (alleen in dev): `/?canal=1` opent de vaart direct, `&z=-60` start verderop;
   `/?roof=1` opent de daken, `&cover=8` start verderop; `/?bike=1` opent de fietstocht (`&bomb=1` laat direct een bom vallen, `&plane=1` toont een

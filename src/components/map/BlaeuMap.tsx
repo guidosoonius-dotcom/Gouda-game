@@ -140,7 +140,7 @@ function Button({ label, onClick, children, className = "" }: { label: string; o
       aria-label={label}
       onClick={onClick}
       onPointerDown={(e) => e.stopPropagation()}
-      className={`pointer-events-auto flex h-11 w-11 items-center justify-center border border-[#3a434b] bg-night/75 font-label text-[20px] font-bold leading-none text-parchment active:bg-night ${className}`}
+      className={`pointer-events-auto flex h-11 w-11 items-center justify-center border border-[#3a434b] bg-night/75 font-label text-[length:calc(20px*var(--ts,1))] font-bold leading-none text-parchment active:bg-night ${className}`}
     >
       {children}
     </button>

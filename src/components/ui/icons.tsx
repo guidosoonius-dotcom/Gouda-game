@@ -66,3 +66,12 @@ export function Bell({ color = "currentColor" }: { color?: string }) {
     />
   );
 }
+
+export function Pause({ color = "currentColor" }: { color?: string }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+      <rect x="4" y="3" width="3.4" height="12" fill={color} />
+      <rect x="10.6" y="3" width="3.4" height="12" fill={color} />
+    </svg>
+  );
+}

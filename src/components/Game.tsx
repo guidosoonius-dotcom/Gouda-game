@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
 import { useGameStore, type View } from "@/store/useGameStore";
-import { setMuted } from "@/lib/sound";
+import { setMuted, setSuspended } from "@/lib/sound";
+import { handleBackOverride, isPaused } from "@/lib/pause";
 import { chapterById } from "@/data/places";
 import { TitleScreen } from "./screens/TitleScreen";
 import { MapScreen } from "./screens/MapScreen";
@@ -37,7 +38,7 @@ const BikeGame = dynamic(() => import("./bike/BikeGame").then((m) => m.BikeGame)
 function Loading() {
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-night">
-      <span className="label text-[11px] text-bone">Even geduld</span>
+      <span className="label text-[length:calc(11px*var(--ts,1))] text-bone">Even geduld</span>
     </div>
   );
 }
@@ -69,10 +70,38 @@ const SCREENS: Record<View, () => React.ReactNode> = {
   epilogue: () => <EpilogueScreen />,
 };
 
+/**
+ * The phone's back button (and the swipe back on iOS) steps back inside the game instead of
+ * leaving it: one sentinel entry in the browser history catches the press. On the title screen
+ * the press is left alone, so the player can still leave.
+ */
+function useBackButton(view: View) {
+  const armed = useRef(false);
+  useEffect(() => {
+    if (view === "title" || armed.current) return;
+    window.history.pushState({ koerier: true }, "");
+    armed.current = true;
+  }, [view]);
+  useEffect(() => {
+    const onPop = () => {
+      armed.current = false;
+      if (!handleBackOverride()) useGameStore.getState().back();
+      if (useGameStore.getState().view !== "title") {
+        window.history.pushState({ koerier: true }, "");
+        armed.current = true;
+      }
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+}
+
 export function Game() {
   const view = useGameStore((s) => s.view);
   const muted = useGameStore((s) => s.muted);
   const location = useGameStore((s) => s.mode === "location");
+  const textScale = useGameStore((s) => s.textScale);
+  useBackButton(view);
   const [mounted, setMounted] = useState(false);
   // Location mode: no games while walking. The watcher runs only in a chapter, never on the map.
   useWalkWatcher(location && (view === "dossier" || view === "task"));
@@ -89,6 +118,14 @@ export function Game() {
     }
   }, []);
   useEffect(() => setMuted(muted), [muted]);
+  // every font size is written as calc(px * var(--ts)), so this one variable scales all text
+  useEffect(() => document.documentElement.style.setProperty("--ts", String(textScale)), [textScale]);
+  // no sound from a page in the background
+  useEffect(() => {
+    const onVisibility = () => setSuspended(document.hidden || isPaused());
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, []);
 
   return (
     <MotionConfig reducedMotion="user">

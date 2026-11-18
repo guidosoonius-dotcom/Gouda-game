@@ -1,6 +1,6 @@
 import type { ChoiceId, Flags } from "@/game/choices";
 import type { FactId } from "./sources";
-import { ARCHIVE } from "./archive";
+import { ARCHIVE, shown } from "./archive";
 
 export type TaskKind = "packing" | "canal" | "rooftop" | "bicycle" | "witness" | "puzzle";
 
@@ -190,7 +190,7 @@ export const CHAPTERS: Chapter[] = [
       scan: {
         label: "FOTO · uitneming van de glazen uit de Sint-Jan",
         credit: "Bron volgt: Streekarchief Midden-Holland, inv.nr.",
-        image: ARCHIVE.glazenUitgenomen,
+        image: shown(ARCHIVE.glazenUitgenomen),
       },
       notice: {
         title: "En de student?",

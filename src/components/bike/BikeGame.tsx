@@ -9,13 +9,14 @@ import { useGameStore } from "@/store/useGameStore";
 import { ambience, sfx, unlockAudio } from "@/lib/sound";
 import { Arrow } from "@/components/ui/icons";
 import { Cinema, Night } from "@/components/canal/Night";
+import { PauseLayer } from "@/components/ui/PauseLayer";
 import { GameCanvas, type Grade } from "@/components/canal/GameCanvas";
 import { Dilemma } from "@/components/dossier/Dilemma";
 import { BikeActors } from "./BikeActors";
 import { BikeHud, BIKE_HUD_START, type BikeHudState } from "./BikeHud";
 import { BikeWorld } from "./BikeWorld";
 import { STREET, createBike, peopleSafe, resolveDilemma, stepBike, type BikeOutcome, type BikeSim } from "./sim";
-import { isWalkBlocked } from "@/lib/walk";
+import { isFrozen } from "@/lib/pause";
 
 interface Input {
   L: boolean;
@@ -44,7 +45,7 @@ function Loop({ sim, input, shake, onHud, onEvent }: {
   const since = useRef(0);
   useFrame((_, delta) => {
     const s = sim.current;
-    const dt = isWalkBlocked() ? 0 : Math.min(delta, 0.05);
+    const dt = isFrozen() ? 0 : Math.min(delta, 0.05);
     const bell = input.current.bell;
     input.current.bell = false;
     for (const e of stepBike(s, { left: input.current.L, right: input.current.R, bell }, dt)) {
@@ -177,6 +178,7 @@ export function BikeGame() {
         {scene}
       </GameCanvas>
       <Cinema warm />
+      <PauseLayer active={phase === "play"} title="Vluchtspoor bij het Station" onRestart={start} />
       <div className="pointer-events-none absolute inset-0 transition-opacity duration-300" style={{ background: "radial-gradient(ellipse at 50% 45%, rgba(255,230,190,.95), rgba(255,160,70,.6) 60%, rgba(255,120,40,.3))", opacity: flash ? 0.85 : 0, transitionDuration: flash ? "40ms" : "500ms" }} />
       {phase === "play" && <BikeHud hud={hud} onSteer={steer} onBell={bell} />}
 
@@ -184,8 +186,8 @@ export function BikeGame() {
         {phase === "dilemma" && (
           <motion.div key="dilemma" className="absolute inset-0 flex flex-col justify-end gap-4 bg-night/75 px-[22px] pb-[calc(26px+env(safe-area-inset-bottom))] text-parchment" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <div className="-rotate-1 bg-parchment px-5 py-4 text-ink shadow-[0_14px_30px_rgba(0,0,0,.55)]">
-              <p className="m-0 font-type text-[14.5px] leading-[1.55]">Bij een ingestort huis grijpt een man je stuur. Zijn handen zijn grijs van het stof.</p>
-              <p className="m-0 mt-2 font-news text-[17px] italic leading-[1.4]">‘Mijn vrouw ligt eronder!’ Achter je roept Gerrit dat de groep nú de kelder in moet.</p>
+              <p className="m-0 font-type text-[length:calc(14.5px*var(--ts,1))] leading-[1.55]">Bij een ingestort huis grijpt een man je stuur. Zijn handen zijn grijs van het stof.</p>
+              <p className="m-0 mt-2 font-news text-[length:calc(17px*var(--ts,1))] italic leading-[1.4]">‘Mijn vrouw ligt eronder!’ Achter je roept Gerrit dat de groep nú de kelder in moet.</p>
             </div>
             <Dilemma id="ch5.puin" ready onPick={pick} />
           </motion.div>
@@ -193,8 +195,8 @@ export function BikeGame() {
         {(phase === "intro" || phase === "done") && (
           <motion.div key={phase} className="absolute inset-0 flex flex-col justify-end gap-5 bg-night/70 px-[22px] pb-[calc(26px+env(safe-area-inset-bottom))]" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <div className="flex flex-col gap-2">
-              <span className="label text-[10.5px] text-bone">{phase === "intro" ? "26 november 1944 · 16:44" : "Bij de schuilkelder"}</span>
-              <h1 className="m-0 font-fell text-[32px] font-normal leading-[1.06] text-parchment">
+              <span className="label text-[length:calc(11px*var(--ts,1))] text-bone">{phase === "intro" ? "26 november 1944 · 16:44" : "Bij de schuilkelder"}</span>
+              <h1 className="m-0 font-fell text-[length:calc(32px*var(--ts,1))] font-normal leading-[1.06] text-parchment">
                 {phase === "intro" ? (
                   <>
                     Vluchtspoor <span className="italic text-ochre">bij het station</span>
@@ -206,7 +208,7 @@ export function BikeGame() {
             </div>
             <div className="-rotate-1 bg-parchment px-5 py-4 text-ink shadow-[0_14px_30px_rgba(0,0,0,.55)]">
               {phase === "intro" ? (
-                <ul className="m-0 flex list-none flex-col gap-2 p-0 font-type text-[14px] leading-[1.5]">
+                <ul className="m-0 flex list-none flex-col gap-2 p-0 font-type text-[length:calc(14px*var(--ts,1))] leading-[1.5]">
                   <li>Stuur met links en rechts om het puin heen. Beide vasthouden is remmen.</li>
                   <li>Bel bij mensen langs de straat: wie je hoort, loopt achter je aan.</li>
                   <li>Hoor je het fluiten, blijf dan uit het rode vlak. Anders stuift iedereen uiteen.</li>
@@ -214,15 +216,15 @@ export function BikeGame() {
                   {cast && <li>{cast}</li>}
                 </ul>
               ) : (
-                <p className="m-0 font-news text-[16.5px] leading-[1.5]">{ENDINGS[outcome].body}</p>
+                <p className="m-0 font-news text-[length:calc(16.5px*var(--ts,1))] leading-[1.5]">{ENDINGS[outcome].body}</p>
               )}
             </div>
             <div className="flex flex-col gap-2.5">
-              <button type="button" onClick={phase === "intro" ? start : () => (sfx.paper(), advance())} className="flex h-[54px] items-center justify-between bg-ochre px-[18px] font-label text-[14px] font-bold tracking-[0.17em] text-slate">
+              <button type="button" onClick={phase === "intro" ? start : () => (sfx.paper(), advance())} className="flex h-[54px] items-center justify-between bg-ochre px-[18px] font-label text-[length:calc(14px*var(--ts,1))] font-bold tracking-[0.17em] text-slate">
                 {phase === "intro" ? "OP DE FIETS" : "LEES DE KRANT"}
                 <Arrow color="#14181d" />
               </button>
-              <button type="button" onClick={phase === "intro" ? () => go("dossier") : start} className="flex h-12 items-center justify-between border border-parchment/45 px-[18px] font-label text-[13px] font-bold tracking-[0.17em] text-parchment">
+              <button type="button" onClick={phase === "intro" ? () => go("dossier") : start} className="flex h-12 items-center justify-between border border-parchment/45 px-[18px] font-label text-[length:calc(13px*var(--ts,1))] font-bold tracking-[0.17em] text-parchment">
                 {phase === "intro" ? "TERUG NAAR HET DOSSIER" : "NOG EEN KEER"}
                 <Arrow color="#ede6d6" />
               </button>

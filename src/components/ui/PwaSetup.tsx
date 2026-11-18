@@ -59,7 +59,7 @@ export function InstallHint() {
   if (hidden || (!event && !ios)) return null;
 
   return (
-    <div className="flex items-start justify-between gap-3 border-l-2 border-ochre bg-night/60 py-2 pl-3 font-news text-[13.5px] leading-snug text-[#d8d0be]">
+    <div className="flex items-start justify-between gap-3 border-l-2 border-ochre bg-night/60 py-2 pl-3 font-news text-[length:calc(13.5px*var(--ts,1))] leading-snug text-[#d8d0be]">
       <p className="m-0">
         {event ? (
           <>

@@ -70,6 +70,10 @@ async function convert(name) {
     await sleep(3000);
   }
   for (const name of Object.keys(FILES)) if (fs.existsSync(path.join(ORIGINALS, `${name}.jpg`))) await convert(name);
+  // the game shows a photograph only when its file is listed here (src/data/archive.ts, `shown`)
+  const made = Object.keys(FILES).map((n) => `${n}.webp`).filter((f) => fs.existsSync(path.join(OUT, f)));
+  fs.writeFileSync(path.join(__dirname, "..", "src", "data", "archive-files.json"), JSON.stringify(made, null, 2) + "\n");
+  console.log(`  ${made.length} photographs available to the game`);
   if (missing.length) {
     console.log(`\nNot downloaded: ${missing.join(", ")}.\nSave the original from Commons as assets/archive/<name>.jpg and run again (see assets/archive/README.md).`);
     process.exitCode = 1;

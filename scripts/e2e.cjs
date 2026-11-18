@@ -91,10 +91,7 @@ async function packCrate(page, crateNo) {
     await expectText("Dossier 01");
     await page.waitForTimeout(5200);
     await shot("03a-dossier-scene");
-    await page.getByRole("button", { name: /Verder/i }).click();
-    await expectText("Dezelfde plek");
-    await page.waitForTimeout(700);
-    await shot("03b-toen-en-nu");
+    // At home a then/now page without a real archive photograph is left out (no placeholders for players).
     await page.getByRole("button", { name: /Verder/i }).click();
     await expectText("Pak de laatste panelen in");
     await page.waitForTimeout(700);

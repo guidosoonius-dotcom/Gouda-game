@@ -61,10 +61,10 @@ export function ThenNow({
             />
           </div>
         </div>
-        <span className="label absolute left-2 top-2 bg-press px-1.5 py-0.5 text-[10px] text-parchment">
+        <span className="label absolute left-2 top-2 bg-press px-1.5 py-0.5 text-[length:calc(11px*var(--ts,1))] text-parchment">
           {year}
         </span>
-        <span className="label absolute right-2 top-2 bg-parchment px-1.5 py-0.5 text-[10px] text-press">
+        <span className="label absolute right-2 top-2 bg-parchment px-1.5 py-0.5 text-[length:calc(11px*var(--ts,1))] text-press">
           Nu
         </span>
         <div
@@ -96,7 +96,7 @@ export function ThenNow({
         </div>
       </div>
       {credits.length > 0 && (
-        <p className="m-0 font-label text-[10px] leading-tight text-ash">
+        <p className="m-0 font-label text-[length:calc(11px*var(--ts,1))] leading-tight text-ash">
           {credits.join(" · ")}
         </p>
       )}

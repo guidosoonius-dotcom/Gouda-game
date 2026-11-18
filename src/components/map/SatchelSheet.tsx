@@ -8,6 +8,7 @@ import { CHOICES } from "@/game/choices";
 import { decodeSave, encodeSave } from "@/game/save";
 import { sfx } from "@/lib/sound";
 import { Arrow, Speaker } from "@/components/ui/icons";
+import { TextSize } from "@/components/ui/TextSize";
 import { AboutSheet } from "@/components/ui/AboutSheet";
 
 const KIND_LABEL: Record<SatchelItem["kind"], string> = { krant: "KRANT", voorwerp: "VOORWERP", bron: "BRON" };
@@ -16,13 +17,13 @@ function Item({ item, onRead }: { item: SatchelItem; onRead?: () => void }) {
   const body = (
     <>
       <span className="flex items-center justify-between">
-        <span className="label text-[9.5px] tracking-[0.18em] text-wax">{KIND_LABEL[item.kind]}</span>
+        <span className="label text-[length:calc(11px*var(--ts,1))] tracking-[0.18em] text-wax">{KIND_LABEL[item.kind]}</span>
         {item.fiction && (
-          <span className="border border-wax px-1 font-stamp text-[9px] tracking-[0.14em] text-wax">FICTIE</span>
+          <span className="border border-wax px-1 font-stamp text-[length:calc(11px*var(--ts,1))] tracking-[0.14em] text-wax">FICTIE</span>
         )}
       </span>
-      <span className="font-news text-[16px] font-semibold leading-tight">{item.title}</span>
-      <span className="font-news text-[13.5px] italic leading-snug text-[#55534d]">{item.note}</span>
+      <span className="font-news text-[length:calc(16px*var(--ts,1))] font-semibold leading-tight">{item.title}</span>
+      <span className="font-news text-[length:calc(13.5px*var(--ts,1))] italic leading-snug text-[#55534d]">{item.note}</span>
     </>
   );
   if (!onRead) return <li className="flex flex-col gap-1 bg-parchment px-3.5 py-3 text-ink">{body}</li>;
@@ -75,17 +76,17 @@ export function SatchelSheet({ onClose }: { onClose: () => void }) {
       >
         <header className="flex items-end justify-between border-b border-rule px-5 pb-3 pt-5">
           <div className="flex flex-col gap-1">
-            <span className="label text-[10.5px] text-bone">Wat je bij je draagt</span>
-            <h2 className="m-0 font-fell text-[30px] font-normal leading-none">Koerierstas</h2>
+            <span className="label text-[length:calc(11px*var(--ts,1))] text-bone">Wat je bij je draagt</span>
+            <h2 className="m-0 font-fell text-[length:calc(30px*var(--ts,1))] font-normal leading-none">Koerierstas</h2>
           </div>
-          <button type="button" onClick={onClose} className="label h-11 px-1 text-[11px] text-ochre">
+          <button type="button" onClick={onClose} className="label h-11 px-1 text-[length:calc(11px*var(--ts,1))] text-ochre">
             Sluit
           </button>
         </header>
 
         <div className="flex flex-col gap-6 overflow-y-auto px-5 pb-[calc(24px+env(safe-area-inset-bottom))] pt-4">
           {items.length === 0 ? (
-            <p className="m-0 font-news text-[16px] italic leading-relaxed text-bone">
+            <p className="m-0 font-news text-[length:calc(16px*var(--ts,1))] italic leading-relaxed text-bone">
               Nog leeg. Wat je onderweg krijgt, bewaar je hier: kranten, bronnen en wat mensen je toevertrouwen.
             </p>
           ) : (
@@ -102,11 +103,11 @@ export function SatchelSheet({ onClose }: { onClose: () => void }) {
 
           {made.length > 0 && (
             <div className="flex flex-col gap-2">
-              <span className="label text-[10.5px] text-bone">Jouw keuzes</span>
+              <span className="label text-[length:calc(11px*var(--ts,1))] text-bone">Jouw keuzes</span>
               {made.map((c) => {
                 const opt = flags[c.id] === c.A.value ? c.A : c.B;
                 return (
-                  <p key={c.id} className="m-0 border-l-2 border-ochre pl-3 font-news text-[15px] leading-snug">
+                  <p key={c.id} className="m-0 border-l-2 border-ochre pl-3 font-news text-[length:calc(15px*var(--ts,1))] leading-snug">
                     <span className="text-ash">Hoofdstuk {c.chapter}: </span>
                     {opt.title}
                   </p>
@@ -117,17 +118,17 @@ export function SatchelSheet({ onClose }: { onClose: () => void }) {
 
           {letter && (
             <div className="flex flex-col gap-2">
-              <span className="label text-[10.5px] text-bone">Jouw brief aan later</span>
-              <p className="m-0 whitespace-pre-wrap bg-parchment px-3.5 py-3 font-type text-[14px] leading-[1.55] text-ink">{letter}</p>
+              <span className="label text-[length:calc(11px*var(--ts,1))] text-bone">Jouw brief aan later</span>
+              <p className="m-0 whitespace-pre-wrap bg-parchment px-3.5 py-3 font-type text-[length:calc(14px*var(--ts,1))] leading-[1.55] text-ink">{letter}</p>
             </div>
           )}
 
           <div className="flex flex-col gap-2">
-            <span className="label text-[10.5px] text-bone">Herstelcode</span>
-            <p className="m-0 font-news text-[14px] leading-snug text-ash">
+            <span className="label text-[length:calc(11px*var(--ts,1))] text-bone">Herstelcode</span>
+            <p className="m-0 font-news text-[length:calc(14px*var(--ts,1))] leading-snug text-ash">
               Schrijf deze code op. Daarmee haal je je voortgang terug op elk toestel.
             </p>
-            <span className="select-text font-type text-[22px] tracking-[0.12em] text-ochre">{code}</span>
+            <span className="select-text font-type text-[length:calc(22px*var(--ts,1))] tracking-[0.12em] text-ochre">{code}</span>
             <div className="flex gap-2">
               <label className="sr-only" htmlFor="restore-code">
                 Voer een herstelcode in
@@ -140,29 +141,32 @@ export function SatchelSheet({ onClose }: { onClose: () => void }) {
                 autoCapitalize="characters"
                 autoCorrect="off"
                 spellCheck={false}
-                className="h-11 min-w-0 flex-1 select-text border border-rule bg-transparent px-3 font-type text-[16px] uppercase text-parchment placeholder:text-ash-dim"
+                className="h-11 min-w-0 flex-1 select-text border border-rule bg-transparent px-3 font-type text-[length:calc(16px*var(--ts,1))] uppercase text-parchment placeholder:text-ash-dim"
               />
-              <button type="button" onClick={tryRestore} className="label h-11 border border-parchment/40 px-4 text-[11px]">
+              <button type="button" onClick={tryRestore} className="label h-11 border border-parchment/40 px-4 text-[length:calc(11px*var(--ts,1))]">
                 Herstel
               </button>
             </div>
-            {error && <span className="font-news text-[14px] italic text-[#f0b5aa]">Deze code klopt niet. Kijk de tekens nog eens na.</span>}
+            {error && <span className="font-news text-[length:calc(14px*var(--ts,1))] italic text-[#f0b5aa]">Deze code klopt niet. Kijk de tekens nog eens na.</span>}
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-x-4 border-t border-rule pt-4">
-            <button type="button" onClick={toggleMute} className="label flex h-11 items-center gap-2.5 text-[11px]">
+            <div className="basis-full pb-1">
+              <TextSize />
+            </div>
+            <button type="button" onClick={toggleMute} className="label flex h-11 items-center gap-2.5 text-[length:calc(11px*var(--ts,1))]">
               <Speaker off={muted} color="#ede6d6" />
               Geluid {muted ? "uit" : "aan"}
             </button>
-            <button type="button" onClick={() => setAbout(true)} className="label h-11 text-[11px] text-bone">
+            <button type="button" onClick={() => setAbout(true)} className="label h-11 text-[length:calc(11px*var(--ts,1))] text-bone">
               Over dit spel
             </button>
             {confirmReset ? (
-              <button type="button" onClick={() => (reset(), onClose())} className="label h-11 border border-alarm px-3 text-[11px] text-[#f0b5aa]">
+              <button type="button" onClick={() => (reset(), onClose())} className="label h-11 border border-alarm px-3 text-[length:calc(11px*var(--ts,1))] text-[#f0b5aa]">
                 Zeker weten: wis alles
               </button>
             ) : (
-              <button type="button" onClick={() => setConfirmReset(true)} className="label h-11 text-[11px] text-ash">
+              <button type="button" onClick={() => setConfirmReset(true)} className="label h-11 text-[length:calc(11px*var(--ts,1))] text-ash">
                 Begin opnieuw
               </button>
             )}

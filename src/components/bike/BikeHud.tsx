@@ -43,19 +43,19 @@ export function BikeHud({ hud, onSteer, onBell }: { hud: BikeHudState; onSteer: 
 
       <div className="absolute inset-x-5 top-[max(46px,env(safe-area-inset-top))] flex items-start justify-between">
         <div className="flex flex-col gap-1.5">
-          <span className="label text-[10.5px] text-bone">In de schuilkelder</span>
+          <span className="label text-[length:calc(11px*var(--ts,1))] text-bone">In de schuilkelder</span>
           <div className="flex gap-[3px]" role="img" aria-label={`${hud.safe} van ${peopleTotal} mensen veilig, ${hud.behind} lopen achter je`}>
             {Array.from({ length: peopleTotal }, (_, i) => (
               <span key={i} className="h-3.5 w-[11px]" style={{ background: i < hud.safe ? "#e2a93a" : i < hud.safe + hud.behind ? "rgba(226,169,58,.4)" : "rgba(237,230,214,.2)" }} />
             ))}
           </div>
-          <span className="label text-[10.5px] text-bone">{hud.behind > 0 ? `${hud.behind} lopen achter je` : `Nog ${Math.max(0, Math.round(hud.dist))} m`}</span>
+          <span className="label text-[length:calc(11px*var(--ts,1))] text-bone">{hud.behind > 0 ? `${hud.behind} lopen achter je` : `Nog ${Math.max(0, Math.round(hud.dist))} m`}</span>
         </div>
         <div className="flex flex-col items-end gap-0.5">
-          <span className="font-fell text-[34px] leading-none text-[#f2c1b8]">
+          <span className="font-fell text-[length:calc(34px*var(--ts,1))] leading-none text-[#f2c1b8]">
             {m}:{sec}
           </span>
-          <span className="label flex items-center gap-1.5 text-[10.5px] text-[#f2c1b8]">
+          <span className="label flex items-center gap-1.5 text-[length:calc(11px*var(--ts,1))] text-[#f2c1b8]">
             <span className="h-2 w-2 bg-alarm" />
             Luchtalarm
           </span>
@@ -63,18 +63,18 @@ export function BikeHud({ hud, onSteer, onBell }: { hud: BikeHudState; onSteer: 
       </div>
 
       {hud.warning && (
-        <span className="label absolute left-5 top-[calc(max(46px,env(safe-area-inset-top))+82px)] border-l-2 border-alarm bg-night/70 px-2 py-1.5 text-[10px] text-[#f2c1b8]">
+        <span className="label absolute left-5 top-[calc(max(46px,env(safe-area-inset-top))+82px)] border-l-2 border-alarm bg-night/70 px-2 py-1.5 text-[length:calc(11px*var(--ts,1))] text-[#f2c1b8]">
           Inslag op komst · blijf uit het rode vlak
         </span>
       )}
 
-      <p className="absolute inset-x-12 bottom-[176px] m-0 text-center font-fell text-[16px] italic leading-snug tracking-normal">{caption(hud)}</p>
+      <p className="absolute inset-x-12 bottom-[176px] m-0 text-center font-fell text-[length:calc(16px*var(--ts,1))] italic leading-snug tracking-normal">{caption(hud)}</p>
 
       <button type="button" aria-label="Stuur naar links" className={`${zone} -left-[70px]`} {...thumb("L")}>
-        <span className="label absolute left-[92px] top-[78px] text-[12px] tracking-[0.2em]">Links</span>
+        <span className="label absolute left-[92px] top-[78px] text-[length:calc(12px*var(--ts,1))] tracking-[0.2em]">Links</span>
       </button>
       <button type="button" aria-label="Stuur naar rechts" className={`${zone} -right-[70px]`} {...thumb("R")}>
-        <span className="label absolute left-[80px] top-[78px] text-[12px] tracking-[0.2em]">Rechts</span>
+        <span className="label absolute left-[80px] top-[78px] text-[length:calc(12px*var(--ts,1))] tracking-[0.2em]">Rechts</span>
       </button>
       <button
         type="button"
@@ -88,9 +88,9 @@ export function BikeHud({ hud, onSteer, onBell }: { hud: BikeHudState; onSteer: 
         <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M5 17h14 M7 17v-5a5 5 0 0 1 10 0v5 M12 5v2 M10.5 20h3" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
         </svg>
-        <span className="label text-[11px] tracking-[0.2em]">Bel</span>
+        <span className="label text-[length:calc(11px*var(--ts,1))] tracking-[0.2em]">Bel</span>
       </button>
-      <span className="absolute inset-x-0 bottom-[118px] text-center font-fell text-[12.5px] italic tracking-normal text-bone">beide vast: remmen</span>
+      <span className="absolute inset-x-0 bottom-[118px] text-center font-fell text-[length:calc(12.5px*var(--ts,1))] italic tracking-normal text-bone">beide vast: remmen</span>
     </div>
   );
 }

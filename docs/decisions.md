@@ -200,6 +200,13 @@ Formaat: beslissing · waarom · alternatief.
     seconden). Daarom verhuizen de vuurlichten naar het vuur bij de speler in plaats van aan en uit
     te gaan.
 
+55. **Wat nog niet af is, ziet een speler niet.** Placeholders en [notities] zijn voor ons: in
+    productie valt een Toen-en-nu-pagina zonder foto weg en blijft een vak zonder scan leeg. Zo
+    oogt het spel af, ook terwijl de archieffoto's nog worden aangevraagd.
+56. **Terug is terug, niet weg.** Op een telefoon is de terugknop de eerste reflex; die mag niet
+    het spel sluiten midden in een hoofdstuk. In een 3D-spel betekent terug "pauze", want daar is
+    het spel zelf het scherm.
+
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.
 - Blaeu-kaart: pin-posities zijn op het oog geplaatst. Georefereren met controlepunten in M8.

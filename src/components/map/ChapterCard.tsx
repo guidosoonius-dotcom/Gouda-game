@@ -8,8 +8,8 @@ import { Arrow } from "@/components/ui/icons";
 function Field({ label, value, accent }: { label: string; value: React.ReactNode; accent?: boolean }) {
   return (
     <div className="flex min-w-0 flex-col gap-0.5">
-      <span className="label text-[9.5px] tracking-[0.16em] text-[#6e6a60]">{label}</span>
-      <span className={`truncate font-type text-[14px] ${accent ? "text-wax" : ""}`}>{value}</span>
+      <span className="label text-[length:calc(11px*var(--ts,1))] tracking-[0.16em] text-[#6e6a60]">{label}</span>
+      <span className={`break-words font-type leading-tight text-[length:calc(14px*var(--ts,1))] ${accent ? "text-wax" : ""}`}>{value}</span>
     </div>
   );
 }
@@ -69,12 +69,12 @@ export function ChapterCard({
     >
       <div className="absolute bottom-0 left-10 top-0 w-px bg-[rgba(176,58,46,.35)]" />
       <div className="flex items-center justify-between pl-[34px]">
-        <span className="label text-[10.5px] text-[#5c5a52]">{side ? "Zijspoor" : `Kaart 0${chapter.id} / 05`}</span>
-        <span className="rotate-3 whitespace-nowrap border-[1.5px] border-wax px-1.5 py-px font-stamp text-[12px] tracking-[0.16em] text-wax opacity-85">
+        <span className="label text-[length:calc(11px*var(--ts,1))] text-[#5c5a52]">{side ? "Zijspoor" : `Kaart 0${chapter.id} / 05`}</span>
+        <span className="rotate-3 whitespace-nowrap border-[1.5px] border-wax px-1.5 py-px font-stamp text-[length:calc(12px*var(--ts,1))] tracking-[0.16em] text-wax opacity-85">
           {stamp}
         </span>
       </div>
-      <h2 className="m-0 pl-[34px] font-fell text-[28px] font-normal leading-[1.05]">{chapter.title}</h2>
+      <h2 className="m-0 pl-[34px] font-fell text-[length:calc(28px*var(--ts,1))] font-normal leading-[1.05]">{chapter.title}</h2>
       <div className="grid grid-cols-[1.25fr_1.1fr_0.85fr] gap-2 pl-[34px]">
         <Field label="ADRES" value={chapter.place} />
         <Field label={location ? "TIJD" : "DATUM"} value={location ? chapter.time : chapter.dateShort} />
@@ -84,7 +84,7 @@ export function ChapterCard({
         type="button"
         onClick={primary.onPress}
         disabled={primary.disabled}
-        className="mt-1.5 flex h-[52px] items-center justify-between bg-press px-[18px] font-label text-[14px] font-bold tracking-[0.17em] text-parchment transition-transform active:translate-x-1 disabled:bg-[#b9b1a0] disabled:text-[#5c5a52] disabled:active:translate-x-0"
+        className="mt-1.5 flex h-[52px] items-center justify-between bg-press px-[18px] font-label text-[length:calc(14px*var(--ts,1))] font-bold tracking-[0.17em] text-parchment transition-transform active:translate-x-1 disabled:bg-[#b9b1a0] disabled:text-[#5c5a52] disabled:active:translate-x-0"
       >
         {primary.label.toUpperCase()}
         {!primary.disabled && <Arrow color="#e2a93a" />}
@@ -93,7 +93,7 @@ export function ChapterCard({
         <button
           type="button"
           onClick={secondary.onPress}
-          className="flex h-11 items-center justify-between border border-press/60 px-[18px] font-label text-[12.5px] font-bold tracking-[0.17em] text-press transition-transform active:translate-x-1"
+          className="flex h-11 items-center justify-between border border-press/60 px-[18px] font-label text-[length:calc(12.5px*var(--ts,1))] font-bold tracking-[0.17em] text-press transition-transform active:translate-x-1"
         >
           {secondary.label.toUpperCase()}
           <Arrow color="#1a1b1c" />

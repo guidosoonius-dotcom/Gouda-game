@@ -7,6 +7,7 @@
  * them to 960 px and writes webp under 250 KB to `public/img/archive/`).
  */
 import type { ArchiveImage } from "./chapters";
+import present from "./archive-files.json";
 
 const COMMONS = "https://commons.wikimedia.org/wiki/File:";
 
@@ -47,3 +48,9 @@ export const ARCHIVE = {
     source: `${COMMONS}Plaquette_door_Ralph_Prins_op_de_deur_voormalige_synagoge_Gouda.jpg`,
   },
 } as const satisfies Record<string, ArchiveImage>;
+
+/**
+ * The photograph if its file exists (written to `archive-files.json` by `npm run archive`), else
+ * undefined: a slot without a file keeps its placeholder, which players never see.
+ */
+export const shown = (img: ArchiveImage): ArchiveImage | undefined => ((present as string[]).includes(img.file) ? img : undefined);

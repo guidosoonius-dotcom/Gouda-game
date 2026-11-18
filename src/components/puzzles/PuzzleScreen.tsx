@@ -44,12 +44,12 @@ export function PuzzleScreen() {
           <Back color="#ede6d6" />
         </button>
         <div className="flex flex-col gap-0.5">
-          <span className="label text-[10.5px] text-ochre">Zijspoor · {chapter.place}</span>
-          <h1 className="m-0 font-fell text-[24px] font-normal leading-tight">{"title" in puzzle ? puzzle.title : task?.kind === "task" ? task.title : chapter.title}</h1>
+          <span className="label text-[length:calc(11px*var(--ts,1))] text-ochre">Zijspoor · {chapter.place}</span>
+          <h1 className="m-0 font-fell text-[length:calc(24px*var(--ts,1))] font-normal leading-tight">{"title" in puzzle ? puzzle.title : task?.kind === "task" ? task.title : chapter.title}</h1>
         </div>
       </header>
       <div key={stage} className="relative flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-5 pb-[calc(24px+env(safe-area-inset-bottom))]">
-        <p className="m-0 font-news text-[15.5px] italic leading-snug text-bone">{puzzle.intro}</p>
+        <p className="m-0 font-news text-[length:calc(15.5px*var(--ts,1))] italic leading-snug text-bone">{puzzle.intro}</p>
         {puzzle.kind === "words" && <WordsPuzzle pairs={puzzle.pairs} onSolved={solve} />}
         {puzzle.kind === "acrostic" && <AcrosticPuzzle puzzle={puzzle} onSolved={solve} />}
         {puzzle.kind === "stars" && <StarsPuzzle onSolved={solve} />}
@@ -58,7 +58,7 @@ export function PuzzleScreen() {
         {puzzle.kind === "rooms" && <RoomsPuzzle onSolved={solve} />}
         {solved && (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-auto flex flex-col gap-3 pt-2">
-            <p className="m-0 border-l-2 border-ochre pl-3 font-news text-[16px] leading-snug">{puzzle.done}</p>
+            <p className="m-0 border-l-2 border-ochre pl-3 font-news text-[length:calc(16px*var(--ts,1))] leading-snug">{puzzle.done}</p>
             <button
               type="button"
               onClick={() => {
@@ -68,7 +68,7 @@ export function PuzzleScreen() {
                   setSolved(false);
                 } else advance();
               }}
-              className="flex h-[54px] items-center justify-between bg-ochre px-[18px] font-label text-[14px] font-bold tracking-[0.17em] text-slate"
+              className="flex h-[54px] items-center justify-between bg-ochre px-[18px] font-label text-[length:calc(14px*var(--ts,1))] font-bold tracking-[0.17em] text-slate"
             >
               VERDER
               <Arrow color="#14181d" />

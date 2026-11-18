@@ -64,7 +64,7 @@ export function BureauPuzzle({ onSolved }: { onSolved: () => void }) {
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <span className="label text-[11px] text-bone">Argwaan</span>
+          <span className="label text-[length:calc(11px*var(--ts,1))] text-bone">Argwaan</span>
           <div className="flex gap-[3px]" role="img" aria-label={`Argwaan ${desk.suspicion} van ${TUNING.bureau.suspicionMax}`}>
             {Array.from({ length: TUNING.bureau.suspicionMax }, (_, i) => (
               <motion.span
@@ -75,18 +75,18 @@ export function BureauPuzzle({ onSolved }: { onSolved: () => void }) {
             ))}
           </div>
         </div>
-        <span className="font-label text-[13px] text-ochre" aria-live="polite">
+        <span className="font-label text-[length:calc(13px*var(--ts,1))] text-ochre" aria-live="polite">
           Gewonnen: {desk.gained} {desk.gained === 1 ? "dag" : "dagen"}
         </span>
       </div>
 
       {friday ? (
         <div className="flex flex-col gap-3 pt-1">
-          <span className="label text-[11px] text-ochre">Vrijdag 7 juni 1940</span>
-          <p className="m-0 font-fell text-[22px] leading-snug">{OUTCOME_TEXT[outcome].title}</p>
-          <p className="m-0 font-news text-[15.5px] leading-snug text-bone">{OUTCOME_TEXT[outcome].body}</p>
-          <div className="flex flex-col gap-1 bg-paper px-3.5 py-3 font-news text-[15px] leading-snug text-ink">
-            <span className="label text-[10.5px] text-wax-dark">Burgemeester James</span>
+          <span className="label text-[length:calc(11px*var(--ts,1))] text-ochre">Vrijdag 7 juni 1940</span>
+          <p className="m-0 font-fell text-[length:calc(22px*var(--ts,1))] leading-snug">{OUTCOME_TEXT[outcome].title}</p>
+          <p className="m-0 font-news text-[length:calc(15.5px*var(--ts,1))] leading-snug text-bone">{OUTCOME_TEXT[outcome].body}</p>
+          <div className="flex flex-col gap-1 bg-paper px-3.5 py-3 font-news text-[length:calc(15px*var(--ts,1))] leading-snug text-ink">
+            <span className="label text-[length:calc(11px*var(--ts,1))] text-wax-dark">Burgemeester James</span>
             <span>
               <FactText id={FRIDAY_FACT} />
             </span>
@@ -95,11 +95,11 @@ export function BureauPuzzle({ onSolved }: { onSolved: () => void }) {
       ) : (
         <>
           <div className="flex items-baseline justify-between">
-            <span className="font-fell text-[20px]">{order.day}</span>
-            <span className="label text-[10.5px] text-ash">dag {desk.day + 1} van {ORDERS.length}</span>
+            <span className="font-fell text-[length:calc(20px*var(--ts,1))]">{order.day}</span>
+            <span className="label text-[length:calc(11px*var(--ts,1))] text-ash">dag {desk.day + 1} van {ORDERS.length}</span>
           </div>
-          <div className="relative bg-paper px-3.5 pb-3 pt-4 font-type text-[13.5px] leading-[1.45] text-ink shadow-[0_6px_18px_rgba(0,0,0,0.45)]">
-            <div className="flex justify-between px-1.5 pb-2 text-[11.5px] tracking-[0.06em]">
+          <div className="relative bg-paper px-3.5 pb-3 pt-4 font-type text-[length:calc(13.5px*var(--ts,1))] leading-[1.45] text-ink shadow-[0_6px_18px_rgba(0,0,0,0.45)]">
+            <div className="flex justify-between px-1.5 pb-2 text-[length:calc(11.5px*var(--ts,1))] tracking-[0.06em]">
               <span>ORTSKOMMANDANTUR GOUDA</span>
               <span>{order.date}</span>
             </div>
@@ -116,13 +116,13 @@ export function BureauPuzzle({ onSolved }: { onSolved: () => void }) {
                 {text}
               </button>
             ))}
-            <div className="px-1.5 pt-2 font-label text-[11px] text-[#5b5f62]">Verzonnen bevel, naar het soort bevelen uit 1940</div>
+            <div className="px-1.5 pt-2 font-label text-[length:calc(11px*var(--ts,1))] text-[#5b5f62]">Verzonnen bevel, naar het soort bevelen uit 1940</div>
             {result && (
               <motion.div
                 initial={still ? false : { scale: 1.9, rotate: -16, opacity: 0 }}
                 animate={{ scale: 1, rotate: -8, opacity: 1 }}
                 transition={{ type: "spring", stiffness: 520, damping: 18 }}
-                className="absolute right-4 top-14 border-[3px] bg-paper/60 px-3 py-1 text-[22px] tracking-[0.18em]"
+                className="absolute right-4 top-14 border-[3px] bg-paper/60 px-3 py-1 text-[length:calc(22px*var(--ts,1))] tracking-[0.18em]"
                 style={{ color: STAMP[result.verdict].color, borderColor: STAMP[result.verdict].color }}
               >
                 {STAMP[result.verdict].label}
@@ -137,7 +137,7 @@ export function BureauPuzzle({ onSolved }: { onSolved: () => void }) {
               initial={false}
               animate={still ? {} : { x: [0, -6, 6, -3, 0] }}
               transition={{ duration: 0.28 }}
-              className="m-0 border border-alarm bg-[#3a1a1b] px-3 py-2.5 font-news text-[14.5px] leading-snug"
+              className="m-0 border border-alarm bg-[#3a1a1b] px-3 py-2.5 font-news text-[length:calc(14.5px*var(--ts,1))] leading-snug"
             >
               {miss.text}
             </motion.p>
@@ -145,15 +145,15 @@ export function BureauPuzzle({ onSolved }: { onSolved: () => void }) {
 
           {result ? (
             <>
-              <p className="m-0 font-news text-[16px] leading-snug">{result.text}</p>
-              <button type="button" onClick={next} className="flex h-[54px] items-center justify-between bg-ochre px-[18px] font-label text-[14px] font-bold tracking-[0.17em] text-slate">
+              <p className="m-0 font-news text-[length:calc(16px*var(--ts,1))] leading-snug">{result.text}</p>
+              <button type="button" onClick={next} className="flex h-[54px] items-center justify-between bg-ochre px-[18px] font-label text-[length:calc(14px*var(--ts,1))] font-bold tracking-[0.17em] text-slate">
                 {desk.day + 1 < ORDERS.length ? "VOLGENDE DAG" : "VRIJDAG"} <span aria-hidden="true">→</span>
               </button>
             </>
           ) : (
             <>
               <BureauTools tools={toolsOn(ORDERS, desk.day)} open={tool} onOpen={setTool} fresh={order.tool} />
-              <p className="m-0 font-news text-[14px] italic leading-snug text-bone">
+              <p className="m-0 font-news text-[length:calc(14px*var(--ts,1))] italic leading-snug text-bone">
                 Vind de fout en stuur het bevel zonder gevaar terug. Gok je mis, dan stijgt de argwaan.
               </p>
               <div className="grid grid-cols-3 gap-1.5">
@@ -162,7 +162,7 @@ export function BureauPuzzle({ onSolved }: { onSolved: () => void }) {
                     key={v}
                     type="button"
                     onClick={() => act(v)}
-                    className={`min-h-14 px-1 font-label text-[12.5px] font-bold leading-tight tracking-[0.08em] ${v === "terug" ? "bg-ochre text-slate" : "border border-rule bg-slate text-parchment"}`}
+                    className={`min-h-14 px-1 font-label text-[length:calc(12.5px*var(--ts,1))] font-bold leading-tight tracking-[0.08em] ${v === "terug" ? "bg-ochre text-slate" : "border border-rule bg-slate text-parchment"}`}
                   >
                     {v === "terug" ? "TERUG WEGENS FOUT" : v === "liggen" ? "LATEN LIGGEN" : "TEKENEN"}
                   </button>

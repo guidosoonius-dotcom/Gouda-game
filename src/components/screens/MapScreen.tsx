@@ -22,7 +22,7 @@ function ModeTab({ mode, label }: { mode: Mode; label: string }) {
       type="button"
       aria-pressed={active}
       onClick={() => setMode(mode)}
-      className={`-my-2 py-2 font-label text-[12px] tracking-[0.14em] ${active ? "font-bold text-parchment" : "font-semibold text-ash"}`}
+      className={`-my-2 py-2 font-label text-[length:calc(12px*var(--ts,1))] tracking-[0.14em] ${active ? "font-bold text-parchment" : "font-semibold text-ash"}`}
     >
       <span className={`block border-b-2 pb-1.5 ${active ? "border-ochre" : "border-transparent"}`}>{label}</span>
     </button>
@@ -37,7 +37,7 @@ function Timeline({ at, year }: { at: number; year: string }) {
         className="absolute inset-x-0 top-1 h-[7px]"
         style={{ background: "repeating-linear-gradient(90deg, #4a535b 0 1px, transparent 1px calc(100% / 30))" }}
       />
-      <div className="absolute inset-x-0 top-4 flex justify-between font-label text-[10px] font-semibold tracking-[0.1em] text-ash-dim">
+      <div className="absolute inset-x-0 top-4 flex justify-between font-label text-[length:calc(11px*var(--ts,1))] font-semibold tracking-[0.1em] text-ash-dim">
         {[1940, 1941, 1942, 1943, 1944, 1945].map((y) => (
           <span key={y} className={year.endsWith(String(y)) ? "text-parchment" : ""}>
             {y}
@@ -119,7 +119,7 @@ export function MapScreen() {
 
         <header className="absolute inset-x-5 top-[max(46px,env(safe-area-inset-top))] flex items-start justify-between">
           <div className="flex flex-col gap-0.5">
-            <span className="font-fell text-[21px] italic leading-none">Koerier aan de Gouwe</span>
+            <span className="font-fell text-[length:calc(21px*var(--ts,1))] italic leading-none">Koerier aan de Gouwe</span>
             <div className="mt-2 flex gap-[18px]">
               <ModeTab mode="location" label="OP LOCATIE" />
               <ModeTab mode="home" label="THUIS" />
@@ -133,7 +133,7 @@ export function MapScreen() {
           >
             <Satchel color="#ede6d6" />
             {items.length > 0 && (
-              <span className="absolute -right-1.5 -top-1.5 h-[18px] min-w-[18px] bg-wax text-center font-label text-[11px] font-bold leading-[18px] text-[#f3d6c4]">
+              <span className="absolute -right-1.5 -top-1.5 h-[18px] min-w-[18px] bg-wax text-center font-label text-[length:calc(11px*var(--ts,1))] font-bold leading-[calc(18px*var(--ts,1))] text-[#f3d6c4]">
                 {items.length}
               </span>
             )}
@@ -147,7 +147,7 @@ export function MapScreen() {
         <button
           type="button"
           onClick={press(() => go("epilogue"))}
-          className="mx-3.5 mb-2 flex h-12 flex-none items-center justify-between bg-ochre px-[18px] font-label text-[13px] font-bold tracking-[0.17em] text-slate"
+          className="mx-3.5 mb-2 flex h-12 flex-none items-center justify-between bg-ochre px-[18px] font-label text-[length:calc(13px*var(--ts,1))] font-bold tracking-[0.17em] text-slate"
         >
           {completed.includes(6) ? "HERLEES DE EPILOOG · MEI 1945" : "MEI 1945 · NAAR DE MARKT"}
           <Arrow color="#14181d" />

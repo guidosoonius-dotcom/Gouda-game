@@ -4,6 +4,7 @@ import { memo, Suspense, useEffect, useRef, useState, type ReactNode } from "rea
 import { Canvas, useFrame, useThree, type CanvasProps } from "@react-three/fiber";
 import * as THREE from "three";
 import { TUNING } from "@/game/tuning";
+import { usePaused } from "@/lib/pause";
 
 const G = TUNING.gfx;
 
@@ -115,8 +116,11 @@ function Warmup() {
 export const GameCanvas = memo(function GameCanvas({ camera, grade, children }: { camera: CanvasProps["camera"]; grade: Grade; children: ReactNode }) {
   // the grade must be in place before the first shader compiles
   useState(() => applyGrade(grade));
+  // paused: keep the last picture, draw nothing (the clock and the battery both rest)
+  const paused = usePaused();
   return (
     <Canvas
+      frameloop={paused ? "never" : "always"}
       shadows="percentage"
       dpr={typeof window === "undefined" ? 1 : Math.min(G.dprStart, window.devicePixelRatio || 1)}
       camera={camera}

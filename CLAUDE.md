@@ -45,7 +45,9 @@ Read only the section you need; do not load whole documents by default.
 8. Chapter 3 (Oosthaven 31) has no score, timer, failure state or modifiers.
 9. No game over: failing a minigame changes the story outcome, it never blocks progress.
 10. Accessibility: `prefers-reduced-motion`, no flashing above 3 Hz, contrast 4.5:1,
-    text scalable, every audio cue also visual. iOS has no `navigator.vibrate`.
+    text scalable (write font sizes as `text-[length:calc(Npx*var(--ts,1))]`, N >= 11; no
+    `maximumScale`), every audio cue also visual. iOS has no `navigator.vibrate`. Every 3D
+    minigame has a `PauseLayer`; players never see placeholders (dev and preview only).
 
 ## Working style (token-efficient)
 - One milestone per session; finish its acceptance checks, commit, stop.

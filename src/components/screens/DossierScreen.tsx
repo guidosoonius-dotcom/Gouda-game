@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { chapterById } from "@/data/places";
+import { chapterById, dossierPages, isFinished } from "@/data/places";
 import { echoesFor } from "@/game/choices";
 import { useGameStore } from "@/store/useGameStore";
 import { sfx } from "@/lib/sound";
@@ -17,7 +17,7 @@ function Continue({ label, onPress, dim }: { label: string; onPress: () => void;
     <button
       type="button"
       onClick={onPress}
-      className={`flex h-[54px] items-center justify-between bg-ochre px-[18px] font-label text-[14px] font-bold tracking-[0.17em] text-slate transition-all active:translate-x-1 ${dim ? "opacity-55" : ""}`}
+      className={`flex h-[54px] items-center justify-between bg-ochre px-[18px] font-label text-[length:calc(14px*var(--ts,1))] font-bold tracking-[0.17em] text-slate transition-all active:translate-x-1 ${dim ? "opacity-55" : ""}`}
     >
       {label.toUpperCase()}
       <Arrow color="#14181d" />
@@ -26,9 +26,10 @@ function Continue({ label, onPress, dim }: { label: string; onPress: () => void;
 }
 
 export function DossierScreen() {
-  const { chapter: chapterId, page: pageIndex, flags, nextPage, go } = useGameStore();
+  const { chapter: chapterId, page: pageIndex, flags, nextPage, go, mode } = useGameStore();
   const chapter = chapterById(chapterId);
-  const page = chapter.pages[Math.min(pageIndex, chapter.pages.length - 1)];
+  const pages = dossierPages(chapter, mode);
+  const page = pages[Math.min(pageIndex, pages.length - 1)];
   const [typedPage, setTypedPage] = useState(-1);
   const typed = typedPage === pageIndex;
   const markTyped = () => setTypedPage(pageIndex);
@@ -77,11 +78,11 @@ export function DossierScreen() {
           <Back color="#ede6d6" />
         </button>
         <div className="flex flex-1 flex-col gap-1.5">
-          <span className="label text-[11px] text-bone">
+          <span className="label text-[length:calc(11px*var(--ts,1))] text-bone">
             Dossier 0{chapter.id} · {chapter.date} · {chapter.time.replace(" uur", "")}
           </span>
-          <div className="flex gap-1" role="img" aria-label={`Blad ${pageIndex + 1} van ${chapter.pages.length}`}>
-            {chapter.pages.map((_, i) => (
+          <div className="flex gap-1" role="img" aria-label={`Blad ${pageIndex + 1} van ${pages.length}`}>
+            {pages.map((_, i) => (
               <span key={i} className={`h-0.5 flex-1 transition-colors duration-500 ${i <= pageIndex ? "bg-ochre" : "bg-parchment/25"}`} />
             ))}
           </div>
@@ -106,26 +107,41 @@ export function DossierScreen() {
           {page.kind === "then-now" && (
             <>
               <div className="flex flex-col gap-2">
-                <span className="label text-[10.5px] text-bone">Toen en nu</span>
-                <h1 className="m-0 font-fell text-[28px] font-normal leading-[1.1]">
-                  Dezelfde plek, <span className="italic text-ochre">een andere tijd</span>
+                <span className="label text-[length:calc(11px*var(--ts,1))] text-bone">{page.then.image ? "Toen en nu" : "Op locatie"}</span>
+                <h1 className="m-0 font-fell text-[length:calc(28px*var(--ts,1))] font-normal leading-[1.1]">
+                  {page.then.image ? (
+                    <>
+                      Dezelfde plek, <span className="italic text-ochre">een andere tijd</span>
+                    </>
+                  ) : (
+                    <>
+                      Kijk <span className="italic text-ochre">om je heen</span>
+                    </>
+                  )}
                 </h1>
               </div>
-              <ThenNow then={page.then} now={page.now} year={chapter.date.split(" ").slice(-1)[0]} />
-              <p className="m-0 font-news text-[15px] leading-[1.5] text-[#d8d0be]">{page.intro}</p>
-              <p className="m-0 border-l-2 border-ochre pl-3 font-news text-[14.5px] italic leading-snug text-bone">{page.anchor}</p>
+              {/* the slider only with a real archive photograph (dossierPages leaves the page out otherwise) */}
+              {page.then.image && (
+                <>
+                  <ThenNow then={page.then} now={page.now} year={chapter.date.split(" ").slice(-1)[0]} />
+                  <p className="m-0 font-news text-[length:calc(15px*var(--ts,1))] leading-[1.5] text-[#d8d0be]">{page.intro}</p>
+                </>
+              )}
+              {mode === "location" && isFinished(page.anchor) && (
+                <p className="m-0 border-l-2 border-ochre pl-3 font-news text-[length:calc(14.5px*var(--ts,1))] italic leading-snug text-bone">{page.anchor}</p>
+              )}
               <Continue label="Verder" onPress={advance} />
             </>
           )}
           {page.kind === "task" && (
             <>
               <div className="flex flex-col gap-2">
-                <span className="label text-[10.5px] text-bone">Jouw opdracht</span>
-                <h1 className="m-0 font-fell text-[30px] font-normal leading-[1.08]">{page.title}</h1>
+                <span className="label text-[length:calc(11px*var(--ts,1))] text-bone">Jouw opdracht</span>
+                <h1 className="m-0 font-fell text-[length:calc(30px*var(--ts,1))] font-normal leading-[1.08]">{page.title}</h1>
               </div>
-              <p className="m-0 font-news text-[16.5px] leading-[1.5] text-[#d8d0be]">{page.brief}</p>
+              <p className="m-0 font-news text-[length:calc(16.5px*var(--ts,1))] leading-[1.5] text-[#d8d0be]">{page.brief}</p>
               {echoesFor(chapter.id, flags, "route").map((e) => (
-                <p key={e.id} className="m-0 border-l-2 border-ochre pl-3 font-news text-[14.5px] italic leading-snug text-bone">
+                <p key={e.id} className="m-0 border-l-2 border-ochre pl-3 font-news text-[length:calc(14.5px*var(--ts,1))] italic leading-snug text-bone">
                   {e.text}
                 </p>
               ))}

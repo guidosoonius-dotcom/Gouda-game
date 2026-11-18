@@ -14,10 +14,11 @@ import { CanalLife } from "./CanalLife";
 import { CanalWorld } from "./CanalWorld";
 import { Cinema, Night } from "./Night";
 import { Sky } from "./Sky";
+import { PauseLayer } from "@/components/ui/PauseLayer";
 import { GameCanvas, type Grade } from "./GameCanvas";
 import { useWindowGlow } from "./Kit";
 import { COURSE, createSim, step, type Outcome, type Side, type Sim } from "./sim";
-import { isWalkBlocked } from "@/lib/walk";
+import { isFrozen } from "@/lib/pause";
 
 interface Input {
   strokes: Side[];
@@ -59,7 +60,7 @@ function Loop({ sim, fx, input, onHud, onEvent }: {
   const sinceHud = useRef(0);
   useFrame((_, delta) => {
     const s = sim.current;
-    const dt = isWalkBlocked() ? 0 : Math.min(delta, 0.05);
+    const dt = isFrozen() ? 0 : Math.min(delta, 0.05);
     const now = performance.now();
     const { L, R } = input.current.held;
     const holdBoth = L > 0 && R > 0 && now - Math.max(L, R) > 220;
@@ -191,6 +192,7 @@ export function CanalGame() {
       </GameCanvas>
 
       <Cinema />
+      <PauseLayer active={phase === "play" || phase === "caught"} title="Nachtvaart bij het Verlaat" onRestart={start} />
       {phase !== "intro" && phase !== "done" && <CanalHud hud={hud} onDown={down} onUp={up} />}
 
       <AnimatePresence>
@@ -204,8 +206,8 @@ export function CanalGame() {
             exit={{ opacity: 0 }}
           >
             <div className="flex flex-col items-center gap-3">
-              <span className="-rotate-6 border-[3px] border-alarm bg-night/70 px-4 py-1 font-stamp text-[34px] tracking-[0.2em] text-alarm">GEZIEN</span>
-              <span className="font-fell text-[17px] italic text-parchment">
+              <span className="-rotate-6 border-[3px] border-alarm bg-night/70 px-4 py-1 font-stamp text-[length:calc(34px*var(--ts,1))] tracking-[0.2em] text-alarm">GEZIEN</span>
+              <span className="font-fell text-[length:calc(17px*var(--ts,1))] italic text-parchment">
                 {hud.caught >= TUNING.canal.maxCaught ? "‘Zo lukt het niet.’" : "Terug naar het laatste riet."}
               </span>
             </div>
@@ -220,8 +222,8 @@ export function CanalGame() {
             exit={{ opacity: 0 }}
           >
             <div className="flex flex-col gap-2">
-              <span className="label text-[10.5px] text-bone">{phase === "intro" ? "Oktober 1944 · 19:45" : "Bij de sluis"}</span>
-              <h1 className="m-0 font-fell text-[32px] font-normal leading-[1.06] text-parchment">
+              <span className="label text-[length:calc(11px*var(--ts,1))] text-bone">{phase === "intro" ? "Oktober 1944 · 19:45" : "Bij de sluis"}</span>
+              <h1 className="m-0 font-fell text-[length:calc(32px*var(--ts,1))] font-normal leading-[1.06] text-parchment">
                 {phase === "intro" ? (
                   <>
                     Nachtvaart <span className="italic text-ochre">bij het Verlaat</span>
@@ -233,7 +235,7 @@ export function CanalGame() {
             </div>
             <div className="-rotate-1 bg-parchment px-5 py-4 text-ink shadow-[0_14px_30px_rgba(0,0,0,.55)]">
               {phase === "intro" ? (
-                <ul className="m-0 flex list-none flex-col gap-2 p-0 font-type text-[14px] leading-[1.5]">
+                <ul className="m-0 flex list-none flex-col gap-2 p-0 font-type text-[length:calc(14px*var(--ts,1))] leading-[1.5]">
                   <li>Tik links en rechts om de beurt om te roeien.</li>
                   <li>Elke slag maakt lawaai. Wordt de meter rood, dan komt het licht naar je toe.</li>
                   <li>In het riet en onder de brug ben je onzichtbaar.</li>
@@ -241,15 +243,15 @@ export function CanalGame() {
                   {crew === 3 && <li>Jaap roeit mee: zwaarder en luider, maar in de maat gaat het hard.</li>}
                 </ul>
               ) : (
-                <p className="m-0 font-news text-[16.5px] leading-[1.5]">{ENDINGS[outcome].body}</p>
+                <p className="m-0 font-news text-[length:calc(16.5px*var(--ts,1))] leading-[1.5]">{ENDINGS[outcome].body}</p>
               )}
             </div>
             <div className="flex flex-col gap-2.5">
-              <button type="button" onClick={phase === "intro" ? start : () => (sfx.paper(), advance())} className="flex h-[54px] items-center justify-between bg-ochre px-[18px] font-label text-[14px] font-bold tracking-[0.17em] text-slate">
+              <button type="button" onClick={phase === "intro" ? start : () => (sfx.paper(), advance())} className="flex h-[54px] items-center justify-between bg-ochre px-[18px] font-label text-[length:calc(14px*var(--ts,1))] font-bold tracking-[0.17em] text-slate">
                 {phase === "intro" ? "AFVAREN" : "LEES DE KRANT"}
                 <Arrow color="#14181d" />
               </button>
-              <button type="button" onClick={phase === "intro" ? () => go("dossier") : start} className="flex h-12 items-center justify-between border border-parchment/45 px-[18px] font-label text-[13px] font-bold tracking-[0.17em] text-parchment">
+              <button type="button" onClick={phase === "intro" ? () => go("dossier") : start} className="flex h-12 items-center justify-between border border-parchment/45 px-[18px] font-label text-[length:calc(13px*var(--ts,1))] font-bold tracking-[0.17em] text-parchment">
                 {phase === "intro" ? "TERUG NAAR HET DOSSIER" : "NOG EEN KEER VAREN"}
                 <Arrow color="#ede6d6" />
               </button>

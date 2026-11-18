@@ -103,9 +103,9 @@ export const Crate = forwardRef<
         animate={closed ? { y: 0, opacity: 1 } : { y: "-108%", opacity: 0 }}
         transition={closed ? { duration: 0.55, ease: [0.3, 0, 0.2, 1] } : { duration: 0 }}
       >
-        <span className="font-stamp text-[15px] tracking-[0.3em] text-[#2b1f12]/85">ST. JAN · GOUDA</span>
-        <span className="font-stamp text-[54px] leading-none text-[#2b1f12]/85">{level.crate}</span>
-        <span className="mt-1 border-2 border-[#2b1f12]/75 px-2 font-stamp text-[13px] tracking-[0.3em] text-[#2b1f12]/85">
+        <span className="font-stamp text-[length:calc(15px*var(--ts,1))] tracking-[0.3em] text-[#2b1f12]/85">ST. JAN · GOUDA</span>
+        <span className="font-stamp text-[length:calc(54px*var(--ts,1))] leading-none text-[#2b1f12]/85">{level.crate}</span>
+        <span className="mt-1 border-2 border-[#2b1f12]/75 px-2 font-stamp text-[length:calc(13px*var(--ts,1))] tracking-[0.3em] text-[#2b1f12]/85">
           BREEKBAAR
         </span>
       </motion.div>

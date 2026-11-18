@@ -62,7 +62,7 @@ function Thumb({ side, onDown, onUp }: { side: Side; onDown: (s: Side) => void; 
             strokeLinejoin="round"
           />
         </svg>
-        <span className="label text-[12px] tracking-[0.2em] text-parchment">{left ? "Links" : "Rechts"}</span>
+        <span className="label text-[length:calc(12px*var(--ts,1))] tracking-[0.2em] text-parchment">{left ? "Links" : "Rechts"}</span>
       </span>
     </button>
   );
@@ -82,7 +82,7 @@ export function CanalHud({ hud, onDown, onUp }: { hud: HudState; onDown: (s: Sid
 
       <div className="absolute inset-x-5 top-[max(46px,env(safe-area-inset-top))] flex items-start justify-between">
         <div className="flex flex-col gap-[7px]" role="img" aria-label={`Lawaai ${Math.round(hud.noise * 100)} procent`}>
-          <span className="label text-[10.5px] text-bone">Lawaai</span>
+          <span className="label text-[length:calc(11px*var(--ts,1))] text-bone">Lawaai</span>
           <div className="flex items-end gap-[3px]">
             {Array.from({ length: 10 }, (_, i) => (
               <span
@@ -97,30 +97,30 @@ export function CanalHud({ hud, onDown, onUp }: { hud: HudState; onDown: (s: Sid
           </div>
         </div>
         <div className="flex flex-col items-end gap-0.5">
-          <span className="font-fell text-[34px] leading-none">{hud.clock}</span>
-          <span className="label text-[10.5px] text-bone">Okt 1944</span>
+          <span className="font-fell text-[length:calc(34px*var(--ts,1))] leading-none">{hud.clock}</span>
+          <span className="label text-[length:calc(11px*var(--ts,1))] text-bone">Okt 1944</span>
         </div>
       </div>
 
-      <div className="absolute inset-x-5 top-[calc(max(46px,env(safe-area-inset-top))+70px)] flex items-center gap-2.5 text-[12px] font-semibold tracking-[0.14em]">
+      <div className="absolute inset-x-5 top-[calc(max(46px,env(safe-area-inset-top))+70px)] flex items-center gap-2.5 text-[length:calc(12px*var(--ts,1))] font-semibold tracking-[0.14em]">
         <span>NAAR DE SLUIS</span>
         <span className="h-px flex-1 bg-parchment/30" />
-        <span className="font-fell text-[17px] tracking-normal">{Math.max(0, Math.round(hud.dist))} m</span>
+        <span className="font-fell text-[length:calc(17px*var(--ts,1))] tracking-normal">{Math.max(0, Math.round(hud.dist))} m</span>
       </div>
 
       <div className="absolute inset-x-5 top-[calc(max(46px,env(safe-area-inset-top))+100px)] flex h-9 items-center justify-between gap-2">
         <div className="flex min-w-0 flex-1 items-center">
           {hud.lit && !hud.hidden ? (
             <div className="flex w-full items-center gap-2.5 border-l-2 border-alarm bg-night/65 px-2 py-1.5">
-              <span className="label text-[10px] text-[#f2c1b8]">In het licht</span>
+              <span className="label text-[length:calc(11px*var(--ts,1))] text-[#f2c1b8]">In het licht</span>
               <span className="h-[3px] flex-1 bg-parchment/15">
                 <span className="block h-full bg-alarm" style={{ width: `${Math.min(1, hud.exposure) * 100}%` }} />
               </span>
             </div>
           ) : hud.alerted ? (
-            <span className="label border-l-2 border-alarm bg-night/65 px-2 py-1.5 text-[10px] text-[#f2c1b8]">De wacht hoort iets</span>
+            <span className="label border-l-2 border-alarm bg-night/65 px-2 py-1.5 text-[length:calc(11px*var(--ts,1))] text-[#f2c1b8]">De wacht hoort iets</span>
           ) : hud.hidden || hud.underBridge ? (
-            <span className="label border-l-2 border-ochre bg-night/65 px-2 py-1.5 text-[10px] text-ochre">
+            <span className="label border-l-2 border-ochre bg-night/65 px-2 py-1.5 text-[length:calc(11px*var(--ts,1))] text-ochre">
               {hud.hidden ? "In het riet · onzichtbaar" : "Onder de brug · onzichtbaar"}
             </span>
           ) : null}
@@ -148,13 +148,13 @@ export function CanalHud({ hud, onDown, onUp }: { hud: HudState; onDown: (s: Sid
             />
             <Bell color={hud.bellActive ? "#14181d" : "#ede6d6"} />
           </svg>
-          <span className="label text-[10px] tracking-[0.14em]">{hud.bellActive ? "Sint-Jan slaat" : `Sint-Jan · ${Math.ceil(hud.bellIn)} s`}</span>
+          <span className="label text-[length:calc(11px*var(--ts,1))] tracking-[0.14em]">{hud.bellActive ? "Sint-Jan slaat" : `Sint-Jan · ${Math.ceil(hud.bellIn)} s`}</span>
         </div>
       </div>
 
       {/* Marie, as a caption between the thumbs */}
       <p
-        className="absolute inset-x-12 bottom-[176px] m-0 text-center font-fell text-[16px] italic leading-snug tracking-normal text-parchment"
+        className="absolute inset-x-12 bottom-[176px] m-0 text-center font-fell text-[length:calc(16px*var(--ts,1))] italic leading-snug tracking-normal text-parchment"
         style={{ textShadow: "0 1px 3px #0a0d11, 0 0 12px #0a0d11, 0 0 2px #0a0d11" }}
       >
         {marieSays(hud)}
@@ -164,7 +164,7 @@ export function CanalHud({ hud, onDown, onUp }: { hud: HudState; onDown: (s: Sid
         <Thumb side="L" onDown={onDown} onUp={onUp} />
         <Thumb side="R" onDown={onDown} onUp={onUp} />
       </div>
-      <span className="absolute inset-x-0 bottom-[calc(22px+env(safe-area-inset-bottom))] text-center font-fell text-[13px] italic leading-tight text-bone">
+      <span className="absolute inset-x-0 bottom-[calc(22px+env(safe-area-inset-bottom))] text-center font-fell text-[length:calc(13px*var(--ts,1))] italic leading-tight text-bone">
         beide vast:
         <br />
         stil liggen

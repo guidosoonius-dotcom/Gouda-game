@@ -27,6 +27,13 @@ export function unlockAudio() {
   if (c && c.state === "suspended") void c.resume();
 }
 
+/** Silences everything without losing state: the page went to the background, or the game is paused. */
+export function setSuspended(value: boolean) {
+  if (!ctx) return;
+  if (value && ctx.state === "running") void ctx.suspend();
+  if (!value && ctx.state === "suspended") void ctx.resume();
+}
+
 export function setMuted(value: boolean) {
   muted = value;
   if (master && ctx) master.gain.setTargetAtTime(value ? 0 : 0.9, ctx.currentTime, 0.03);

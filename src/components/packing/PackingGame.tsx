@@ -72,14 +72,14 @@ export function PackingGame() {
               <Back color="#ede6d6" />
             </button>
             <div className="flex flex-col gap-1">
-              <span className="label text-[10.5px] text-bone">
+              <span className="label text-[length:calc(11px*var(--ts,1))] text-bone">
                 Kist {g.levelIndex + 1} van {LEVELS.length}
               </span>
-              <span className="font-fell text-[24px] leading-none">Paneel voor paneel</span>
+              <span className="font-fell text-[length:calc(24px*var(--ts,1))] leading-none">Paneel voor paneel</span>
             </div>
           </div>
           <div className="flex flex-col items-end gap-1.5" role="img" aria-label={`Schokgolven: ${g.rumbles} van ${MAX}`}>
-            <span className="label text-[10.5px] text-bone">Schokgolven</span>
+            <span className="label text-[length:calc(11px*var(--ts,1))] text-bone">Schokgolven</span>
             <div className="flex gap-1.5">
               {Array.from({ length: MAX }, (_, i) => (
                 <span key={i} className={`h-3 w-3 rotate-45 border transition-colors duration-500 ${i < g.rumbles ? "border-alarm bg-alarm" : "border-parchment/50"}`} />
@@ -123,7 +123,7 @@ export function PackingGame() {
               onClick={finish}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              className="flex h-[54px] w-full items-center justify-between bg-ochre px-[18px] font-label text-[14px] font-bold tracking-[0.17em] text-slate"
+              className="flex h-[54px] w-full items-center justify-between bg-ochre px-[18px] font-label text-[length:calc(14px*var(--ts,1))] font-bold tracking-[0.17em] text-slate"
             >
               DE KISTEN ZIJN DICHT
               <Arrow color="#14181d" />
@@ -132,9 +132,9 @@ export function PackingGame() {
         </div>
 
         <div className="flex min-h-[86px] items-start gap-3 px-5 pb-[calc(20px+env(safe-area-inset-bottom))]">
-          <span className="flex h-11 w-11 flex-none items-center justify-center rounded-full border-[1.5px] border-ochre bg-[#2a2f35] font-fell text-[18px] text-ochre">W</span>
+          <span className="flex h-11 w-11 flex-none items-center justify-center rounded-full border-[1.5px] border-ochre bg-[#2a2f35] font-fell text-[length:calc(18px*var(--ts,1))] text-ochre">W</span>
           <div className="flex flex-col gap-1">
-            <span className="label text-[10.5px] text-ochre">Willem</span>
+            <span className="label text-[length:calc(11px*var(--ts,1))] text-ochre">Willem</span>
             <AnimatePresence mode="wait">
               <motion.p
                 key={willemSays(g.phase, g.rumbles, g.moves, g.helped, g.levelIndex)}
@@ -142,7 +142,7 @@ export function PackingGame() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25 }}
-                className="m-0 font-news text-[16px] italic leading-[1.35]"
+                className="m-0 font-news text-[length:calc(16px*var(--ts,1))] italic leading-[1.35]"
               >
                 {willemSays(g.phase, g.rumbles, g.moves, g.helped, g.levelIndex)}
               </motion.p>

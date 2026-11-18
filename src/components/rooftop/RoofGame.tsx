@@ -12,12 +12,13 @@ import { RoofHud, ROOF_HUD_START, type RoofHudState } from "./RoofHud";
 import { RoofWorld } from "./RoofWorld";
 import { Cinema, Night } from "@/components/canal/Night";
 import { Sky } from "@/components/canal/Sky";
+import { PauseLayer } from "@/components/ui/PauseLayer";
 import { GameCanvas, type Grade } from "@/components/canal/GameCanvas";
 import { useWindowGlow } from "@/components/canal/Kit";
 import { RoofLife } from "./RoofLife";
 import { HOUSES, ridgeAt } from "./layout";
 import { ROOF, alleyAfter, createRoof, dashIsSafe, stepRoof, type RoofOutcome, type RoofSim } from "./sim";
-import { isWalkBlocked } from "@/lib/walk";
+import { isFrozen } from "@/lib/pause";
 
 interface Input {
   tap: boolean;
@@ -49,7 +50,7 @@ function Loop({ sim, input, onHud, onEvent }: {
   const since = useRef(0);
   useFrame((_, delta) => {
     const s = sim.current;
-    const dt = isWalkBlocked() ? 0 : Math.min(delta, 0.05);
+    const dt = isFrozen() ? 0 : Math.min(delta, 0.05);
     const hold = input.current.downAt > 0 && performance.now() - input.current.downAt > 170;
     const tap = input.current.tap;
     input.current.tap = false;
@@ -156,6 +157,7 @@ export function RoofGame() {
       </GameCanvas>
 
       <Cinema />
+      <PauseLayer active={phase === "play" || phase === "caught"} title="Over de daken" onRestart={start} at="right-4 top-[calc(max(30px,env(safe-area-inset-top))+78px)]" />
       {(phase === "play" || phase === "caught") && <RoofHud hud={hud} onDown={down} onUp={up} />}
 
       <AnimatePresence>
@@ -169,8 +171,8 @@ export function RoofGame() {
             exit={{ opacity: 0 }}
           >
             <div className="flex flex-col items-center gap-3">
-              <span className="-rotate-6 border-[3px] border-alarm bg-night/70 px-4 py-1 font-stamp text-[34px] tracking-[0.2em] text-alarm">GEZIEN</span>
-              <span className="font-fell text-[17px] italic text-parchment">
+              <span className="-rotate-6 border-[3px] border-alarm bg-night/70 px-4 py-1 font-stamp text-[length:calc(34px*var(--ts,1))] tracking-[0.2em] text-alarm">GEZIEN</span>
+              <span className="font-fell text-[length:calc(17px*var(--ts,1))] italic text-parchment">
                 {hud.caught >= TUNING.rooftop.maxCaught ? "De daken zijn niet meer veilig." : "Terug achter de schoorsteen."}
               </span>
             </div>
@@ -185,8 +187,8 @@ export function RoofGame() {
             exit={{ opacity: 0 }}
           >
             <div className="flex flex-col gap-2">
-              <span className="label text-[10.5px] text-bone">{phase === "intro" ? "November 1942 · 19:52" : "Bij het dakraam"}</span>
-              <h1 className="m-0 font-fell text-[32px] font-normal leading-[1.06] text-parchment">
+              <span className="label text-[length:calc(11px*var(--ts,1))] text-bone">{phase === "intro" ? "November 1942 · 19:52" : "Bij het dakraam"}</span>
+              <h1 className="m-0 font-fell text-[length:calc(32px*var(--ts,1))] font-normal leading-[1.06] text-parchment">
                 {phase === "intro" ? (
                   <>
                     Over <span className="italic text-ochre">de daken</span>
@@ -198,7 +200,7 @@ export function RoofGame() {
             </div>
             <div className="-rotate-1 bg-parchment px-5 py-4 text-ink shadow-[0_14px_30px_rgba(0,0,0,.55)]">
               {phase === "intro" ? (
-                <ul className="m-0 flex list-none flex-col gap-2 p-0 font-type text-[14px] leading-[1.5]">
+                <ul className="m-0 flex list-none flex-col gap-2 p-0 font-type text-[length:calc(14px*var(--ts,1))] leading-[1.5]">
                   <li>Tik om naar de volgende schoorsteen te rennen.</li>
                   <li>Achter een schoorsteen ziet niemand je. Wacht tot het zoeklicht weg is.</li>
                   <li>Komt het licht toch: houd vast en ga plat op de pannen liggen.</li>
@@ -207,15 +209,15 @@ export function RoofGame() {
                   {startCover > 0 && <li>Willems sleutel van de kerkzolder: je begint twee daken verder.</li>}
                 </ul>
               ) : (
-                <p className="m-0 font-news text-[16.5px] leading-[1.5]">{ENDINGS[outcome].body}</p>
+                <p className="m-0 font-news text-[length:calc(16.5px*var(--ts,1))] leading-[1.5]">{ENDINGS[outcome].body}</p>
               )}
             </div>
             <div className="flex flex-col gap-2.5">
-              <button type="button" onClick={phase === "intro" ? start : () => (sfx.paper(), advance())} className="flex h-[54px] items-center justify-between bg-ochre px-[18px] font-label text-[14px] font-bold tracking-[0.17em] text-slate">
+              <button type="button" onClick={phase === "intro" ? start : () => (sfx.paper(), advance())} className="flex h-[54px] items-center justify-between bg-ochre px-[18px] font-label text-[length:calc(14px*var(--ts,1))] font-bold tracking-[0.17em] text-slate">
                 {phase === "intro" ? "HET DAK OP" : "LEES DE KRANT"}
                 <Arrow color="#14181d" />
               </button>
-              <button type="button" onClick={phase === "intro" ? () => go("dossier") : start} className="flex h-12 items-center justify-between border border-parchment/45 px-[18px] font-label text-[13px] font-bold tracking-[0.17em] text-parchment">
+              <button type="button" onClick={phase === "intro" ? () => go("dossier") : start} className="flex h-12 items-center justify-between border border-parchment/45 px-[18px] font-label text-[length:calc(13px*var(--ts,1))] font-bold tracking-[0.17em] text-parchment">
                 {phase === "intro" ? "TERUG NAAR HET DOSSIER" : "NOG EEN KEER"}
                 <Arrow color="#ede6d6" />
               </button>
