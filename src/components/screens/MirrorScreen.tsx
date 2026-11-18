@@ -60,7 +60,7 @@ export function MirrorScreen() {
           </div>
           <div className="col-span-2 flex flex-col gap-1.5">
             <ArchivePlaceholder slot={mirror.scan} className="h-[132px]" />
-            <span className="text-[11.5px] italic leading-[1.35] text-[#3c3b37]">Hier komt een echte scan, met bron.</span>
+            {!mirror.scan.image && <span className="text-[11.5px] italic leading-[1.35] text-[#3c3b37]">Hier komt een echte scan, met bron.</span>}
           </div>
           {mirror.facts.length > 2 && (
             <p className="col-span-5 m-0 -mt-1 text-[13.5px] leading-[1.5]" style={{ hyphens: "auto" }}>

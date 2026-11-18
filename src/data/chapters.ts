@@ -1,5 +1,6 @@
 import type { ChoiceId, Flags } from "@/game/choices";
 import type { FactId } from "./sources";
+import { ARCHIVE } from "./archive";
 
 export type TaskKind = "packing" | "canal" | "rooftop" | "bicycle" | "witness" | "puzzle";
 
@@ -14,10 +15,26 @@ export type Puzzle =
   /** The rooms of the orphanage: a placement puzzle a month (`game/rooms.ts`). */
   | { kind: "rooms"; title: string; intro: string; done: string };
 
+/** A real photograph with its rights: only images with a clear licence get in (see `data/archive.ts`). */
+export interface ArchiveImage {
+  /** Webp in `public/img/archive/`, made by `npm run archive`. */
+  file: string;
+  /** What the photograph shows, for screen readers. */
+  alt: string;
+  /** Who made it and where it is kept, as shown under the picture. */
+  credit: string;
+  licence: "Publiek domein" | "CC BY-SA 4.0";
+  /** Page of the source (with the licence and the description). */
+  source: string;
+  /** CSS object-position for the crop in a wide block. */
+  focus?: string;
+}
+
 export interface ArchiveSlot {
-  /** What the licensed scan will show. Rendered by ArchivePlaceholder until it exists. */
+  /** What the licensed scan will show. Rendered by ArchivePlaceholder until `image` exists. */
   label: string;
   credit: string;
+  image?: ArchiveImage;
 }
 
 export type DossierPage =
@@ -171,8 +188,9 @@ export const CHAPTERS: Chapter[] = [
       factsTitle: "De glazen gingen ondergronds",
       facts: ["glazen.what", "glazen.removed", "glazen.stored", "glazen.returned"],
       scan: {
-        label: "SCAN · kisten met glazen in de Sint-Jan",
+        label: "FOTO · uitneming van de glazen uit de Sint-Jan",
         credit: "Bron volgt: Streekarchief Midden-Holland, inv.nr.",
+        image: ARCHIVE.glazenUitgenomen,
       },
       notice: {
         title: "En de student?",

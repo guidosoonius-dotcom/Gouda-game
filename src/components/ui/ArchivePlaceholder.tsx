@@ -1,19 +1,55 @@
+"use client";
+
+import { useState } from "react";
 import type { ArchiveSlot } from "@/data/chapters";
 
 /**
- * Stand-in for a licensed archive scan. We never generate "archive photos" (CLAUDE.md #7):
- * until a real scan with rights exists, this halftone block says exactly what is missing.
+ * A slot for an archive photograph. With a licensed `image` it shows the photograph and its credit;
+ * without one (or when the file is missing) it shows a halftone block that says exactly what is
+ * missing. We never generate "archive photos" (CLAUDE.md #7).
  */
 export function ArchivePlaceholder({
   slot,
   tone = "dark",
   className = "",
+  caption = true,
+  onBroken,
 }: {
   slot: ArchiveSlot;
   tone?: "dark" | "light";
   className?: string;
+  /** Show the credit on the picture; false when the parent shows it elsewhere. */
+  caption?: boolean;
+  /** Called when the photograph file cannot be loaded and the placeholder takes over. */
+  onBroken?: () => void;
 }) {
+  const [broken, setBroken] = useState(false);
   const dark = tone === "dark";
+  const image = slot.image && !broken ? slot.image : undefined;
+
+  if (image) {
+    return (
+      <figure className={`relative m-0 overflow-hidden bg-press ${className}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={`/img/archive/${image.file}`}
+          alt={image.alt}
+          loading="lazy"
+          decoding="async"
+          draggable={false}
+          onError={() => (setBroken(true), onBroken?.())}
+          className="absolute inset-0 h-full w-full object-cover"
+          style={{ objectPosition: image.focus ?? "50% 50%" }}
+        />
+        {caption && (
+          <figcaption className="absolute inset-x-0 bottom-0 bg-press/85 px-1.5 py-[3px] font-label text-[10px] leading-tight text-parchment">
+            {image.credit}
+          </figcaption>
+        )}
+      </figure>
+    );
+  }
+
   return (
     <div
       className={`flex items-end overflow-hidden p-2 ${className}`}

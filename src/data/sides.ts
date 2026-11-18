@@ -5,6 +5,7 @@
  * Ids 11..14 (the recovery code stores them as bits, see `game/save.ts`).
  */
 import { yearPos, type Chapter } from "./chapters";
+import { ARCHIVE } from "./archive";
 
 export const SIDES: Chapter[] = [
   {
@@ -115,7 +116,7 @@ export const SIDES: Chapter[] = [
         kind: "then-now",
         image: "/img/scenes/stadhuis.webp",
         intro: "Sleep de schuif. Links het stadhuis in 1940, rechts het stadhuis van nu.",
-        then: { label: "ARCHIEFFOTO · stadhuis van Gouda, 1940", credit: "Rechten aanvragen: Streekarchief Midden-Holland" },
+        then: { label: "ARCHIEFFOTO · stadhuis van Gouda, 1940", credit: "Rechten aanvragen: Streekarchief Midden-Holland", image: ARCHIVE.stadhuisTrap },
         now: { label: "FOTO VAN NU · zelfde standpunt", credit: "Zelf maken bij veldbezoek" },
         anchor: "Op locatie: loop om het stadhuis heen. Aan de westkant hangt een gedenkbord voor de Gouwenaars die in de oorlog zijn omgekomen. Lees een paar namen.",
       },
@@ -172,7 +173,7 @@ export const SIDES: Chapter[] = [
               },
       factsTitle: "Een burgemeester die weigerde",
       facts: ["stadhuis.refuse", "stadhuis.aanwijzingen", "stadhuis.arrest", "stadhuis.liera", "stadhuis.return"],
-      scan: { label: "SCAN · stadhuis van Gouda met zandzakken, 1940", credit: "Bron volgt: Streekarchief Midden-Holland" },
+      scan: { label: "FOTO · werkkamer van de burgemeester, 1940", credit: "Bron volgt: Streekarchief Midden-Holland", image: ARCHIVE.stadhuisWerkkamer },
       notice: {
         title: "Wat hij zei",
         fact: "stadhuis.paratrooper",
@@ -211,7 +212,7 @@ export const SIDES: Chapter[] = [
         image: "",
         intro: "Sleep de schuif. Links de synagoge van toen, rechts het gebouw van nu.",
         then: { label: "ARCHIEFFOTO · synagoge aan de Turfmarkt, voor 1940", credit: "Rechten aanvragen: Streekarchief Midden-Holland" },
-        now: { label: "FOTO VAN NU · de deur met de plaquette", credit: "Zelf maken bij veldbezoek" },
+        now: { label: "FOTO VAN NU · de voormalige synagoge", credit: "Zelf maken bij veldbezoek", image: ARCHIVE.synagoge },
         anchor: "Op locatie: kijk naar de deur. Tel de sterren in het wapen van Gouda.",
       },
       {
@@ -231,7 +232,7 @@ export const SIDES: Chapter[] = [
       title: "Turfmarkt 23",
       lead: "Hier kwam de Joodse gemeente van Gouda samen. Na de oorlog was er bijna niemand meer om terug te komen.",
       facts: ["synagoge.building", "synagoge.war", "synagoge.after", "synagoge.plaque"],
-      photo: { label: "FOTO · de plaquette van Ralph Prins op de deur", credit: "Zelf maken bij veldbezoek, of rechten aanvragen" },
+      photo: { label: "FOTO · de plaquette van Ralph Prins op de deur", credit: "Zelf maken bij veldbezoek, of rechten aanvragen", image: ARCHIVE.plaquette },
       names: [],
       namesNote: "De namen van de vermoorde Joodse Gouwenaars staan op het gedenkbord aan het stadhuis en in het Joods Monument.",
     },

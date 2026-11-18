@@ -13,3 +13,6 @@ next-env.d.ts
 test-results/
 
 __pycache__/
+
+# archive photo originals (large; `npm run archive` fetches them)
+assets/archive/*.jpg
