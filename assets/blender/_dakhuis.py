@@ -20,8 +20,10 @@ def windows(b, h):
 
 def dormer(b, x, h, rise, k, size=1.0):
     dy, dz = -D / 2 * (1 - k), h + rise * k
-    b.box((1.5 * size, 1.5, 1.25 * size), (x, dy + 0.3, dz + 0.3 * size), "WoodWhite")
-    b.box((1.1 * size, 0.06, 0.85 * size), (x, dy - 0.47, dz + 0.3 * size), "WindowDark")
+    # lead-clad cheeks, a white painted front frame around the window
+    b.box((1.5 * size, 1.5, 1.25 * size), (x, dy + 0.3, dz + 0.3 * size), "Lead")
+    b.box((1.3 * size, 0.05, 1.05 * size), (x, dy - 0.47, dz + 0.3 * size), "WoodWhite")
+    b.box((1.1 * size, 0.06, 0.85 * size), (x, dy - 0.5, dz + 0.3 * size), "Glass")
     b.box((1.8 * size, 1.8, 0.1), (x, dy + 0.25, dz + 0.3 + 0.67 * size), "Roof")
 
 
@@ -30,7 +32,7 @@ def saddle(name, h, rise, tile, dormers, hoist=False):
     b = Builder(name)
     b.box((W, D, h), (0, 0, h / 2), "Brick")
     b.loft([[(x, -D / 2 - 0.3, h), (x, D / 2 + 0.3, h), (x, 0, h + rise)] for x in (-W / 2 - 0.12, W / 2 + 0.12)], tile)
-    b.box((W + 0.3, 0.34, 0.14), (0, 0, h + rise - 0.02), "Stone")
+    b.box((W + 0.3, 0.34, 0.14), (0, 0, h + rise - 0.02), "Lead")  # lead-covered ridge: the route catches the moon
     b.box((W + 0.3, 0.2, 0.16), (0, -D / 2 - 0.34, h - 0.02), "WoodWhite")
     slope = math.atan2(rise, D / 2 + 0.3)
     for k in (0.2, 0.4, 0.6, 0.8):
