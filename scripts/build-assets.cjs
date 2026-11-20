@@ -85,7 +85,8 @@ for (const script of scripts) {
     run("gltf-transform", ["quantize", glb, glb]);
   }
   run("gltf-transform", ["dedup", glb, glb]);
-  run("gltf-transform", ["prune", glb, glb, "--keep-leaves", "true"]);
+  // keep TEXCOORD_0: no model has image textures, but leaf cards get one in the game
+  run("gltf-transform", ["prune", glb, glb, "--keep-leaves", "true", "--keep-attributes", glb.endsWith("boom.glb") ? "true" : "false"]);
   const kb = fs.statSync(glb).size / 1024;
   const info = inspect(glb);
   if (kb > MAX_KB) failed = true;

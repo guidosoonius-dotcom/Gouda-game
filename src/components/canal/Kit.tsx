@@ -65,6 +65,13 @@ function flatten(root: THREE.Object3D) {
     for (let i = 0; i < colors.length; i += 3) colors.set([c.r, c.g, c.b], i);
     g.setAttribute("color", new THREE.BufferAttribute(colors, 3));
     g.setAttribute("kind", new THREE.BufferAttribute(new Float32Array(count).fill(SURFACE[(mesh.material as THREE.Material).name] ?? 0), 1));
+    // leaf cards carry their place in the leaf atlas
+    if (kindOf((mesh.material as THREE.Material).name) === "leaf") {
+      const uv = src.attributes.uv;
+      const data = new Float32Array(count * 2);
+      if (uv) for (let i = 0; i < count; i++) data.set([uv.getX(i), uv.getY(i)], i * 2);
+      g.setAttribute("uv", new THREE.BufferAttribute(data, 2));
+    }
     if (src.index) g.setIndex(Array.from(src.index.array));
     return g;
   };

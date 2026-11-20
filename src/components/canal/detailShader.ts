@@ -2,14 +2,15 @@
  * GLSL of the kit's detail material (see `detailMaterial` in materials.ts). Every surface gets its
  * pattern from world position, projected on its own plane, so no model needs UVs:
  * - always: brick, tile, wood and stone patterns, rising damp and rain streaks on walls, moss on
- *   roofs, and a roughness per material (wet tiles and glass catch the light, brick does not);
+ *   roofs, a roughness per material (wet tiles and glass catch the light, brick does not), and,
+ *   where a scene sets `uWaterLine`, a wet band and algae on walls standing in the water;
  * - HIFI ("Hoge beeldkwaliteit"): the patterns come from detail maps made from generated material
  *   photos (`public/img/kit/*.webp`, a colour ratio to their mean, so the model keeps its colour),
  *   and their brightness becomes relief.
  */
 
 /** Surface families, stored per vertex as `kind` (see SURFACE in materials.ts). */
-export const KIND = { brick: 1, roof: 2, wood: 3, stone: 4, window: 5, soot: 6, cobble: 7, plaster: 8, metal: 9 } as const;
+export const KIND = { brick: 1, roof: 2, wood: 3, stone: 4, window: 5, soot: 6, cobble: 7, plaster: 8, metal: 9, bark: 10 } as const;
 
 export const fragCommon = /* glsl */ `
 varying float vKind;
@@ -18,8 +19,10 @@ varying vec3 vWNor;
 uniform vec3 uFire[4];
 uniform float uWindowGlow;
 uniform float uTimeW;
+uniform float uWaterLine;
 float dHeight;
 float dRough;
+float dWet;
 #ifdef HIFI
 uniform highp sampler2DArray uDetail;
 uniform float uScale[6];
@@ -43,6 +46,7 @@ vec3 reliefNormal(vec3 pos, vec3 n, float h) {
 export const fragColor = /* glsl */ `
 dHeight = 0.0;
 dRough = -1.0;
+dWet = 0.0;
 {
   float k = floor(vKind + 0.5);
   vec3 n = normalize(vWNor);
@@ -92,6 +96,13 @@ dRough = -1.0;
   }
   detail = mix(vec3(1.0), detail, fade);
 #endif
+  if (k == 10.0) {
+    // bark: long furrows up the trunk and branches, ridges a little lighter
+    float f = smoothstep(0.25, 0.75, vnoise(vec2(uv.x * 15.0, uv.y * 1.4)) * 0.75 + vnoise(uv * vec2(40.0, 6.0)) * 0.25);
+    detail = vec3(mix(0.5, 1.2, f));
+    dHeight = f * 0.8;
+    joint = 1.0 - f;
+  }
   detail *= 0.92 + 0.16 * grain;
   float wall = 1.0 - smoothstep(0.3, 0.6, abs(n.y));
   if (wall > 0.0 && (k == 1.0 || k == 3.0 || k == 4.0 || k == 8.0)) {
@@ -100,6 +111,15 @@ dRough = -1.0;
     float streak = smoothstep(0.35, 0.75, vnoise(vec2(uv.x * 6.0, vWPos.y * 0.3)) * (0.6 + 0.6 * vnoise(vec2(uv.x * 1.3 + 7.0, vWPos.y * 0.8))));
     detail *= mix(vec3(1.0), vec3(0.62, 0.68, 0.6), damp * wall);
     detail *= 1.0 - 0.2 * streak * wall;
+  }
+  float wl = vWPos.y - uWaterLine;
+  if (wall > 0.0 && wl > -2.0 && wl < 1.2) {
+    // where walls stand in the canal: soaked and dark just above the water, a band of green algae
+    // at the waterline, the stone below it slimy and shining
+    dWet = (1.0 - smoothstep(0.0, 0.55 + 0.35 * vnoise(vec2(uv.x * 2.7, 3.0)), wl)) * wall;
+    float algae = (1.0 - smoothstep(0.0, 0.16 + 0.14 * vnoise(vec2(uv.x * 6.0, 1.0)), abs(wl - 0.04))) * wall;
+    detail *= mix(vec3(1.0), vec3(0.5, 0.54, 0.48), dWet);
+    detail *= mix(vec3(1.0), vec3(0.6, 0.95, 0.45), algae * 0.85);
   }
   if (k == 2.0) {
     // moss gathers where the tiles overlap and in the hollows
@@ -118,6 +138,8 @@ dRough = -1.0;
   else if (k == 7.0) dRough = 0.6 + 0.3 * joint;
   else if (k == 8.0) dRough = 0.9;
   else if (k == 9.0) dRough = 0.4;
+  else if (k == 10.0) dRough = 0.95;
+  if (dWet > 0.0) dRough = mix(dRough < 0.0 ? 0.86 : dRough, 0.18, dWet);
 #ifdef HIFI
   dHeight *= uBump * smoothstep(40.0, 6.0, dist);
 #endif

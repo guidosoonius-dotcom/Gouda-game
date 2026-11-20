@@ -14,7 +14,7 @@ b.box((STRIP - 0.5, LENGTH, 0.06), (STRIP / 2 + 0.25, 0, TOP + 0.03), "Cobble")
 blocks = 8
 for i in range(blocks):
     y = -LENGTH / 2 + (i + 0.5) * LENGTH / blocks
-    b.box((0.56, LENGTH / blocks - 0.04, 0.16), (0.24, y, TOP + 0.08), "Stone")
+    b.box((0.56, LENGTH / blocks - 0.04, 0.16), (0.24, y, TOP + 0.08), "Sandstone")  # weathered Bentheim coping, darkened by years of rain
 for y in (-LENGTH / 2 + 0.2, 0, LENGTH / 2 - 0.2):
     b.box((0.1, 0.4, TOP - 0.2), (-0.03, y, (TOP + 0.2) / 2), "Brick")
 # bollard, mooring ring and a wooden ladder

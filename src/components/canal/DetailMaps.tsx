@@ -4,7 +4,7 @@ import { useLayoutEffect } from "react";
 import { preload, suspend } from "suspend-react";
 import * as THREE from "three";
 import { useGameStore } from "@/store/useGameStore";
-import { DETAIL_MAPS, setDetailMaps } from "./materials";
+import { DETAIL_MAPS, setDetailMaps, setLeafMap } from "./materials";
 
 const SIZE = 512;
 const KEY = "kit-detail-maps";
@@ -35,9 +35,27 @@ async function load() {
   return tex;
 }
 
+const LEAVES = "/img/kit/leaves.webp";
+
+/** The leaf atlas of the trees: needed in both picture qualities (it gives the crowns their shape). */
+async function loadLeaves() {
+  const tex = await new THREE.TextureLoader().loadAsync(LEAVES);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 4;
+  return tex;
+}
+
 /** Start loading while the dossier is open, so the minigame does not wait for it. */
 export function preloadDetailMaps() {
-  if (typeof window !== "undefined" && useGameStore.getState().settings.hifi) preload(load, [KEY]);
+  if (typeof window === "undefined") return;
+  preload(loadLeaves, [LEAVES]);
+  if (useGameStore.getState().settings.hifi) preload(load, [KEY]);
+}
+
+function Leaves() {
+  const tex = suspend(loadLeaves, [LEAVES]);
+  useLayoutEffect(() => setLeafMap(tex), [tex]);
+  return null;
 }
 
 function Maps() {
@@ -47,13 +65,19 @@ function Maps() {
 }
 
 /**
- * "Hoge beeldkwaliteit": puts the detail maps on the kit before the warm-up compiles the scene
- * (it sits in front of `Warmup` in the canvas' Suspense). Off, the kit draws its own patterns.
+ * Puts the leaf atlas and, with "Hoge beeldkwaliteit", the detail maps on the kit before the
+ * warm-up compiles the scene (it sits in front of `Warmup` in the canvas' Suspense). Without the
+ * detail maps the kit draws its own patterns.
  */
 export function DetailMaps() {
   const hifi = useGameStore((s) => s.settings.hifi);
   useLayoutEffect(() => {
     if (!hifi) setDetailMaps(null);
   }, [hifi]);
-  return hifi ? <Maps /> : null;
+  return (
+    <>
+      <Leaves />
+      {hifi && <Maps />}
+    </>
+  );
 }

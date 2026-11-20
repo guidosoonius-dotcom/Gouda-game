@@ -22,8 +22,17 @@ function swayMaterial(strength: number) {
   const m = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.9, side: THREE.DoubleSide });
   m.onBeforeCompile = (shader) => {
     Object.assign(shader.uniforms, sway, { uStrength: { value: strength } });
+    // reeds: dark and green at the water, pale straw toward the tips, each stem a little different
+    shader.fragmentShader = shader.fragmentShader
+      .replace("#include <common>", "#include <common>\nvarying float vStemH;\nvarying float vStem;")
+      .replace(
+        "#include <color_fragment>",
+        `#include <color_fragment>
+        float tip = smoothstep(0.2, 1.6, vStemH);
+        diffuseColor.rgb *= mix(vec3(0.42, 0.5, 0.36), vec3(1.05, 0.98, 0.72), tip) * (0.8 + 0.4 * vStem);`,
+      );
     shader.vertexShader = shader.vertexShader
-      .replace("#include <common>", "#include <common>\nuniform float uTime;\nuniform vec3 uBoat;\nuniform float uRustle;\nuniform float uStrength;")
+      .replace("#include <common>", "#include <common>\nuniform float uTime;\nuniform vec3 uBoat;\nuniform float uRustle;\nuniform float uStrength;\nvarying float vStemH;\nvarying float vStem;")
       .replace(
         "#include <begin_vertex>",
         `#include <begin_vertex>
@@ -37,18 +46,65 @@ function swayMaterial(strength: number) {
         float wind = sin(uTime * 1.4 + ipos.x * 0.9 + ipos.z * 0.7) + 0.5 * sin(uTime * 2.3 + ipos.z * 1.3);
         float brush = uRustle * smoothstep(3.2, 0.6, distance(ipos.xz, uBoat.xz)) * sin(uTime * 11.0 + ipos.x * 5.0 + h * 3.0);
         transformed.x += (wind * 0.035 * uStrength + brush * 0.045) * bend;
-        transformed.z += cos(uTime * 1.1 + ipos.x) * 0.02 * uStrength * bend;`,
+        transformed.z += cos(uTime * 1.1 + ipos.x) * 0.02 * uStrength * bend;
+        vStemH = h;
+        vStem = fract(sin(dot(floor(position.xz * 7.0) + ipos.xz, vec2(12.9898, 78.233))) * 43758.5453);`,
       );
   };
   m.customProgramCacheKey = () => `sway-${strength}`;
   return m;
 }
 
+/** Height of the crown's centre in the tree model (build_boom.py): leaf cards are lit as one ball. */
+const CROWN_Y = 5.3;
+
+/**
+ * Leaf cards of the trees: an alpha-cut atlas of autumn lime sprigs (`leaves.webp`, set by
+ * `setLeafMap`), normals pointing out of the crown so it shades as one round mass, a slow sway
+ * of the whole crown and a flutter of the outer leaves.
+ */
+function foliageMaterial() {
+  const m = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.78, side: THREE.DoubleSide, alphaTest: 0.5 });
+  m.onBeforeCompile = (shader) => {
+    Object.assign(shader.uniforms, sway);
+    shader.vertexShader = shader.vertexShader
+      .replace("#include <common>", "#include <common>\nuniform float uTime;")
+      .replace(
+        "#include <beginnormal_vertex>",
+        `vec3 objectNormal = normalize(position - vec3(0.0, ${CROWN_Y.toFixed(1)}, 0.0));
+        #ifdef USE_TANGENT
+          vec3 objectTangent = vec3(tangent.xyz);
+        #endif`,
+      )
+      .replace(
+        "#include <begin_vertex>",
+        `#include <begin_vertex>
+        #ifdef USE_INSTANCING
+          vec3 ipos = instanceMatrix[3].xyz;
+        #else
+          vec3 ipos = modelMatrix[3].xyz;
+        #endif
+        float lift = smoothstep(2.5, 7.5, position.y);
+        transformed.x += sin(uTime * 0.7 + ipos.x * 0.3 + ipos.z * 0.2) * 0.12 * lift * lift;
+        transformed += objectNormal * sin(uTime * 3.1 + dot(position, vec3(3.1, 2.3, 2.7)) + ipos.x) * 0.035 * lift;`,
+      );
+    // the same round normal on both faces of a card (not flipped for the back face)
+    shader.fragmentShader = shader.fragmentShader.replace(
+      "#include <normal_fragment_begin>",
+      `#include <normal_fragment_begin>
+      normal = normalize(vNormal);
+      nonPerturbedNormal = normal;`,
+    );
+  };
+  m.customProgramCacheKey = () => "foliage";
+  return m;
+}
+
 /** Surface families for the procedural detail shader, stored per vertex as `kind`. */
-const { brick, roof, wood, stone, window: glass, soot, cobble, plaster, metal } = KIND;
+const { brick, roof, wood, stone, window: glass, soot, cobble, plaster, metal, bark } = KIND;
 export const SURFACE: Record<string, number> = {
   Brick: brick, BrickDark: brick, Roof: roof, RoofRed: roof, Slate: roof, Wood: wood, WoodDark: wood, WoodWhite: wood,
-  Stone: stone, StonePale: stone, Sandstone: stone, Relief: stone, Cobble: cobble, Stucco: plaster, Lead: metal,
+  Stone: stone, StonePale: stone, Sandstone: stone, Relief: stone, Cobble: cobble, Stucco: plaster, Lead: metal, Bark: bark,
   Glass: glass, WindowDark: glass, Soot: soot,
 };
 
@@ -58,7 +114,14 @@ const detail = {
   uDetail: { value: null as THREE.DataArrayTexture | null },
   uScale: { value: TUNING.gfx.hifi.scale },
   uBump: { value: TUNING.gfx.hifi.bump },
+  /** Height of the water in a scene with walls standing in it (the canal); far below: none. */
+  uWaterLine: { value: -1000 },
 };
+
+/** Walls touching water at this height get a wet band and algae; null switches it off. */
+export function setWaterLine(y: number | null) {
+  detail.uWaterLine.value = y ?? -1000;
+}
 
 /**
  * Vertex colours carry the base colour; the shader in detailShader.ts adds what a texture would:
@@ -98,7 +161,7 @@ function detailMaterial() {
 export const MATERIALS = {
   flat: detailMaterial(),
   reed: swayMaterial(1),
-  leaf: swayMaterial(0.07),
+  leaf: foliageMaterial(),
   lamp: new THREE.MeshStandardMaterial({ color: "#ffd98a", emissive: "#ffd27a", emissiveIntensity: 2.4, toneMapped: false }),
 };
 export type Kind = keyof typeof MATERIALS;
@@ -107,6 +170,11 @@ export type Kind = keyof typeof MATERIALS;
  * Switches the kit to the detail maps (or back to the drawn patterns, with null). Changing it
  * recompiles the kit material once, so it happens before the warm-up of a minigame.
  */
+export function setLeafMap(map: THREE.Texture) {
+  MATERIALS.leaf.map = map;
+  MATERIALS.leaf.needsUpdate = true;
+}
+
 export function setDetailMaps(maps: THREE.DataArrayTexture | null) {
   const m = MATERIALS.flat;
   if (detail.uDetail.value === maps) return;

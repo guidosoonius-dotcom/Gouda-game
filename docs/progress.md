@@ -181,7 +181,14 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   een echte voormuur met verzonken ramen en deuren en een kroonlijst; roeden zijn platte strips, dus
   minder driehoeken dan voorheen (fiets 217k, vaart 261k, daken 105k). Achter Vluchtspoor staat
   nu het station van Gouda zoals het was (naar een ansichtkaart), op ware grootte. Zijspoor
-  *Hemels Gewoon* heeft een sfeerbeeld (`scenes/markt.webp`); Oosthaven 31 en de synagoge blijven
+  *Hemels Gewoon* heeft een sfeerbeeld. Nachtvaart: natte klinkers op de kadestraten (gedeeld
+  met Vluchtspoor, `canal/WetStreet.ts`), een waterlijn met algen en natte steen op de kademuren
+  (`setWaterLine`), water dat langs de kades de muren spiegelt in plaats van de lucht, lichtstrepen
+  van de lantaarns, verweerde kadestenen en riet van donker naar strokleur. Bomen: echte vertakking
+  en een kruin van bladkaartjes (`img/kit/leaves.webp`, herfstlinde, uitgesneden), rond belicht,
+  met wiegende kruin en bladeren; 526 driehoeken per boom (was ruim 1600). Bast met groeven. Het
+  sfeerbeeld van het Weeshuis is opnieuw gemaakt naar een foto van de echte poort (1643), zonder
+  gezichten naar de kijker (`scenes/markt.webp`); Oosthaven 31 en de synagoge blijven
   bewust zonder illustratie (plekken van herdenking, getest).
 
 ## Half af

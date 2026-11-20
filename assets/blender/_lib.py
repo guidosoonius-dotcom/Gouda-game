@@ -40,7 +40,7 @@ MATERIALS = {
     "Boot": ("#1d1d1f", False),
     "Sand": ("#8d7f5f", False),
     "Bark": ("#3b2f26", False),
-    "Leaf": ("#6a6232", True),
+    "Leaf": ("#b4ae9c", True),  # the leaf atlas brings the colour; this only dims it
     "Soot": ("#1b1715", False),
     "Awning": ("#7d3b32", False),
     "AwningPale": ("#d8cdb4", False),
@@ -130,6 +130,25 @@ class Builder:
             pts = list(reversed(pts))
         face = self.poly(pts, mat)
         face.tag = True
+        return face
+
+    def card(self, centre, size, normal, twist, cell, mat, cells=2):
+        """A square leaf card facing `normal`, turned `twist` radians about it, mapped to one cell of
+        a `cells` x `cells` texture atlas (cell 0 is top left). The game gives cards their texture."""
+        n = Vector(normal).normalized()
+        u = n.cross(Vector((0, 0, 1)) if abs(n.z) < 0.95 else Vector((1, 0, 0))).normalized()
+        v = n.cross(u)
+        u, v = u * math.cos(twist) + v * math.sin(twist), v * math.cos(twist) - u * math.sin(twist)
+        h = size / 2
+        c = Vector(centre)
+        corners = [c - u * h - v * h, c + u * h - v * h, c + u * h + v * h, c - u * h + v * h]
+        face = self.bm.faces.new([self.bm.verts.new(p) for p in corners])
+        face.material_index = self._index(mat)
+        face.tag = True
+        uv = self.bm.loops.layers.uv.verify()
+        cx, cy = cell % cells, cell // cells
+        for loop, (a, b) in zip(face.loops, [(0, 0), (1, 0), (1, 1), (0, 1)]):
+            loop[uv].uv = ((cx + a) / cells, 1 - (cy + 1 - b) / cells)
         return face
 
     def loft(self, rings, mat, cap_first=True, cap_last=True):

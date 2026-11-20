@@ -39,7 +39,7 @@ export const SIDES: Chapter[] = [
         intro: "Sleep de schuif. Links het weeshuis van toen, rechts het gebouw van nu.",
         then: { label: "ARCHIEFFOTO · poort van het weeshuis, ca. 1939", credit: "Rechten aanvragen: Streekarchief Midden-Holland" },
         now: { label: "FOTO VAN NU · zelfde standpunt", credit: "Zelf maken bij veldbezoek" },
-        anchor: "Op locatie: boven de poort staan twee weeskinderen met het wapen van Gouda, en een jaartal. Welk jaar staat er?",
+        anchor: "Op locatie: boven de poort staan twee weeskinderen met het wapen van Gouda, en een jaartal. Vergelijk de echte poort met de tekening: wat is er anders?",
       },
       {
         kind: "task",

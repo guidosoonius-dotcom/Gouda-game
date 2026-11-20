@@ -228,6 +228,13 @@ Formaat: beslissing · waarom · alternatief.
     schemering, op ware grootte en schuin in het zicht zodat één puntgevel tussen de huizen past.
     Het blijft een schildering, geen archieffoto.
 
+62. **Bomen van kaartjes, niet van bollen.** Een kruin van uitgesneden bladtrossen (alpha-test,
+    dus geen sorteerproblemen en wel gespikkelde schaduw), met normalen vanuit het midden van de
+    kruin zodat hij als één bol belicht wordt. Goedkoper dan de oude bollen en echt van vorm.
+63. **Sfeerbeelden tonen geen gezichten van voren.** Gegenereerde gezichten verraden het snelst dat
+    een beeld gemaakt is; figuren staan van achteren of klein in beeld en het gebouw draagt het
+    beeld. Echte gebouwen (station, weeshuispoort) volgen een historische foto die we hebben.
+
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.
 - Blaeu-kaart: pin-posities zijn op het oog geplaatst. Georefereren met controlepunten in M8.
