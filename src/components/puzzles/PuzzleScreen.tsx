@@ -13,6 +13,7 @@ import { StarsPuzzle } from "./StarsPuzzle";
 import { CouponsPuzzle } from "./CouponsPuzzle";
 import { BureauPuzzle } from "./BureauPuzzle";
 import { RoomsPuzzle } from "./RoomsPuzzle";
+import { ToonbankPuzzle } from "./ToonbankPuzzle";
 
 /**
  * The small paper puzzle of a side story. No clock, no score, no way to fail: a wrong try gets a
@@ -56,6 +57,7 @@ export function PuzzleScreen() {
         {puzzle.kind === "coupons" && <CouponsPuzzle puzzle={puzzle} onSolved={solve} />}
         {puzzle.kind === "bureau" && <BureauPuzzle onSolved={solve} />}
         {puzzle.kind === "rooms" && <RoomsPuzzle onSolved={solve} />}
+        {puzzle.kind === "toonbank" && <ToonbankPuzzle onSolved={solve} />}
         {solved && (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-auto flex flex-col gap-3 pt-2">
             <p className="m-0 border-l-2 border-ochre pl-3 font-news text-[length:calc(16px*var(--ts,1))] leading-snug">{puzzle.done}</p>

@@ -3,22 +3,26 @@
  * iOS Safari may evict localStorage after ~7 days, so progress must be restorable.
  * Layout (LSB first): version(3) | completed chapters 1..6 (6) | choices (2 each) | outcomes (2 each)
  *   | version >= 2: side stories 11..14 (4) | version >= 3: outcomes added later (2 each)
+ *   | version >= 4: the outcomes added after those (2 each)
  * Codes of older versions (written before the side stories, or before their outcomes) still decode.
  */
 import { CHOICES, OUTCOMES, type Flags } from "./choices";
 
 const ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"; // Crockford base32, no I L O U
-const VERSION = 3;
+const VERSION = 4;
 const ALL_OUTCOMES = Object.keys(OUTCOMES) as (keyof typeof OUTCOMES)[];
 /** The outcomes version 1 knew; the rest are stored after the side stories (version 3). */
 const OUTCOME_IDS = ALL_OUTCOMES.slice(0, 4);
-const LATER_OUTCOMES = ALL_OUTCOMES.slice(4);
+const LATER_OUTCOMES = ALL_OUTCOMES.slice(4, 7);
+/** Outcomes stored from version 4 on (the counter at the Markt). Append only. */
+const V4_OUTCOMES = ALL_OUTCOMES.slice(7);
 /** Side stories, in bit order. Append only. */
 const SIDE_IDS = [11, 12, 13, 14];
 const BITS_V1 = 3 + 6 + CHOICES.length * 2 + OUTCOME_IDS.length * 2;
 const BITS_V2 = BITS_V1 + SIDE_IDS.length;
 const BITS_V3 = BITS_V2 + LATER_OUTCOMES.length * 2;
-const CHARS_BY_VERSION: Record<number, number> = { 1: Math.ceil(BITS_V1 / 5), 2: Math.ceil(BITS_V2 / 5), 3: Math.ceil(BITS_V3 / 5) };
+const BITS_V4 = BITS_V3 + V4_OUTCOMES.length * 2;
+const CHARS_BY_VERSION: Record<number, number> = { 1: Math.ceil(BITS_V1 / 5), 2: Math.ceil(BITS_V2 / 5), 3: Math.ceil(BITS_V3 / 5), 4: Math.ceil(BITS_V4 / 5) };
 const CHARS = CHARS_BY_VERSION[VERSION];
 
 export interface Progress {
@@ -49,6 +53,7 @@ export function encodeSave({ completed, flags }: Progress): string {
   OUTCOME_IDS.forEach(outcome);
   push(SIDE_IDS.reduce((m, id, i) => (completed.includes(id) ? m | (1 << i) : m), 0), SIDE_IDS.length);
   LATER_OUTCOMES.forEach(outcome);
+  V4_OUTCOMES.forEach(outcome);
   const digits: number[] = [];
   for (let i = 0; i < CHARS; i++) digits.push(Number((bits >> BigInt(i * 5)) & 31n));
   const body = digits.map((d) => ALPHABET[d]).join("");
@@ -101,5 +106,6 @@ export function decodeSave(code: string): Progress | null {
     SIDE_IDS.forEach((id, i) => sides & (1 << i) && completed.push(id));
   }
   if (version >= 3 && !LATER_OUTCOMES.every(outcome)) return null;
+  if (version >= 4 && !V4_OUTCOMES.every(outcome)) return null;
   return { completed, flags };
 }

@@ -29,7 +29,7 @@ describe("hulpmodus", () => {
 
   it("only touches numbers that exist, and makes things easier, never harder", () => {
     const live = TUNING as unknown as Record<string, Record<string, number>>;
-    const easier = new Set(["exposureLimit", "noiseAlert", "sweepPeriod", "jumpWindow", "jumpClean", "time", "bombEvery", "bombWarn", "bellRange", "rumbleInterval"]);
+    const easier = new Set(["exposureLimit", "noiseAlert", "sweepPeriod", "jumpWindow", "jumpClean", "time", "bombEvery", "bombWarn", "bellRange", "rumbleInterval", "tolerance"]);
     for (const [game, table] of Object.entries(TUNING.assist)) {
       for (const [key, f] of Object.entries(table)) {
         expect(typeof live[game][key], `${game}.${key}`).toBe("number");

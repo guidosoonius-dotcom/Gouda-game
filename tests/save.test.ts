@@ -51,6 +51,15 @@ describe("recovery code", () => {
     expect(decodeSave("KG-T01043-E")).toEqual({ completed: [1, 2, 11, 12], flags: { "ch1.pass": "glazen", "ch2.task": "gezien" } });
   });
 
+  it("round-trips the counter at the Markt, and still reads a code from before it (version 3)", () => {
+    for (const brood of OUTCOMES["side14.brood"]) {
+      const p: Progress = { completed: [1, 14], flags: { "side14.brood": brood, "side12.bode": "stil" } };
+      expect(decodeSave(encodeSave(p))).toEqual(p);
+    }
+    // written by version 3, before the counter had an outcome
+    expect(decodeSave("KG-V0106A1-0")).toEqual({ completed: [1, 2, 12, 14], flags: { "ch1.pass": "glazen", "ch2.task": "telaat", "side12.bode": "lijstje" } });
+  });
+
   it("is short enough to write down", () => {
     expect(encodeSave({ completed: [1, 2, 3, 4, 5, 6, 11, 12, 13, 14], flags: { "side12.bode": "weg" } }).length).toBeLessThanOrEqual(12);
   });

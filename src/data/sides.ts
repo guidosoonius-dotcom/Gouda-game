@@ -258,9 +258,9 @@ export const SIDES: Chapter[] = [
         image: "/img/scenes/markt.webp",
         lines: [
           "April 1945. De winter is voorbij, de honger nog niet. Op de Markt staat een lange rij, stil en mager.",
-          "Je moeder heeft je de bonkaart meegegeven. ‘Niet kwijtraken. En niet de verkeerde bon.’",
+          "Je moeder heeft je de bonkaart meegegeven. ‘Niet kwijtraken. En niet de verkeerde bon.’ Dan wenkt de winkelier je: hij komt handen tekort.",
         ],
-        quote: "‘Wit brood,’ fluistert iemand voor je. ‘Uit Zweden.’",
+        quote: "‘Jij kunt lezen en tellen. Kom achter de toonbank, dan ben jij straks als laatste aan de beurt.’",
       },
       {
         kind: "then-now",
@@ -273,34 +273,36 @@ export const SIDES: Chapter[] = [
       {
         kind: "task",
         image: "/img/scenes/markt.webp",
-        title: "De goede bonnen",
-        brief: "Op het bord in de etalage staat welke bonnen deze week gelden. Knip de juiste uit je kaart, en alleen die.",
-        cta: "Pak de bonkaart",
+        title: "Achter de toonbank",
+        brief:
+          "Vijf klanten, één mand brood. Knip alleen de bonnen die op het bord staan, weeg de margarine af en geef het brood mee. Wat je weggeeft zonder bon, is er niet meer als jij aan de beurt bent.",
+        cta: "Ga achter de toonbank",
       },
     ],
     puzzle: {
-      kind: "coupons",
-      intro: "Lees het bord en tik de bonnen aan die je moet inleveren. (De bonnummers zijn voor dit spel verzonnen.)",
-      board: ["Deze week geldig:", "Bon 412 · 1 Zweeds wittebrood", "Bon 415 · 100 gram margarine", "Andere bonnen: niet geldig"],
-      coupons: [
-        { id: "409", label: "409", ok: false, why: "Die was van vorige maand." },
-        { id: "410", label: "410", ok: false, why: "Die staat niet op het bord." },
-        { id: "411", label: "411", ok: false, why: "Die staat niet op het bord." },
-        { id: "412", label: "412", ok: true },
-        { id: "413", label: "413", ok: false, why: "Die bewaar je: misschien geldt hij volgende week." },
-        { id: "414", label: "414", ok: false, why: "Die staat niet op het bord." },
-        { id: "415", label: "415", ok: true },
-        { id: "416", label: "416", ok: false, why: "Die staat niet op het bord." },
-      ],
-      done: "De winkelier knipt, weegt, en legt een wit brood in je handen. Het is nog warm.",
+      kind: "toonbank",
+      title: "Achter de toonbank",
+      intro: "De klanten, hun kaarten en de bonnummers zijn voor dit spel verzonnen. Het brood niet.",
+      done: "De winkel gaat dicht. Buiten is het plein leeg, op een paar kruimels na.",
     },
     mirror: {
       edition: "Zijspoor",
       dateline: "GOUDA · APRIL 1945",
-      story: () => ({
-        headline: "Bonkaart klopt; wit brood mee naar huis",
-        body: "Je liep langzaam terug, met het brood onder je jas zodat het warm bleef. Thuis sneed je moeder het in dunne plakken, zo dun als het kon. Niemand zei iets tot alles op was.",
-      }),
+      story: (flags) =>
+        flags["side14.brood"] === "kok"
+          ? {
+              headline: "Hulpje geeft brood weg op verlopen bon",
+              body: "Je kwam met lege handen thuis. Je moeder vroeg niets; ze had het al gehoord, van de buurvrouw van mevrouw Kok. Die avond at je de laatste aardappels. Drie straten verder at een kind met koorts wit brood.",
+            }
+          : flags["side14.brood"] === "leeg"
+            ? {
+                headline: "Mand leeg voor de rij op is",
+                body: "Eén brood te veel over de toonbank, en het was het jouwe. Je liep met de lege bonkaart terug naar huis. ‘Volgende week,’ zei je moeder. Ze zei het alsof ze het geloofde.",
+              }
+            : {
+                headline: "Bonkaart klopt; wit brood mee naar huis",
+                body: "Je liep langzaam terug, met het brood onder je jas zodat het warm bleef. Thuis sneed je moeder het in dunne plakken, zo dun als het kon. Niemand zei iets tot alles op was.",
+              },
       factsTitle: "Brood uit Zweden",
       facts: ["brood.ships", "brood.gouda", "markt.hunger"],
       scan: { label: "SCAN · personeel van Albert Heijn aan de Markt deelt Zweeds brood uit, 1945", credit: "Bron volgt: Streekarchief Midden-Holland" },
@@ -309,7 +311,7 @@ export const SIDES: Chapter[] = [
         fact: "brood.gouka",
         body: "Jij en je moeder zijn verzonnen. Deze jongen niet.",
       },
-      reward: "Een bonkaart met twee gaten erin",
+      reward: "Een bonkaart met een gat erin",
     },
   },
 ];

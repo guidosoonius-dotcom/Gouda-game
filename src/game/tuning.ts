@@ -47,6 +47,7 @@ export const TUNING = {
     rooftop: { exposureLimit: 1.8, jumpWindow: 1.3, jumpClean: 1.5, time: 1.2 },
     bike: { time: 1.25, bombEvery: 1.35, bombWarn: 1.4, bellRange: 1.25 },
     packing: { rumbleInterval: 1.5 },
+    toonbank: { unrestPerSecond: 0.6, tolerance: 1.5 },
   },
   ui: {
     /** Text size steps (multiplier on every font size): normal, large, largest. */
@@ -65,6 +66,26 @@ export const TUNING = {
     leaveGain: 1,
     /** Signing calms the occupier down a little. */
     signRelief: 1,
+  },
+  /** Side story at the Markt, April 1945: helping out behind the counter (`game/toonbank.ts`). */
+  toonbank: {
+    /** Loaves in the basket at the start: exactly enough for every customer and you, if nobody
+     *  gets bread they have no coupon for. */
+    loaves: 5,
+    /** Grams of margarine on the counter at the start, and per coupon. */
+    margarine: 600,
+    portion: 100,
+    /** The piece on the knife: grams in the whole block shown, and how far off still counts as good. */
+    blockGrams: 400,
+    tolerance: 15,
+    /** Unrest in the queue runs from 0 to this. */
+    unrestMax: 5,
+    /** Unrest per second a customer waits (after `patience` seconds), per wrong cut, and the calm
+     *  that a served customer brings. */
+    patience: 14,
+    unrestPerSecond: 0.07,
+    wrongCut: 1,
+    served: 1,
   },
   packing: {
     /** Seconds between distant shock waves. */

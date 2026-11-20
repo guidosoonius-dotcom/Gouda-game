@@ -76,6 +76,8 @@ export const OUTCOMES = {
   "ch5.task": ["allen", "enkelen", "telaat"],
   // Side story at the town hall: how much the occupier noticed the slow messenger.
   "side12.bode": ["stil", "lijstje", "weg"],
+  // Side story at the Markt: whether there was bread left for you, and if not, why not.
+  "side14.brood": ["thuis", "kok", "leeg"],
 } as const;
 export type OutcomeId = keyof typeof OUTCOMES;
 

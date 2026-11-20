@@ -193,6 +193,15 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   banden en plint (252 driehoeken, was 1404); de daken samen 101k driehoeken (`scenes/markt.webp`); Oosthaven 31 en de synagoge blijven
   bewust zonder illustratie (plekken van herdenking, getest).
 
+- **Zijspoor Hemels Gewoon: Achter de toonbank.** De bonkaartpuzzel is een spel geworden: je
+  helpt achter de toonbank. Vijf klanten (`data/toonbank.ts`, model `game/toonbank.ts`, getest):
+  bonnen knippen volgens het bord, margarine afsnijden op het oog en wegen op een weegschaal met
+  slingerende wijzer, brood in de tas slepen. Mevrouw Kok met een verlopen bon en een ziek kind
+  (keuze), een man met haast die er één brood bij wil (keuze). De mand heeft precies genoeg; wat
+  je weggeeft zonder bon is er niet als jij aan de beurt bent. Een rij die gaat morren (lichte
+  druk, nooit game over). Uitkomst `side14.brood` (thuis, kok, leeg) kleurt de krant; herstelcode
+  versie 4. Beelden geschilderd met Higgsfield (`public/img/markt/`), geen gezichten in beeld.
+
 ## Half af
 - Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).
 - De tekst van hoofdstuk 3 is een voorstel: laat die lezen door iemand van het Joods Monument

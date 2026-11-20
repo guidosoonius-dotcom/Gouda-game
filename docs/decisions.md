@@ -235,6 +235,14 @@ Formaat: beslissing · waarom · alternatief.
     een beeld gemaakt is; figuren staan van achteren of klein in beeld en het gebouw draagt het
     beeld. Echte gebouwen (station, weeshuispoort) volgen een historische foto die we hebben.
 
+64. **De toonbank laat de schaarste voelen in plaats van haar uit te leggen.** De mand bevat
+    precies genoeg brood voor de rij en voor jou. Elke keuze om iemand meer te geven dan de bon
+    toestaat, kost jou je eigen brood: zo wordt het dilemma van de distributie iets dat je zelf
+    meemaakt. Het afsnijden is schatten op het oog (het hele blok weegt 400 gram), want dat deed
+    een winkelier ook; de weegschaal oordeelt pas daarna.
+65. **Herstelcode versie 4** voegt uitkomsten achteraan toe; codes van versie 1 tot en met 3
+    blijven werken (getest met een echte versie-3-code).
+
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.
 - Blaeu-kaart: pin-posities zijn op het oog geplaatst. Georefereren met controlepunten in M8.

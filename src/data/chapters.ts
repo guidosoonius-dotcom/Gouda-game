@@ -13,7 +13,9 @@ export type Puzzle =
   /** The messenger's desk at the town hall: a week of orders to stall (`game/bureau.ts`). */
   | { kind: "bureau"; title: string; intro: string; done: string }
   /** The rooms of the orphanage: a placement puzzle a month (`game/rooms.ts`). */
-  | { kind: "rooms"; title: string; intro: string; done: string };
+  | { kind: "rooms"; title: string; intro: string; done: string }
+  /** Behind the counter at the Markt: coupons, margarine and bread for a queue (`game/toonbank.ts`). */
+  | { kind: "toonbank"; title: string; intro: string; done: string };
 
 /** A real photograph with its rights: only images with a clear licence get in (see `data/archive.ts`). */
 export interface ArchiveImage {
