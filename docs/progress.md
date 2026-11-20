@@ -188,7 +188,9 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   en een kruin van bladkaartjes (`img/kit/leaves.webp`, herfstlinde, uitgesneden), rond belicht,
   met wiegende kruin en bladeren; 526 driehoeken per boom (was ruim 1600). Bast met groeven. Het
   sfeerbeeld van het Weeshuis is opnieuw gemaakt naar een foto van de echte poort (1643), zonder
-  gezichten naar de kijker (`scenes/markt.webp`); Oosthaven 31 en de synagoge blijven
+  gezichten naar de kijker. Over de daken: loden nokken (de route vangt het maanlicht), loden
+  dakkapellen met wit kozijn en glas, verweerde schoorsteenkappen, een uitkijktoren met kroonlijst,
+  banden en plint (252 driehoeken, was 1404); de daken samen 101k driehoeken (`scenes/markt.webp`); Oosthaven 31 en de synagoge blijven
   bewust zonder illustratie (plekken van herdenking, getest).
 
 ## Half af
