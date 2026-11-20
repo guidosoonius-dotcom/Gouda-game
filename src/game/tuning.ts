@@ -8,6 +8,17 @@ export const TUNING = {
     spotShadows: true,
     /** Procedural brick, tile, wood and stone detail in the shader. */
     detail: true,
+    /** "Hoge beeldkwaliteit" (settings.hifi): detail maps made from generated material photos,
+     *  relief from them, and a sharper moon shadow. Off, the shader draws its patterns itself. */
+    hifi: {
+      shadowMap: 2048,
+      /** Metres covered by one repeat of each detail map: brick, tiles, wood, stone, cobble, plaster. */
+      scale: [2.6, 2.4, 1.3, 2.6, 2.2, 3.2],
+      /** Depth in metres of the relief (mortar joints, tile edges, planks), faded out with distance. */
+      bump: 0.012,
+      /** Relief of the clinkers in the bicycle street (three's bumpScale on the cobble image). */
+      streetBump: 0.03,
+    },
     /** Ambient life in the bicycle chapter: extra people, aircraft, debris, embers and ash. */
     life: true,
     /** Render resolution (device pixels per CSS pixel): starts at dprStart (or the device's own if

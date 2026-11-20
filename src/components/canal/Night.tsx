@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { TUNING } from "@/game/tuning";
+import { useGameStore } from "@/store/useGameStore";
 import { Grain } from "@/components/ui/Grain";
 
 const SKY_FRAGMENT = `
@@ -49,6 +50,7 @@ export function Night({
   extent?: number;
 }) {
   const { gl, scene } = useThree();
+  const map = useGameStore((s) => s.settings.hifi) ? TUNING.gfx.hifi.shadowMap : 1024;
   const key = useRef<THREE.DirectionalLight>(null);
   const rim = useRef<THREE.PointLight>(null);
   const target = useMemo(() => new THREE.Object3D(), []);
@@ -101,12 +103,14 @@ export function Night({
       {subject && <pointLight ref={rim} color="#a9c0e8" intensity={9} distance={7} decay={1.6} />}
       <primitive object={target} />
       <directionalLight
+        // a new key per map size: the shadow map is only made once per light
+        key={map}
         ref={key}
         target={target}
         color={keyColor}
         intensity={keyIntensity}
         castShadow={TUNING.gfx.shadows}
-        shadow-mapSize={[1024, 1024]}
+        shadow-mapSize={[map, map]}
         shadow-bias={-0.0006}
         shadow-normalBias={0.05}
         shadow-camera-left={-extent}

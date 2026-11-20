@@ -173,6 +173,16 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   sloot) kom je terug in het dossier, een minigame begint dan opnieuw bij zijn opdracht.
   *Menu's*: "Ga verder" noemt het volgende hoofdstuk; de kaart toont 2/5 avonden en de zijsporen
   met het ruitje als uitleg; onder elke krant staat de herstelcode.
+- **Beeldkwaliteit (3D):** instelling *Hoge beeldkwaliteit* (standaard aan bij 6+ kernen en 4+ GB).
+  Aan: zes detailkaarten uit gegenereerde materiaalfoto's (`public/img/kit/`: baksteen, pannen,
+  hout, natuursteen, keien, pleister; samen ~580 KB) met reliëf, natte klinkers met glimmende
+  voegen in Vluchtspoor en een maanschaduw van 2048. Altijd: optrekkend vocht en regenstrepen op
+  muren, mos op pannen, lichte voegen, glans per materiaal (glas en lood spiegelen). Gevels hebben
+  een echte voormuur met verzonken ramen en deuren en een kroonlijst; roeden zijn platte strips, dus
+  minder driehoeken dan voorheen (fiets 217k, vaart 261k, daken 105k). Achter Vluchtspoor staat
+  nu het station van Gouda zoals het was (naar een ansichtkaart), op ware grootte. Zijspoor
+  *Hemels Gewoon* heeft een sfeerbeeld (`scenes/markt.webp`); Oosthaven 31 en de synagoge blijven
+  bewust zonder illustratie (plekken van herdenking, getest).
 
 ## Half af
 - Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).
@@ -197,7 +207,7 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   ("J. Blaeu, 1649") in "Over dit spel": herkomst van het kaartbestand en jaartal nog controleren.
 
 ## Controle
-- `npm run build` · `npm test` (97 tests) · `npm run test:e2e` (speelt hoofdstuk 1 door op 390×844,
+- `npm run build` · `npm test` (100 tests) · `npm run test:e2e` (speelt hoofdstuk 1 door op 390×844,
   speelt het dossier van hoofdstuk 4 tot in de vaart en zet screenshots in `test-results/`) · `npm run assets`.
 - Ontwikkelhulp (alleen in dev): `/?canal=1` opent de vaart direct, `&z=-60` start verderop;
   `/?roof=1` opent de daken, `&cover=8` start verderop; `/?bike=1` opent de fietstocht (`&bomb=1` laat direct een bom vallen, `&plane=1` toont een

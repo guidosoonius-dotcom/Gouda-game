@@ -111,7 +111,8 @@ Formaat: beslissing · waarom · alternatief.
 33. **Gegenereerde beelden als decor voor Vluchtspoor.** Een rokerige schemerlucht, naadloze natte
     keien en een stationsgevel komen uit Higgsfield (`public/img/bike/`, samen 350 KB). Dit
     verruimt de regel "geen afbeeldingen": alleen voor decor en ondergrond, nooit als
-    archieffoto. Het station is een generiek Nederlands stationsgebouw, niet het Goudse.
+    archieffoto. Het station was eerst een generiek stationsgebouw; sinds besluit 61 is het een
+    schildering naar een ansichtkaart van het Goudse station.
 34. **Licht in Vluchtspoor: een lage zon achter het spoor** is de enige schaduwwerper. Die rakelt
     langs de straat, dus de schaduwen vallen naar de speler toe en de gevels zijn aan de rand
     verlicht. De lucht dient ook als omgevingsbeeld voor weerspiegelingen. Het vuur kleurt de
@@ -212,6 +213,20 @@ Formaat: beslissing · waarom · alternatief.
     haalt. De uitkomst van een minigame (en dus de krant) hangt nog steeds af van hoe het ging.
 58. **Geen gelijktijdige knoppen als enige manier.** Twee duimen tegelijk vasthouden is voor
     sommige spelers niet te doen; de instelling Eén knop geeft dezelfde handeling op één knop.
+
+59. **Twee standen voor het beeld, één shader.** *Hoge beeldkwaliteit* zet een define in het
+    kitmateriaal: dan komen baksteen, pannen, hout, steen, keien en pleister uit detailkaarten (één
+    texture-array, één sampler) en wordt hun helderheid reliëf; uit tekent de shader de patronen
+    zelf. Vocht, regenstrepen, mos en glans per materiaal zitten in beide. De kaarten bewaren een
+    kleurverhouding tot hun gemiddelde, geen kleur: het model houdt zijn eigen tint, één kaart
+    dient alle bakstenen. Omschakelen hercompileert één keer, vóór de warm-up.
+60. **Diepte uit de gevel, niet uit de bevel.** Een voormuur van 22 cm met gaten (alleen de
+    zichtbare vlakken) geeft echte neggen waar het maanlicht schaduw in werpt; de roeden zijn
+    platte strips. Zo kregen de gevels diepte en werden ze toch lichter.
+61. **Het station van Gouda, niet een station.** Naar een ansichtkaart van het echte station (twee
+    puntgevels met rondboogfriezen, rondboogramen, glazen luifel), opnieuw geschilderd in dezelfde
+    schemering, op ware grootte en schuin in het zicht zodat één puntgevel tussen de huizen past.
+    Het blijft een schildering, geen archieffoto.
 
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.

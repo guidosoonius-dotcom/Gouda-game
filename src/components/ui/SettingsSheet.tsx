@@ -72,6 +72,10 @@ export function SettingsSheet({ onClose }: { onClose: () => void }) {
             <Switch label="Minder beweging" note="Geen bewegende beelden, schuddende camera of typmachine-tekst. Staat je telefoon al op minder beweging, dan volgt het spel die." on={settings.still} onChange={flip("still")} />
           </section>
           <section className="flex flex-col gap-1 border-t border-rule pt-4">
+            <span className={`label ${t(11)} text-bone`}>Beeld</span>
+            <Switch label="Hoge beeldkwaliteit" note="Echte baksteen, pannen en keien met reliëf, en scherpere schaduwen. Zet hem uit als de 3D-scènes haperen of je telefoon warm wordt." on={settings.hifi} onChange={flip("hifi")} />
+          </section>
+          <section className="flex flex-col gap-1 border-t border-rule pt-4">
             <span className={`label ${t(11)} text-bone`}>Spelen</span>
             <Switch label="Hulpmodus" note="Meer tijd, tragere zoeklichten, ruimere sprongen en minder bommen. Het verhaal blijft hetzelfde." on={settings.assist} onChange={flip("assist")} />
             <Switch label="Eén knop voor stil liggen en remmen" note="Een knop Stil of Rem, in plaats van twee duimen tegelijk vasthouden." on={settings.oneButton} onChange={flip("oneButton")} />

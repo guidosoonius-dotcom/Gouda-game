@@ -123,6 +123,15 @@ class Builder:
         face.material_index = self._index(mat)
         return face
 
+    def quad(self, pts, mat, normal):
+        """A single face that faces `normal` (kept as given: `build` does not recalculate it)."""
+        a, b, c = (Vector(p) for p in pts[:3])
+        if (b - a).cross(c - a).dot(Vector(normal)) < 0:
+            pts = list(reversed(pts))
+        face = self.poly(pts, mat)
+        face.tag = True
+        return face
+
     def loft(self, rings, mat, cap_first=True, cap_last=True):
         """Skin between closed rings of equal length (lists of 3D points)."""
         idx = self._index(mat)
@@ -143,7 +152,7 @@ class Builder:
         shades smooth without bevelling: for small round things (birds) where bevels only add
         triangles."""
         if recalc:
-            bmesh.ops.recalc_face_normals(self.bm, faces=self.bm.faces)
+            bmesh.ops.recalc_face_normals(self.bm, faces=[f for f in self.bm.faces if not f.tag])
         mesh = bpy.data.meshes.new(self.name)
         self.bm.to_mesh(mesh)
         self.bm.free()

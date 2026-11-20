@@ -3,6 +3,7 @@
 import { memo, Suspense, useEffect, useRef, useState, type ReactNode } from "react";
 import { Canvas, useFrame, useThree, type CanvasProps } from "@react-three/fiber";
 import * as THREE from "three";
+import { DetailMaps } from "./DetailMaps";
 import { TUNING } from "@/game/tuning";
 import { usePaused } from "@/lib/pause";
 
@@ -130,6 +131,7 @@ export const GameCanvas = memo(function GameCanvas({ camera, grade, children }: 
       onCreated={({ gl }) => void (gl.debug.checkShaderErrors = process.env.NODE_ENV !== "production")}
     >
       <Suspense fallback={null}>
+        <DetailMaps />
         {children}
         <Warmup />
       </Suspense>

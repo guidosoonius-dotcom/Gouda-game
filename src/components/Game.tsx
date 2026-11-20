@@ -36,6 +36,25 @@ const BikeGame = dynamic(() => import("./bike/BikeGame").then((m) => m.BikeGame)
   loading: () => <Loading />,
 });
 
+/** While the dossier of a 3D chapter is open, fetch its minigame and the detail maps ahead. */
+const AHEAD: Record<string, () => Promise<unknown>> = {
+  canal: () => import("./canal/CanalGame"),
+  rooftop: () => import("./rooftop/RoofGame"),
+  bicycle: () => import("./bike/BikeGame"),
+};
+function usePreloadTask(view: string) {
+  const chapter = useGameStore((s) => s.chapter);
+  useEffect(() => {
+    const ahead = view === "dossier" ? AHEAD[chapterById(chapter).task] : undefined;
+    if (!ahead) return;
+    const id = window.setTimeout(() => {
+      ahead().catch(() => undefined);
+      import("./canal/DetailMaps").then((m) => m.preloadDetailMaps()).catch(() => undefined);
+    }, 1200);
+    return () => window.clearTimeout(id);
+  }, [view, chapter]);
+}
+
 function Loading() {
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-night">
@@ -104,6 +123,7 @@ export function Game() {
   const textScale = useGameStore((s) => s.textScale);
   const settings = useGameStore((s) => s.settings);
   useBackButton(view);
+  usePreloadTask(view);
   const [mounted, setMounted] = useState(false);
   // Location mode: no games while walking. The watcher runs only in a chapter, never on the map.
   useWalkWatcher(location && (view === "dossier" || view === "task"));

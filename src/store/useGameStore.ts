@@ -14,8 +14,15 @@ export interface Settings {
   oneButton: boolean;
   still: boolean;
   ambience: boolean;
+  hifi: boolean;
 }
-export const DEFAULT_SETTINGS: Settings = { assist: false, oneButton: false, still: false, ambience: true };
+/** High picture quality starts on for phones and computers with room to spare (6+ cores, 4+ GB). */
+function roomy() {
+  if (typeof navigator === "undefined") return false;
+  const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 8;
+  return (navigator.hardwareConcurrency ?? 4) >= 6 && memory >= 4;
+}
+export const DEFAULT_SETTINGS: Settings = { assist: false, oneButton: false, still: false, ambience: true, hifi: roomy() };
 
 /** Where a reload brings the player back: a minigame restarts from its dossier page. */
 const RESUME: Record<View, View> = { title: "title", map: "map", dossier: "dossier", task: "dossier", mirror: "mirror", epilogue: "epilogue" };
@@ -33,7 +40,8 @@ interface GameState {
   textScale: number;
   /** Settings (see SettingsSheet). `assist`: gentler minigames (`TUNING.assist`); `oneButton`: a
    *  single button instead of holding two at once; `still`: less motion, on top of the system
-   *  setting; `ambience`: the background sound beds. */
+   *  setting; `ambience`: the background sound beds; `hifi`: photo detail and relief in the 3D
+   *  scenes (`TUNING.gfx.hifi`). */
   settings: Settings;
   /** The player's "letter to later", written in the epilogue. Stays on this device. */
   letter: string;

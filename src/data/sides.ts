@@ -255,7 +255,7 @@ export const SIDES: Chapter[] = [
     pages: [
       {
         kind: "scene",
-        image: "",
+        image: "/img/scenes/markt.webp",
         lines: [
           "April 1945. De winter is voorbij, de honger nog niet. Op de Markt staat een lange rij, stil en mager.",
           "Je moeder heeft je de bonkaart meegegeven. ‘Niet kwijtraken. En niet de verkeerde bon.’",
@@ -264,7 +264,7 @@ export const SIDES: Chapter[] = [
       },
       {
         kind: "then-now",
-        image: "",
+        image: "/img/scenes/markt.webp",
         intro: "Sleep de schuif. Links de Markt in 1945, rechts de Markt van nu.",
         then: { label: "ARCHIEFFOTO · uitdeling van Zweeds wittebrood, Gouda 1945", credit: "Rechten aanvragen: Streekarchief Midden-Holland" },
         now: { label: "FOTO VAN NU · zelfde standpunt", credit: "Zelf maken bij veldbezoek" },
@@ -272,7 +272,7 @@ export const SIDES: Chapter[] = [
       },
       {
         kind: "task",
-        image: "",
+        image: "/img/scenes/markt.webp",
         title: "De goede bonnen",
         brief: "Op het bord in de etalage staat welke bonnen deze week gelden. Knip de juiste uit je kaart, en alleen die.",
         cta: "Pak de bonkaart",

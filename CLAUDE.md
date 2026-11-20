@@ -18,7 +18,8 @@ Read only the section you need; do not load whole documents by default.
    No third-party model downloads. Budget: <= 250 KB per GLB after `gltf-transform optimize`,
    <= 1.5 MB of 3D per minigame (the models that minigame loads; `npm run assets` checks the whole kit against 3 MB). Keep model materials simple (base color only): `canal/Kit.tsx` bakes them to vertex
    colours and adds brick, tile, wood and stone detail procedurally in the shader. Image
-   textures are allowed only for generated backdrops and ground (`public/img/<minigame>/*.webp`,
+   textures are allowed only for generated backdrops, ground and the material detail maps of
+   "Hoge beeldkwaliteit" (`public/img/<minigame>/*.webp`, `public/img/kit/*.webp`,
    <= 250 KB each, made with Higgsfield, never presented as archive photographs). Props use `build(bevel=...)` for rounded, smooth
    edges; big architecture stays unbevelled. Lighting is designed in R3F, not in Blender.
    Exception, the people: each character starts from a sheet (`docs/characters/*.webp`), is lifted to a
