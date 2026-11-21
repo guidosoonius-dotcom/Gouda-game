@@ -125,7 +125,7 @@ export const CHAPTERS: Chapter[] = [
     placeHint: "Zuidzijde, Achter de Kerk",
     coords: { lat: 52.01083, lng: 4.71139 },
     map: { x: 60.9, y: 46.5 },
-    teaser: "De grond trilt. De laatste glazen moeten de kist in, en buiten wacht iemand op een antwoord.",
+    teaser: "De grond trilt. De kisten moeten weg, en buiten wacht iemand op een antwoord.",
     status: "playable",
     task: "packing",
     pages: [
@@ -133,8 +133,8 @@ export const CHAPTERS: Chapter[] = [
         kind: "scene",
         image: "/img/scenes/kisten.webp",
         lines: [
-          "Dinsdagmiddag. In het westen staat een zwarte rookkolom boven Rotterdam.",
-          "In de Sint-Jan leunen de laatste panelen nog los tegen de muur.",
+          "Dinsdagmiddag. Vanuit Rotterdam zijn soldaten naar Gouda gevlucht: in de Sint-Jan liggen ze op stro.",
+          "De ramen zijn er al sinds augustus 1939 uit. Vandaag moeten de kisten opnieuw dicht, voordat ze verder weg gaan.",
         ],
         quote: "‘Handen uit de mouwen, koerier. Glas wacht op niemand.’",
       },
@@ -152,7 +152,7 @@ export const CHAPTERS: Chapter[] = [
       {
         kind: "task",
         image: "/img/scenes/kisten.webp",
-        title: "Pak de laatste panelen in",
+        title: "Pak de panelen opnieuw in",
         brief:
           "Elke kist moet tot de rand gevuld. Glas dat kan schuiven, breekt. Sleep de panelen in het stro; tik op een paneel om het te draaien.",
         cta: "Aan het werk",
@@ -197,7 +197,7 @@ export const CHAPTERS: Chapter[] = [
       notice: {
         title: "En de student?",
         fact: "vroman.flight",
-        body: "De student in jouw verhaal is verzonnen. Deze dichter niet.",
+        body: "De student in jouw verhaal is verzonnen. Deze dichter niet. Ook de kisten die op 14 mei 1940 nog dicht moesten, zijn verzonnen: de ramen gingen al in augustus 1939 uit de kerk.",
       },
       reward: "De eerste editie van De Koerier, en een keuze die je nog terugziet",
     },
@@ -221,7 +221,7 @@ export const CHAPTERS: Chapter[] = [
         kind: "scene",
         image: "/img/scenes/daken.webp",
         lines: [
-          "November, acht minuten voor spertijd. De Peperstraat is afgezet: aan beide einden staat een post.",
+          "November, acht minuten voor spertijd. Na de aanslag van vorige week is die vervroegd naar acht uur, en de Peperstraat is afgezet: aan beide einden staat een post.",
           "Drukker Hendrik weet van niets. Zijn pers draait nog.",
         ],
         quote: "‘Over de daken dan. Een andere weg is er niet.’",
@@ -278,7 +278,7 @@ export const CHAPTERS: Chapter[] = [
       notice: {
         title: "Acht uur",
         fact: "curfew.hours",
-        body: "Hendrik en Kees zijn verzonnen. Wie in Gouda echt drukte, zoeken we nog uit.",
+        body: "Hendrik, Kees en de aanslag van vorige week zijn verzonnen. Of de spertijd in Gouda in 1942 al om acht uur begon, weten we niet. Wie in Gouda echt drukte, zoeken we nog uit.",
       },
       reward: "De tweede editie van De Koerier",
     },
@@ -421,7 +421,7 @@ export const CHAPTERS: Chapter[] = [
               : "Jaap bleef op de kade staan. Marie heeft niet meer omgekeken."),
         };
       },
-      factsTitle: "Over water de stad uit",
+      factsTitle: "Water rond Gouda",
       facts: ["locks.route"],
       scan: {
         label: "KAART · sluizen en plassen rond Gouda, 1944",
@@ -430,7 +430,7 @@ export const CHAPTERS: Chapter[] = [
       notice: {
         title: "Na acht uur",
         fact: "curfew.hours",
-        body: "Marie, Jaap en de man onder het zeil zijn verzonnen. Wie hier echt voer, zoeken we nog uit.",
+        body: "Marie, Jaap en de man onder het zeil zijn verzonnen. Dat mensen zo via de Goudse sluizen vluchtten, hebben we nog in geen bron gevonden. Wie hier echt voer, zoeken we nog uit.",
       },
       reward: "De vierde editie van De Koerier",
     },
@@ -505,7 +505,7 @@ export const CHAPTERS: Chapter[] = [
       notice: {
         title: "Luchtbescherming",
         fact: "lbd.role",
-        body: "Gerrit en de mensen in deze straat zijn verzonnen. De doden van die dag waren echt; hun namen volgen na controle.",
+        body: "Gerrit en de mensen in deze straat zijn verzonnen. De doden van die dag waren echt, onder wie zusters van het Sint Jozefpaviljoen; hun namen volgen na controle.",
       },
       reward: "De vijfde editie van De Koerier",
     },

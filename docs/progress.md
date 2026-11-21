@@ -118,7 +118,7 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   opgepakt; in een verduisteringsbekendmaking spellen de beginletters HOUD MOED. De Synagoge
   (zomer 1943, na hoofdstuk 3): het wapen van Gouda met zes sterren, één valt eruit, zoals op de
   plaquette van Ralph Prins aan de Turfmarkt; daarna een gedenkblad, zonder score. De Markt
-  (april 1945, na hoofdstuk 5): Zweeds wittebrood, knip de geldige bonnen. Code: `data/sides.ts`,
+  (maart 1945, na hoofdstuk 5): Zweeds wittebrood, knip de geldige bonnen. Code: `data/sides.ts`,
   `data/places.ts`, `components/puzzles/*`. De herstelcode is versie 2 (vier bits erbij); oude
   codes werken nog. De coördinaten van hoofdstuk 1–3 zijn gecorrigeerd (Oosthaven 31 lag 250 m
   verkeerd); kaartposities volgen nu uit twee ijkpunten (stadhuis en Sint-Jan).
@@ -208,6 +208,11 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   loden platte daken met naden en plassen die maan en zoeklicht spiegelen (shader); lichtkoepels van
   glas in een houten sponning; bakstenen puntgevels met muurankers en zolderraam op de dakhuizen;
   De Zalm heeft ramen en banden op zijn zijgevels. 79–85 calls, 102–110k driehoeken.
+
+- **Onderzoeksdossier verwerkt (vijf tegenspraken):** Hoofdstuk 1 (glazen al sinds 1939 uit de
+  kerk), Hoofdstuk 2 (spertijd als verzonnen gevolg), Hoofdstuk 4 (route over water niet bevestigd),
+  Hoofdstuk 5 (lazaret, geen totaal), Markt in maart 1945 met 125 g margarine. Register bijgewerkt
+  (nog steeds `verified: false`); zie decisie 67.
 
 ## Half af
 - Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).

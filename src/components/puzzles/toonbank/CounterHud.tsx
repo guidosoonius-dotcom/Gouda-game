@@ -64,7 +64,7 @@ export function CounterEnd({ shop, result, margarine }: { shop: Shop; result: Ou
         <span className={`label ${TS[12]}`}>{end.title}</span>
         <p className={`m-0 font-news ${TS[15]} leading-snug`}>{end.text}</p>
         <p className={`m-0 font-news ${TS[14]} leading-snug text-[#3a3f45]`}>
-          {margarine ? "Ook je eigen bon voor margarine gaat erdoor: honderd gram, precies." : "Margarine is er niet meer: wat te veel werd afgesneden, ging met de rij mee."}
+          {margarine ? "Ook je eigen bon voor margarine gaat erdoor: honderdvijfentwintig gram, precies." : "Margarine is er niet meer: wat te veel werd afgesneden, ging met de rij mee."}
         </p>
       </div>
       <div className="grid grid-cols-3 gap-2">

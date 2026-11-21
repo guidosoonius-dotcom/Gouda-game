@@ -93,7 +93,7 @@ async function packCrate(page, crateNo) {
     await shot("03a-dossier-scene");
     // At home a then/now page without a real archive photograph is left out (no placeholders for players).
     await page.getByRole("button", { name: /Verder/i }).click();
-    await expectText("Pak de laatste panelen in");
+    await expectText("Pak de panelen opnieuw in");
     await page.waitForTimeout(700);
     await shot("03c-opdracht");
     await page.getByRole("button", { name: /Aan het werk/i }).click();

@@ -18,7 +18,7 @@ import { TS } from "./toonbank/ts";
 const TICK = 0.25;
 
 /**
- * Behind the counter at the Markt, April 1945 (side story 14). Five customers: cut the coupons the
+ * Behind the counter at the Markt, March 1945 (side story 14). Five customers: cut the coupons the
  * board allows, weigh out margarine, hand over the bread; an expired coupon and a man in a hurry
  * ask for more than the rules give. Whatever is given away is missing when it is your turn.
  */

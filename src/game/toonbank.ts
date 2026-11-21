@@ -1,5 +1,5 @@
 /**
- * Behind the counter (side story at the Markt, April 1945): a pure model of handing out Swedish
+ * Behind the counter (side story at the Markt, March 1945): a pure model of handing out Swedish
  * white bread. Each customer brings a ration card: cut the coupons that the board says are valid,
  * weigh out margarine, hand over the loaves. The basket holds just enough for everyone and for you
  * at the end; a loaf given without a coupon is one you will not have. Tested by

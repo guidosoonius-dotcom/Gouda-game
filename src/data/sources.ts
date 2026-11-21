@@ -26,22 +26,23 @@ export const FACTS = {
   },
   "glazen.what": {
     claim:
-      "De Sint-Janskerk bezit een reeks zestiende-eeuwse gebrandschilderde ramen: de Goudse Glazen.",
-    source: UNSOURCED,
-    todo: "aantal glazen en datering",
+      "De Sint-Janskerk bezit een reeks gebrandschilderde ramen uit de zestiende en het begin van de zeventiende eeuw: de Goudse Glazen.",
+    source: "NGV, ‘The Interior of St Janskerk at Gouda’ (schenkingen tot 1603); Wikipedia, ‘Gebrandschilderde glazen in de Grote of Sint-Janskerk in Gouda’",
+    todo: "aantal glazen",
     verified: false,
   },
   "glazen.removed": {
     claim:
-      "Rond het uitbreken van de oorlog zijn de glazen paneel voor paneel uit de sponningen genomen en in kisten verpakt.",
-    source: UNSOURCED,
-    todo: "jaar, opdrachtgever en uitvoerende glazenier",
+      "Direct na het mobilisatiebevel van 28 augustus 1939 zijn de glazen paneel voor paneel uit de sponningen genomen, in 201 houten kisten verpakt en vervangen door dubbeldik vensterglas.",
+    source: "Wikipedia, ‘Sint-Janskerk (Gouda)’; Canon van Nederland, ‘Goudse glazen in WOII’ (plan van 4 april 1939)",
+    todo: "uitvoerende glazenier; andere bron noemt september tot december 1939",
     verified: false,
   },
   "glazen.stored": {
-    claim: "De kisten zijn buiten de stad in veiligheid gebracht.",
-    source: UNSOURCED,
-    todo: "opslagplaatsen en data van de transporten",
+    claim:
+      "De kisten zijn op verschillende plaatsen in veiligheid gebracht: in bankkluizen, in kelders van boerderijen rond Gouda en in het weeshuis van Moordrecht. In 1943 gingen alle glazen naar de rijkskluizen bij Vogelenzang.",
+    source: "Wikipedia, ‘Sint-Janskerk (Gouda)’; Canon van Nederland, ‘Goudse glazen in WOII’",
+    todo: "welke bankkluizen (in de stad?) en data van de transporten",
     verified: false,
   },
   "glazen.returned": {
@@ -64,9 +65,9 @@ export const FACTS = {
     verified: false,
   },
   "press.gouda": {
-    claim: "In Gouda werden tijdens de bezetting illegale bladen gedrukt en door koeriers rondgebracht.",
-    source: UNSOURCED,
-    todo: "titels, drukkers, adressen en jaren",
+    claim: "In Gouda verschenen tijdens de bezetting illegale bladen, onder andere De Flitspuit (1941–1943) en De Vrije Gedachte, en koeriers brachten ze rond.",
+    source: "‘De Ondergrondse Pers 1940–1945’ (De Flitspuit); Canon van Gouda, ‘Tweede Wereldoorlog’ (De Vrije Gedachte); Streekarchief Midden-Holland, collectie 0196",
+    todo: "drukkers en adressen; de Flitspuit werd gestencild, niet gedrukt",
     verified: false,
   },
   "oosthaven.home": {
@@ -82,15 +83,16 @@ export const FACTS = {
     verified: false,
   },
   "station.raid": {
-    claim: "Op 26 november 1944 vielen geallieerde vliegtuigen het spoor bij Gouda aan. Ook huizen en een ziekenhuis in de buurt werden getroffen.",
-    source: UNSOURCED,
-    todo: "tijdstip, aantal toestellen, getroffen gebouwen, aantal en namen van de slachtoffers",
+    claim:
+      "Op zondagmiddag 26 november 1944 om 16.44 uur vielen geallieerde vliegtuigen het station en het spoor bij Gouda aan. Bommen troffen ook het Sint Jozefpaviljoen, door de Duitsers als lazaret gebruikt; daar vielen doden.",
+    source: "Gouda 40-45, ‘Bombardement Sint Jozef Paviljoen’; Nationaal Comité 4 en 5 mei, plaquette Sint Josefpaviljoen; Vooronderzoek conventionele explosieven Gouda (2011)",
+    todo: "aantal doden: 17 (4 en 5 mei) of 16 Nederlandse en 15 Duitse (Canon van Gouda); namen; aantal toestellen (14, 18 of 26)",
     verified: false,
   },
   "lbd.role": {
-    claim: "De Luchtbeschermingsdienst bracht bij luchtalarm mensen naar schuilkelders en hielp na een inslag bij het redden.",
-    source: "nog te bepalen (NIOD / Streekarchief Midden-Holland)",
-    todo: "organisatie in Gouda, plaats van schuilkelders bij het station",
+    claim: "De Luchtbeschermingsdienst, in Gouda opgericht in 1938, hielp na een bombardement bij het redden en richtte schuilplaatsen in, ook op de Markt.",
+    source: "Historische Vereniging Die Goude, ‘Bommen op Gouda’ (lezing Erik Kooistra); Streekarchief Midden-Holland, Ac 307 (LBD)",
+    todo: "schuilkelders bij het station; rol bij het alarm",
     verified: false,
   },
   "liberation.gouda": {
@@ -100,16 +102,17 @@ export const FACTS = {
     verified: false,
   },
   "curfew.hours": {
-    claim: "Tijdens de bezetting gold een spertijd: 's avonds mocht niemand zonder vergunning op straat.",
-    source: "nog te bepalen (NIOD)",
-    todo: "tijden per periode",
+    claim:
+      "Vanaf 1 november 1940 gold in bezet Nederland een spertijd, aanvankelijk van middernacht tot vier uur. Later werd die vervroegd: voor Joden vanaf juni 1942 tot acht uur ’s avonds, na aanslagen ook in Amsterdam, en vanaf september 1944 voor iedereen van acht tot vier.",
+    source: "Wikipedia, ‘Avondklok’; Historiek, ‘Nederland in de Tweede Wereldoorlog: de bezetting’",
+    todo: "welke uren gold in Gouda in november 1942?",
     verified: false,
   },
   "locks.route": {
     claim:
-      "Via de Goudse sluizen en de plassen ten noorden van de stad werden in de laatste oorlogswinter mensen en voedsel over water verplaatst.",
-    source: UNSOURCED,
-    todo: "welke sluizen, welke periode, bronvermelding",
+      "In 1943 werden polders ten westen van Gouda onder water gezet, de Vordere Wasserstellung; daardoor kwam de voedselproductie in gevaar.",
+    source: "Canon van Gouda, ‘Tweede Wereldoorlog’",
+    todo: "bron voor mensen of voedsel over water via de Goudse sluizen in 1944–45 (niet gevonden)",
     verified: false,
   },
   // ---------- zijsporen (research Nov 2026; sources found, not yet checked by a historian) ----------
@@ -199,7 +202,7 @@ export const FACTS = {
   },
   "brood.ships": {
     claim:
-      "Het ‘Zweedse wittebrood’ werd niet uit vliegtuigen gegooid. Het werd in Nederlandse bakkerijen gebakken van meel dat het Zweedse Rode Kruis per schip aanvoerde; de eerste schepen kwamen op 28 januari 1945 in Delfzijl aan.",
+      "Het ‘Zweedse wittebrood’ werd niet uit vliegtuigen gegooid. Het werd in Nederlandse bakkerijen gebakken van meel dat het Zweedse Rode Kruis per schip aanvoerde; de eerste schepen kwamen op 28 januari 1945 in Delfzijl aan. In de steden werd het brood vanaf eind februari en in maart 1945 verdeeld: 800 gram brood en 125 gram margarine per persoon.",
     source: "Andere Tijden, ‘Geschenk uit de hemel: de mythe van het Zweeds wittebrood’; Wikipedia, ‘Zweeds wittebrood’",
     verified: false,
   },

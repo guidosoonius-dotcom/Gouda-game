@@ -1,11 +1,11 @@
 /**
- * The customers at the counter (side story at the Markt, April 1945). All of them, their cards and
+ * The customers at the counter (side story at the Markt, maart 1945). All of them, their cards and
  * the coupon numbers are invented for this game; what is real is in `sources.ts` (brood.*).
  */
 import type { Coupon, Customer } from "@/game/toonbank";
 
 /** What the shop's board says this week (the numbers are invented for this game). */
-export const BOARD = ["Deze week geldig", "Bon 412 · 1 Zweeds wittebrood", "Bon 415 · 100 gram margarine"];
+export const BOARD = ["Deze week geldig", "Bon 412 · 1 Zweeds wittebrood", "Bon 415 · 125 gram margarine"];
 
 const why = {
   old: "Die was van vorige maand.",
@@ -29,7 +29,7 @@ export const CUSTOMERS: Customer[] = [
     mouths: 1,
     scene: "/img/markt/klant-2.webp",
     coupons: [no("409", why.old), no("414", why.board), ok("415"), no("416", why.board)],
-    margarine: 100,
+    margarine: 125,
     loaves: 0,
   },
   {
@@ -37,7 +37,7 @@ export const CUSTOMERS: Customer[] = [
     mouths: 6,
     scene: "/img/markt/klant-3.webp",
     coupons: [ok("412"), no("413", why.keep), ok("415"), no("410", why.board), ok("412"), ok("415"), no("411", why.board), no("416", why.board)],
-    margarine: 200,
+    margarine: 250,
     loaves: 2,
   },
   {
@@ -54,7 +54,7 @@ export const CUSTOMERS: Customer[] = [
     mouths: 2,
     scene: "/img/markt/klant-5.webp",
     coupons: [no("414", why.board), ok("415"), no("409", why.old), ok("412")],
-    margarine: 100,
+    margarine: 125,
     loaves: 1,
     rush: true,
   },

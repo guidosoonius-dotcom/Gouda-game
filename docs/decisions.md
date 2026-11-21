@@ -247,6 +247,20 @@ Formaat: beslissing · waarom · alternatief.
     lucht: het kost niets, en wat in 3D al bestaat (de Waag, De Zalm) staat er niet op, zodat niets
     dubbel in beeld komt. De 3D-Sint-Jan is vervangen door de geschilderde.
 
+67. **Het onderzoek corrigeerde vijf punten in het spel** (dossier “Onderzoeksdossier Gouda”,
+    nov 2026). Gekozen oplossingen, steeds de kleinste die het spel intact laat:
+    (1) Hoofdstuk 1 blijft op 14 mei 1940 (schokgolven, soldaten, Vroman), maar de glazen zijn
+    sinds 28 augustus 1939 uit de kerk. De scène zegt dat nu, noemt de soldaten op stro (bron:
+    Wikipedia, Sint-Janskerk) en de krant zegt dat de kisten van die dag verzonnen zijn.
+    (2) De spertijd om acht uur in Hoofdstuk 2 blijft, als verzonnen gevolg van een aanslag;
+    de krant zegt dat. In het register staan nu de echte uren.
+    (3) De route over water in Hoofdstuk 4 is niet gevonden in bronnen; het register bevat nu
+    alleen de Vordere Wasserstellung en de krant zegt dat de route niet bevestigd is.
+    (4) Het register noemt het getroffen gebouw voluit (Sint Jozefpaviljoen, Duits lazaret),
+    zonder totaal aantal doden: bronnen verschillen (17, of 16 Nederlandse en 15 Duitse).
+    (5) Het Markt-zijspoor speelt in maart 1945; de margarine is 125 gram per persoon (was 100).
+    Nog open: of Hoofdstuk 1 liever naar 1939 of 1943 verhuist; zie het dossier.
+
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.
 - Blaeu-kaart: pin-posities zijn op het oog geplaatst. Georefereren met controlepunten in M8.

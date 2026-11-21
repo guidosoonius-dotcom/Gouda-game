@@ -240,15 +240,15 @@ export const SIDES: Chapter[] = [
   {
     id: 14,
     title: "Hemels Gewoon",
-    date: "APRIL 1945",
-    dateShort: "april 1945",
+    date: "MAART 1945",
+    dateShort: "maart 1945",
     time: "ochtend",
-    timeline: yearPos(1945, 4),
+    timeline: yearPos(1945, 3),
     place: "De Markt",
-    placeHint: "Markt, noordkant",
+    placeHint: "Op de Markt",
     coords: { lat: 52.0121, lng: 4.7101 },
     map: { x: 47.5, y: 32.5 },
-    teaser: "Na de hongerwinter staat er een rij op de Markt. Er is wit brood, zeggen ze. Echt wit.",
+    teaser: "Aan het eind van de hongerwinter staat er een rij op de Markt. Er is wit brood, zeggen ze. Echt wit.",
     status: "playable",
     task: "puzzle",
     side: { after: 5 },
@@ -257,7 +257,7 @@ export const SIDES: Chapter[] = [
         kind: "scene",
         image: "/img/scenes/markt.webp",
         lines: [
-          "April 1945. De winter is voorbij, de honger nog niet. Op de Markt staat een lange rij, stil en mager.",
+          "Maart 1945. De winter is bijna voorbij, de honger nog lang niet. Op de Markt staat een lange rij, stil en mager.",
           "Je moeder heeft je de bonkaart meegegeven. ‘Niet kwijtraken. En niet de verkeerde bon.’ Dan wenkt de winkelier je: hij komt handen tekort.",
         ],
         quote: "‘Jij kunt lezen en tellen. Kom achter de toonbank, dan ben jij straks als laatste aan de beurt.’",
@@ -268,7 +268,7 @@ export const SIDES: Chapter[] = [
         intro: "Sleep de schuif. Links de Markt in 1945, rechts de Markt van nu.",
         then: { label: "ARCHIEFFOTO · uitdeling van Zweeds wittebrood, Gouda 1945", credit: "Rechten aanvragen: Streekarchief Midden-Holland" },
         now: { label: "FOTO VAN NU · zelfde standpunt", credit: "Zelf maken bij veldbezoek" },
-        anchor: "Op locatie: zoek op de Markt de plek waar je de Waag, het stadhuis en De Zalm tegelijk ziet. Hier stonden de rijen.",
+        anchor: "Op locatie: zoek op de Markt de plek waar je de Waag, het stadhuis en De Zalm tegelijk ziet. Rond deze plek werd het brood uitgedeeld; de precieze winkel zoeken we nog uit.",
       },
       {
         kind: "task",
@@ -287,7 +287,7 @@ export const SIDES: Chapter[] = [
     },
     mirror: {
       edition: "Zijspoor",
-      dateline: "GOUDA · APRIL 1945",
+      dateline: "GOUDA · MAART 1945",
       story: (flags) =>
         flags["side14.brood"] === "kok"
           ? {

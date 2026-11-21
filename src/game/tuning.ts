@@ -67,14 +67,14 @@ export const TUNING = {
     /** Signing calms the occupier down a little. */
     signRelief: 1,
   },
-  /** Side story at the Markt, April 1945: helping out behind the counter (`game/toonbank.ts`). */
+  /** Side story at the Markt, March 1945: helping out behind the counter (`game/toonbank.ts`). */
   toonbank: {
     /** Loaves in the basket at the start: exactly enough for every customer and you, if nobody
      *  gets bread they have no coupon for. */
     loaves: 5,
     /** Grams of margarine on the counter at the start, and per coupon. */
-    margarine: 600,
-    portion: 100,
+    margarine: 725,
+    portion: 125,
     /** The piece on the knife: grams in the whole block shown, and how far off still counts as good. */
     blockGrams: 400,
     tolerance: 15,
