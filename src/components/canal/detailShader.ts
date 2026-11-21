@@ -127,6 +127,17 @@ dWet = 0.0;
     detail *= mix(vec3(1.0), vec3(0.78, 1.0, 0.55), moss * 0.7);
   }
   if (k == 6.0) detail *= 0.7 + 0.3 * grain;
+  float puddle = 0.0;
+  if (k == 9.0) {
+    // lead: sheets with raised seams every 0.6 m, dull grey with a white bloom; on a flat roof
+    // the rain stands in shallow puddles that mirror the moon and the searchlight
+    float seam = smoothstep(0.475, 0.5, abs(fract(uv.x / 0.6) - 0.5));
+    detail *= (0.9 + 0.2 * vnoise(uv * vec2(2.0, 0.4))) * mix(1.0, 1.12, seam);
+    if (n.y > 0.9) {
+      puddle = smoothstep(0.55, 0.68, 0.6 * vnoise(uv * 0.45) + 0.4 * vnoise(uv * 1.6 + 3.0)) * (1.0 - seam);
+      detail *= mix(1.0, 0.55, puddle);
+    }
+  }
   diffuseColor.rgb *= detail;
   // roughness per material: joints stay matt, tiles are damp, glass and lead shine
   if (k == 1.0) dRough = 0.88 + 0.1 * joint;
@@ -137,7 +148,7 @@ dWet = 0.0;
   else if (k == 6.0) dRough = 0.97;
   else if (k == 7.0) dRough = 0.6 + 0.3 * joint;
   else if (k == 8.0) dRough = 0.9;
-  else if (k == 9.0) dRough = 0.4;
+  else if (k == 9.0) dRough = mix(0.5, 0.04, puddle);
   else if (k == 10.0) dRough = 0.95;
   if (dWet > 0.0) dRough = mix(dRough < 0.0 ? 0.86 : dRough, 0.18, dWet);
 #ifdef HIFI

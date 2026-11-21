@@ -12,6 +12,7 @@ import { RoofHud, ROOF_HUD_START, type RoofHudState } from "./RoofHud";
 import { RoofWorld } from "./RoofWorld";
 import { Cinema, Night } from "@/components/canal/Night";
 import { Sky } from "@/components/canal/Sky";
+import { RoofMist, RoofSkyline } from "./RoofSkyline";
 import { PauseLayer } from "@/components/ui/PauseLayer";
 import { GameCanvas, type Grade } from "@/components/canal/GameCanvas";
 import { useWindowGlow } from "@/components/canal/Kit";
@@ -142,6 +143,8 @@ export function RoofGame() {
         <fogExp2 attach="fog" args={["#1a2430", 0.0065]} />
         <Night moon={MOON} focus={(out) => out.set(sim.current.x + 9, ridgeAt(sim.current.x), 0)} subject={(out) => out.set(sim.current.x - 0.6, ridgeAt(sim.current.x), 1.6)} extent={34} skyEnv={false} />
         <Sky url="/img/rooftop/sky.webp" yaw={-Math.PI / 2} dist={380} width={420} height={180} y={70} env={0.9} tint="#c8d0dc" />
+        <RoofSkyline />
+        <RoofMist />
         <RoofWorld sim={sim} />
         <RoofLife sim={sim} />
         <RoofActors sim={sim} />

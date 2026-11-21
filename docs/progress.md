@@ -202,6 +202,13 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   druk, nooit game over). Uitkomst `side14.brood` (thuis, kok, leeg) kleurt de krant; herstelcode
   versie 4. Beelden geschilderd met Higgsfield (`public/img/markt/`), geen gezichten in beeld.
 
+- **Over de daken, graphics (design: canvas "Over de daken · graphics"):** links een geschilderde
+  skyline van Gouda bij nacht (Sint-Jan, stadhuis, daken in mist; `img/rooftop/skyline.webp`,
+  `RoofSkyline`), de grijze 3D-Sint-Jan is weg; twee banken nevel tussen de verre huizenrijen;
+  loden platte daken met naden en plassen die maan en zoeklicht spiegelen (shader); lichtkoepels van
+  glas in een houten sponning; bakstenen puntgevels met muurankers en zolderraam op de dakhuizen;
+  De Zalm heeft ramen en banden op zijn zijgevels. 79–85 calls, 102–110k driehoeken.
+
 ## Half af
 - Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).
 - De tekst van hoofdstuk 3 is een voorstel: laat die lezen door iemand van het Joods Monument

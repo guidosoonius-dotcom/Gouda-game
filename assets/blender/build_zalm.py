@@ -56,6 +56,15 @@ b.box((0.1, 0.9, 0.1), (0.4, FRONT - 0.45, 4.95), "Metal")
 b.ico(0.4, (0.0, FRONT - 0.85, 4.75), "Beak", scale=(2.0, 0.3, 0.55), subdiv=2)
 b.loft([[(0.75, FRONT - 0.89, 4.8), (1.15, FRONT - 0.89, 5.1), (1.15, FRONT - 0.89, 4.5)],
         [(0.75, FRONT - 0.81, 4.8), (1.15, FRONT - 0.81, 5.1), (1.15, FRONT - 0.81, 4.5)]], "Beak")
+# the side walls, seen along the roofs from the route: windows on every floor, the bands run round
+for sx in (-1, 1):
+    x = sx * W / 2
+    for y in (-3.4, 0.0, 3.4):
+        for z, h in ((2.3, 2.6), (6.6, 2.4), (10.4, 1.9)):
+            b.box((0.12, 1.3, h + 0.3), (x + sx * 0.04, y, z), "StonePale")
+            b.box((0.14, 1.04, h), (x + sx * 0.06, y, z), "WindowDark")
+    for z in (4.6, 8.6):
+        b.box((0.3, D, 0.22), (x + sx * 0.05, 0, z), "StonePale")
 b.build()
 export("zalm")
 preview("zalm", view=(0.55, -1.2, 0.25))

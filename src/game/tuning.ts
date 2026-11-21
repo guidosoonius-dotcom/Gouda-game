@@ -133,6 +133,14 @@ export const TUNING = {
     overrideFor: 90,
   },
   rooftop: {
+    /** The painted skyline beyond the row (RoofSkyline): metres ahead of the camera, sideways
+     *  (negative: left), height of its centre and width, in metres; its tint. */
+    skyline: { dist: 300, side: -75, y: 8, width: 300, tint: "#aab4c4" },
+    /** Banks of mist between the rows of houses behind the route: depth (z), height and strength. */
+    mist: [
+      { z: -26, height: 9, opacity: 0.22 },
+      { z: -70, height: 20, opacity: 0.3 },
+    ],
     /** Seconds until curfew (19:52 to 20:00 on the clock). */
     time: 80,
     /** Running speed along the ridge (m/s), alone and with Kees in tow. */

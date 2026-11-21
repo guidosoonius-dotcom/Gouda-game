@@ -243,6 +243,10 @@ Formaat: beslissing · waarom · alternatief.
 65. **Herstelcode versie 4** voegt uitkomsten achteraan toe; codes van versie 1 tot en met 3
     blijven werken (getest met een echte versie-3-code).
 
+66. **Verte geschilderd, nabij in 3D.** De skyline is één geschilderd vlak tussen de daken en de
+    lucht: het kost niets, en wat in 3D al bestaat (de Waag, De Zalm) staat er niet op, zodat niets
+    dubbel in beeld komt. De 3D-Sint-Jan is vervangen door de geschilderde.
+
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.
 - Blaeu-kaart: pin-posities zijn op het oog geplaatst. Georefereren met controlepunten in M8.

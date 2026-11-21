@@ -13,7 +13,7 @@ import { ROOF, beamX, type RoofSim } from "./sim";
 
 const GABLES: ModelName[] = ["gevel_trap", "gevel_klok", "gevel_tuit"];
 const ROOFS: RoofKind[] = ["dakhuis", "dakhuis_steil", "dakhuis_plat"];
-preload([...GABLES, ...ROOFS, "waag", "zalm", "schoorsteen", "koerier", "sintjan", "uitkijk", "soldaat", "zoeklicht", "boom", "duif", "moves"]);
+preload([...GABLES, ...ROOFS, "waag", "zalm", "schoorsteen", "koerier", "uitkijk", "soldaat", "zoeklicht", "boom", "duif", "moves"]);
 /** Blocks of this many metres along the roofs are culled on their own (camera and shadow maps). */
 const CHUNK = 48;
 const UP = new THREE.Vector3(0, 1, 0);
@@ -67,7 +67,6 @@ function Town() {
       {GABLES.map((name, i) => (
         <Instanced key={name} name={name} placements={p.back[i]} chunk={CHUNK} axis="x" />
       ))}
-      <Model name="sintjan" position={[178, -6, -62]} rotation-y={0.25} scale={1.25} />
       <group position={[MARKT.x, 0, MARKT.z]} rotation-y={MARKT.yaw}>
         <Model name="waag" />
         <Model name="zalm" position={[-17, 0, 1.5]} />
