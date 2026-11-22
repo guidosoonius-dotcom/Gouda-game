@@ -67,4 +67,26 @@ describe("side stories (zijsporen)", () => {
     expect(items.some((i) => i.mirrorOf === 13)).toBe(true);
     expect(items.find((i) => i.id === "ding-11")?.fiction).toBe(true);
   });
+
+  it("the orphanage has painted pictures that exist, stay small and show no map of the Netherlands", async () => {
+    const { existsSync, statSync } = await import("node:fs");
+    const { ROOM_LEVELS } = await import("@/data/rooms");
+    const w = SIDES.find((s) => s.place === "Het Weeshuis")!;
+    const files = [
+      ...w.pages.filter((p) => "image" in p && p.image.startsWith("/img/weeshuis/")).map((p) => ("image" in p ? p.image : "")),
+      ...ROOM_LEVELS.map((l) => l.image?.src ?? ""),
+      "/img/weeshuis/brief.webp",
+      w.puzzle && w.puzzle.kind === "rooms" ? (w.puzzle.doneImage?.src ?? "") : "",
+    ];
+    expect(w.pages.filter((p) => p.kind === "scene").length).toBeGreaterThanOrEqual(2);
+    for (const l of ROOM_LEVELS) expect(l.image?.alt, l.id).toBeTruthy();
+    for (const f of files) {
+      expect(f.startsWith("/img/weeshuis/"), f).toBe(true);
+      expect(existsSync(`public${f}`), f).toBe(true);
+      expect(statSync(`public${f}`).size, f).toBeLessThanOrEqual(250 * 1024);
+    }
+    // in 1939 there was no Flevoland: the classroom must not show a map of the country
+    const klas = ROOM_LEVELS.find((l) => l.id === "klas")!;
+    expect(klas.image?.alt.toLowerCase()).not.toContain("kaart");
+  });
 });

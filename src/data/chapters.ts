@@ -6,14 +6,14 @@ export type TaskKind = "packing" | "canal" | "rooftop" | "bicycle" | "witness" |
 
 /** The small paper puzzles of the side stories (zijsporen). All their contents are fiction. */
 export type Puzzle =
-  | { kind: "words"; intro: string; pairs: [string, string][]; done: string }
+  | { kind: "words"; intro: string; pairs: [string, string][]; done: string; /** Painted backdrop behind the exercise book. */ image?: string }
   | { kind: "acrostic"; intro: string; heading: string; lines: string[]; signed: string; answer: string; hint: string; done: string }
   | { kind: "stars"; intro: string; done: string }
   | { kind: "coupons"; intro: string; board: string[]; coupons: { id: string; label: string; ok: boolean; why?: string }[]; done: string }
   /** The messenger's desk at the town hall: a week of orders to stall (`game/bureau.ts`). */
   | { kind: "bureau"; title: string; intro: string; done: string }
   /** The rooms of the orphanage: a placement puzzle a month (`game/rooms.ts`). */
-  | { kind: "rooms"; title: string; intro: string; done: string }
+  | { kind: "rooms"; title: string; intro: string; done: string; /** Painted picture above the closing words. */ doneImage?: { src: string; alt: string } }
   /** Behind the counter at the Markt: coupons, margarine and bread for a queue (`game/toonbank.ts`). */
   | { kind: "toonbank"; title: string; intro: string; done: string };
 

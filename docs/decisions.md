@@ -261,6 +261,15 @@ Formaat: beslissing · waarom · alternatief.
     (5) Het Markt-zijspoor speelt in maart 1945; de margarine is 125 gram per persoon (was 100).
     Nog open: of Hoofdstuk 1 liever naar 1939 of 1943 verhuist; zie het dossier.
 
+## Het Weeshuis in beeld (68)
+Elke pagina en elke kamer een eigen geschilderd beeld, zonder gezichten. Geen kaart van Nederland
+op de muur van de klas: beeldgeneratoren tekenen kaarten onbetrouwbaar en in 1939 bestond Flevoland
+nog niet; een schoolplaat en een globe doen hetzelfde werk. De brieven van Max blijven gewone tekst
+op een geschilderd papier, zodat ze scherp en schaalbaar zijn. De uploads van de foto's van de poort,
+de binnenplaats en de overkant werden voor Higgsfield door de proxy geblokkeerd; de binnenplaats en
+de witte gevel zijn daarom beschreven naar de foto's, niet erop gebaseerd. De slaapzalen tonen nog
+niet de kleine ruitjes en rode luiken van de echte vleugel.
+
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.
 - Blaeu-kaart: pin-posities zijn op het oog geplaatst. Georefereren met controlepunten in M8.

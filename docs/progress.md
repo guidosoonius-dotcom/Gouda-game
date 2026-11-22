@@ -214,6 +214,14 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   Hoofdstuk 5 (lazaret, geen totaal), Markt in maart 1945 met 125 g margarine. Register bijgewerkt
   (nog steeds `verified: false`); zie decisie 67.
 
+- **Het Weeshuis, visueler (design: canvas "Weeshuis — visuele scènes"):** twee scènepagina's
+  (poort naar jouw foto, nieuwe binnenplaats naar jouw foto van de bakstenen vleugel met rode
+  luiken), eigen taakbeeld (schrift), woordenspel op het schrift, een geschilderd beeld boven elke
+  kamer (slaapzaal, keuken, klas, twee zalen), Max' brieven als tekst op luchtpostpapier
+  (`MaxLetter`) en het afscheid in december met de witte gevel aan de overkant van de straat.
+  De klas heeft geen kaart van Nederland meer (Flevoland bestond nog niet); een schoolplaat en een
+  globe in plaats daarvan. Beelden in `public/img/weeshuis/*.webp`, gemaakt met Higgsfield.
+
 ## Half af
 - Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).
 - De tekst van hoofdstuk 3 is een voorstel: laat die lezen door iemand van het Joods Monument

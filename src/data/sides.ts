@@ -31,6 +31,11 @@ export const SIDES: Chapter[] = [
           "April 1939, een jaar voor de oorlog. In de Spieringstraat staan ijzeren bedden op de stoep.",
           "Je draagt dekens naar binnen. Op de binnenplaats wachten jongens met een koffer, sommigen niet ouder dan tien.",
         ],
+      },
+      {
+        kind: "scene",
+        image: "/img/weeshuis/binnenplaats.webp",
+        lines: ["Ze staan stil, ieder bij zijn koffer. Langs de lange muur met de rode luiken knoppen de takken van de linde, alsof er niets aan de hand is."],
         quote: "‘Wie Duits kan, mag tolk zijn. Wie het niet kan, leert het vandaag.’",
       },
       {
@@ -43,7 +48,7 @@ export const SIDES: Chapter[] = [
       },
       {
         kind: "task",
-        image: "/img/scenes/weeshuis.webp",
+        image: "/img/weeshuis/schrift.webp",
         title: "Een schrift met twee talen",
         brief:
           "Max, een van de jongens, schrijft woorden in een schrift: links Duits, rechts Nederlands. Help hem eerst met de woorden. Daarna help je het huis in te richten, maand na maand, tot december.",
@@ -52,12 +57,14 @@ export const SIDES: Chapter[] = [
     ],
     puzzle: {
       kind: "rooms",
+      doneImage: { src: "/img/weeshuis/afscheid.webp", alt: "Jongens met koffers lopen door de poort de straat op; een vrouw zwaait" },
       title: "Het huis vult zich",
       intro: "Elke maand een kamer: de slaapzaal, de keuken, de klas. Tik op een naam en dan op een plek. Elke regel zegt zelf of hij klopt.",
       done: "December 1939. De opvang gaat dicht; de jongens gaan naar tehuizen in Amsterdam. Max schrijft nog één brief: ‘Wir gehen nach Amsterdam. Het schrift neem ik mee.’",
     },
     warmup: {
       kind: "words",
+      image: "/img/weeshuis/schrift.webp",
       intro: "Tik een Duits woord en daarna het Nederlandse woord dat erbij hoort.",
       pairs: [
         ["Brot", "brood"],

@@ -51,7 +51,7 @@ export function PuzzleScreen() {
       </header>
       <div key={stage} className="relative flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-5 pb-[calc(24px+env(safe-area-inset-bottom))]">
         <p className="m-0 font-news text-[length:calc(15.5px*var(--ts,1))] italic leading-snug text-bone">{puzzle.intro}</p>
-        {puzzle.kind === "words" && <WordsPuzzle pairs={puzzle.pairs} onSolved={solve} />}
+        {puzzle.kind === "words" && <WordsPuzzle pairs={puzzle.pairs} image={puzzle.image} onSolved={solve} />}
         {puzzle.kind === "acrostic" && <AcrosticPuzzle puzzle={puzzle} onSolved={solve} />}
         {puzzle.kind === "stars" && <StarsPuzzle onSolved={solve} />}
         {puzzle.kind === "coupons" && <CouponsPuzzle puzzle={puzzle} onSolved={solve} />}
@@ -60,6 +60,7 @@ export function PuzzleScreen() {
         {puzzle.kind === "toonbank" && <ToonbankPuzzle onSolved={solve} />}
         {solved && (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-auto flex flex-col gap-3 pt-2">
+            {puzzle.kind === "rooms" && puzzle.doneImage && <img src={puzzle.doneImage.src} alt={puzzle.doneImage.alt} className="-mx-5 h-[200px] max-w-none object-cover" style={{ width: "calc(100% + 2.5rem)" }} />}
             <p className="m-0 border-l-2 border-ochre pl-3 font-news text-[length:calc(16px*var(--ts,1))] leading-snug">{puzzle.done}</p>
             <button
               type="button"

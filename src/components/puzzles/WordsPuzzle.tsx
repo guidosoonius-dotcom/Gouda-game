@@ -7,7 +7,7 @@ import { sfx } from "@/lib/sound";
 const shuffle = <T,>(list: T[]) => list.map((v, i) => ({ v, k: (i * 7 + 3) % list.length })).sort((a, b) => a.k - b.k).map((x) => x.v);
 
 /** Max's exercise book: match each German word to the Dutch one. */
-export function WordsPuzzle({ pairs, onSolved }: { pairs: [string, string][]; onSolved: () => void }) {
+export function WordsPuzzle({ pairs, image, onSolved }: { pairs: [string, string][]; image?: string; onSolved: () => void }) {
   const right = useMemo(() => shuffle(pairs.map((p, i) => ({ word: p[1], pair: i }))), [pairs]);
   const [picked, setPicked] = useState<number | null>(null);
   const [matched, setMatched] = useState<number[]>([]);
@@ -29,8 +29,8 @@ export function WordsPuzzle({ pairs, onSolved }: { pairs: [string, string][]; on
   };
 
   const tile = "flex min-h-11 items-center px-3 py-2 text-left font-type text-[length:calc(16px*var(--ts,1))] transition-colors";
-  return (
-    <div className="grid grid-cols-2 gap-x-3 gap-y-2 bg-parchment p-3 text-ink" style={{ backgroundImage: "repeating-linear-gradient(transparent 0 31px, rgba(70,110,150,.22) 31px 32px)" }}>
+  const book = (
+    <div className="grid grid-cols-2 gap-x-3 gap-y-2 bg-parchment p-3 text-ink shadow-[0_10px_30px_rgba(0,0,0,.55)]" style={{ backgroundImage: "repeating-linear-gradient(transparent 0 31px, rgba(70,110,150,.22) 31px 32px)" }}>
       <span className="label text-[length:calc(11px*var(--ts,1))] text-[#5c5a52]">Duits</span>
       <span className="label text-[length:calc(11px*var(--ts,1))] text-[#5c5a52]">Nederlands</span>
       {pairs.map(([de], i) => (
@@ -57,6 +57,12 @@ export function WordsPuzzle({ pairs, onSolved }: { pairs: [string, string][]; on
       <span className="col-span-2 font-news text-[length:calc(13px*var(--ts,1))] italic text-[#5c5a52]" aria-live="polite">
         {matched.length === pairs.length ? "Alle woorden staan goed." : picked === null ? "Tik eerst een Duits woord." : `Welk woord hoort bij ‘${pairs[picked][0]}’?`}
       </span>
+    </div>
+  );
+  if (!image) return book;
+  return (
+    <div className="-mx-5 px-5 py-5" style={{ background: `linear-gradient(rgba(14,17,20,.55), rgba(14,17,20,.45)), #0e1114 url(${image}) center/cover` }}>
+      {book}
     </div>
   );
 }

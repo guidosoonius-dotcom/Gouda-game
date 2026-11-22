@@ -8,6 +8,7 @@ import type { Level } from "@/game/rooms";
 export const ROOM_LEVELS: Level[] = [
   {
     id: "slaapzaal",
+    image: { src: "/img/weeshuis/slaapzaal.webp", alt: "Een slaapzaal met ijzeren bedden bij het raam" },
     month: "April",
     title: "De eerste nacht",
     intro: "Zes jongens, zes bedden. Tik op een jongen en dan op een bed.",
@@ -32,6 +33,7 @@ export const ROOM_LEVELS: Level[] = [
   },
   {
     id: "keuken",
+    image: { src: "/img/weeshuis/keuken.webp", alt: "Een keuken met koperen pannen en een kok achter een tafel" },
     month: "Mei",
     title: "De keuken wordt koosjer",
     intro: "De keuken wordt koosjer gemaakt: vlees en melk blijven gescheiden. Zet alles op de planken.",
@@ -59,6 +61,7 @@ export const ROOM_LEVELS: Level[] = [
   },
   {
     id: "klas",
+    image: { src: "/img/weeshuis/klas.webp", alt: "Een klaslokaal met jongens van achteren, een schoolbord, een schoolplaat met dieren en een globe" },
     month: "Juni",
     title: "Het klaslokaal",
     intro: "Elke ochtend Nederlandse les. Wie net is aangekomen, zit naast iemand die het al een beetje kan.",
@@ -82,6 +85,7 @@ export const ROOM_LEVELS: Level[] = [
   },
   {
     id: "zalen",
+    image: { src: "/img/weeshuis/zalen.webp", alt: "Twee zalen vol ijzeren bedden achter een gang" },
     month: "Oktober",
     title: "Twee zalen",
     intro: "Er zijn veel meer kinderen gekomen. Twee zalen, en alle regels tegelijk. Over de muur heen ben je geen buren.",

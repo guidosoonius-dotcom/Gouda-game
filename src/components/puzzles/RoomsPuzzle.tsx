@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { emptyPlacement, evaluate, place, remove, type Placement } from "@/game/rooms";
 import { ROOM_LEVELS } from "@/data/rooms";
 import { sfx } from "@/lib/sound";
+import { MaxLetter } from "./MaxLetter";
 import { RoomBoard } from "./RoomBoard";
 
 /**
@@ -20,6 +21,11 @@ export function RoomsPuzzle({ onSolved }: { onSolved: () => void }) {
   const [sel, setSel] = useState("");
   const { rules, bad, solved } = useMemo(() => evaluate(level, p), [level, p]);
   const last = li === ROOM_LEVELS.length - 1;
+  const root = useRef<HTMLDivElement>(null);
+  // a new room starts at its picture, not wherever the last one was scrolled to
+  useEffect(() => {
+    root.current?.parentElement?.scrollTo({ top: 0 });
+  }, [li]);
 
   useEffect(() => {
     if (!solved) return;
@@ -53,7 +59,7 @@ export function RoomsPuzzle({ onSolved }: { onSolved: () => void }) {
   const selPlaced = sel && p.includes(sel);
 
   return (
-    <div className="flex flex-col gap-3">
+    <div ref={root} className="flex flex-col gap-3">
       <ol className="m-0 grid list-none grid-cols-5 gap-1 p-0 text-center font-label text-[length:calc(11px*var(--ts,1))] uppercase tracking-[0.08em]">
         {[...ROOM_LEVELS.map((l) => l.month), "December"].map((m, i) => (
           <li key={m} aria-current={i === li ? "step" : undefined} className={`border-t-[3px] pt-1.5 ${i < li ? "border-ochre text-bone" : i === li ? "border-parchment font-bold text-parchment" : "border-rule text-ash"}`}>
@@ -61,6 +67,20 @@ export function RoomsPuzzle({ onSolved }: { onSolved: () => void }) {
           </li>
         ))}
       </ol>
+      {level.image && (
+        <div className="relative -mx-5 h-[170px] overflow-hidden bg-slate">
+          <motion.img
+            key={level.id}
+            src={level.image.src}
+            alt={level.image.alt}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="h-full w-full object-cover"
+          />
+          <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-dusk to-transparent" />
+        </div>
+      )}
       <div className="flex flex-col gap-0.5">
         <span className="font-fell text-[length:calc(21px*var(--ts,1))]">{level.title}</span>
         <span className="font-news text-[length:calc(14.5px*var(--ts,1))] italic leading-snug text-bone">{level.intro}</span>
@@ -102,7 +122,7 @@ export function RoomsPuzzle({ onSolved }: { onSolved: () => void }) {
 
       {solved && !last && (
         <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col gap-3">
-          <p className="m-0 -rotate-[0.6deg] bg-[#f1ead9] px-3.5 py-3 font-fell text-[length:calc(18px*var(--ts,1))] italic leading-[1.3] text-[#22324f]">{level.letter}</p>
+          <MaxLetter month={level.month} text={level.letter} />
           <button type="button" onClick={nextLevel} className="flex h-[54px] items-center justify-between bg-ochre px-[18px] font-label text-[length:calc(14px*var(--ts,1))] font-bold tracking-[0.17em] text-slate">
             {ROOM_LEVELS[li + 1].month.toUpperCase()} <span aria-hidden="true">→</span>
           </button>

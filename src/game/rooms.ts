@@ -33,6 +33,8 @@ export interface Level {
   groups?: string[];
   tokens: Token[];
   rules: Rule[];
+  /** Painted picture above the board (`public/img/weeshuis/`). */
+  image?: { src: string; alt: string };
   /** Max's letter home after the level is solved (fiction). */
   letter: string;
 }
