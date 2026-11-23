@@ -47,6 +47,8 @@ interface GameState {
   letter: string;
   /** True when the mirror is re-read from the satchel (no progress change on close). */
   rereading: boolean;
+  /** Sporen (things to look at on location) the player says they have seen. Stays on this device. */
+  seen: string[];
 
   start: (mode: Mode) => void;
   setMode: (mode: Mode) => void;
@@ -68,6 +70,7 @@ interface GameState {
   toggleMute: () => void;
   setTextScale: (scale: number) => void;
   setSetting: <K extends keyof Settings>(key: K, value: Settings[K]) => void;
+  markSeen: (id: string) => void;
   restore: (p: Progress) => void;
   reset: () => void;
 }
@@ -91,6 +94,7 @@ export const useGameStore = create<GameState>()(
       settings: DEFAULT_SETTINGS,
       letter: "",
       rereading: false,
+      seen: [],
 
       start: (mode) => set({ mode, view: "map" }),
       setMode: (mode) => set({ mode }),
@@ -131,8 +135,9 @@ export const useGameStore = create<GameState>()(
       toggleMute: () => set((s) => ({ muted: !s.muted })),
       setTextScale: (textScale) => set({ textScale }),
       setSetting: (key, value) => set((s) => ({ settings: { ...s.settings, [key]: value } })),
+      markSeen: (id) => set((s) => (s.seen.includes(id) ? s : { seen: [...s.seen, id] })),
       restore: (p) => set({ completed: p.completed, flags: p.flags, view: "map" }),
-      reset: () => set({ completed: [], flags: {}, letter: "", chapter: 1, page: 0, view: "title", rereading: false }),
+      reset: () => set({ completed: [], flags: {}, seen: [], letter: "", chapter: 1, page: 0, view: "title", rereading: false }),
     }),
     {
       name: "koerier-aan-de-gouwe",
@@ -156,6 +161,7 @@ export const useGameStore = create<GameState>()(
         textScale: s.textScale,
         settings: s.settings,
         letter: s.letter,
+        seen: s.seen,
         view: RESUME[s.view],
         chapter: s.chapter,
         page: s.page,

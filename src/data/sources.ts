@@ -223,6 +223,37 @@ export const FACTS = {
     source: "Canon van Gouda, ‘Tweede Wereldoorlog’",
     verified: false,
   },
+  // Sporen: things to look at on location (side layer of the map, `data/sporen.ts`)
+  "spoor.glas.maker": {
+    claim: "In de Sint-Janskerk hangt het Bevrijdingsglas uit 1947, ontworpen door Charles Eyck. Burgemeester James liet het maken, nadat alle glazen na de oorlog waren teruggeplaatst.",
+    source: "Wim Denslagen, ‘De gebrandschilderde glazen in de Sint Janskerk, Gouda’ (DBNL), met verwijzing naar Dolder, Goudse Glazen (1995) en Vaandrager, Bevrijdingsglas (1997)",
+    todo: "controleer het initiatief van James in een tweede bron; het glas heet glas 28a",
+    verified: false,
+  },
+  "spoor.glas.beeld": {
+    claim: "Bovenin het glas hangen donkere wolken met de ruiters uit Openbaringen 6, die dood en verderf zaaien. In het midden trekt een kleurrijke stoet voorbij, de vreugde van de bevrijding. Aan de zijkanten zie je de beproevingen van de oorlog.",
+    source: "Wim Denslagen, ‘De gebrandschilderde glazen in de Sint Janskerk, Gouda’ (DBNL)",
+    todo: "ter plekke vergelijken met het glas; welke delen zijn goed te zien vanaf de vloer",
+    verified: false,
+  },
+  "spoor.station.inslagen": {
+    claim: "In een aantal stalen balken van de overkapping van de perrons zijn de inslagen van de bommen uit november 1944 nog te zien, bij perron 3 en 5.",
+    source: "Wikipedia, ‘Gouda railway station’; Verzetsmuseum Zuid-Holland; Tourism Utrecht, ‘Een andere kijk op het station’; TracesOfWar, ‘Granaatinslagen NS-station Gouda’",
+    todo: "ter plekke controleren of de balken na de renovatie van 2022 nog zichtbaar zijn en bij welke pijlers precies",
+    verified: false,
+  },
+  "spoor.station.doel": {
+    claim: "Het station werd op 6 en 26 november 1944 gebombardeerd: de geallieerden wilden voorkomen dat de Duitsers dit spoorknooppunt tussen oost en west konden gebruiken. De aanval op het spoor zelf mislukte grotendeels.",
+    source: "Verzetsmuseum Zuid-Holland; Tourism Utrecht; Historische Vereniging Die Goude, ‘Bommen op Gouda’ (Erik Kooistra, over de V2-trein van 6 november)",
+    todo: "aantal vliegtuigen en bommen (138 vliegtuigen en 43,6 ton in één bron); aantal doden en welke aanval",
+    verified: false,
+  },
+  "spoor.station.blindgangers": {
+    claim: "Bij werkzaamheden rond het station moet Gouda nog steeds rekening houden met niet ontplofte bommen in de grond.",
+    source: "Tourism Utrecht, ‘Een andere kijk op het station’; Vooronderzoek conventionele explosieven Gouda (2011)",
+    todo: "actuele situatie bij de gemeente of Omgevingsdienst",
+    verified: false,
+  },
 } as const satisfies Record<string, Fact>;
 
 export type FactId = keyof typeof FACTS;

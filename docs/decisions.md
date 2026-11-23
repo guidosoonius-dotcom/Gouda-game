@@ -270,6 +270,14 @@ de binnenplaats en de overkant werden voor Higgsfield door de proxy geblokkeerd;
 de witte gevel zijn daarom beschreven naar de foto's, niet erop gebaseerd. De slaapzalen tonen nog
 niet de kleine ruitjes en rode luiken van de echte vleugel.
 
+## Sporen (69)
+Een aparte laag naast de avonden en de zijsporen: wat je nog kunt zien, per plek, met een
+kijkopdracht. Geen punten, geen tijd, geen falen (zoals Hoofdstuk 3), en niets afdwingen met gps:
+"Ik heb het gezien" werkt altijd, de afstand is alleen een hulp. De teksten zijn alleen feiten uit
+het register; de intro en de kijkopdracht beweren niets zelf (test in `tests/sporen.test.ts`). De
+stolpersteine-route is bewust niet meegenomen: de teksten zijn van Soesja Citroen en de Stichting
+Gouds Metaheerhuis, daarvoor eerst toestemming vragen.
+
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.
 - Blaeu-kaart: pin-posities zijn op het oog geplaatst. Georefereren met controlepunten in M8.

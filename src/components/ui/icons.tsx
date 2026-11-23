@@ -75,3 +75,13 @@ export function Pause({ color = "currentColor" }: { color?: string }) {
     </svg>
   );
 }
+
+/** An eye: "look here" (the Sporen on the map). */
+export function Eye({ color = "currentColor", size = 22 }: { color?: string; size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" fill="none" stroke={color} strokeWidth="1.4" strokeLinejoin="round" />
+      <circle cx="12" cy="12" r="3" fill="none" stroke={color} strokeWidth="1.4" />
+    </svg>
+  );
+}

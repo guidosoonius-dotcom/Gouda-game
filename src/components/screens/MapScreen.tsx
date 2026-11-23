@@ -12,6 +12,7 @@ import { sfx, unlockAudio } from "@/lib/sound";
 import { BlaeuMap } from "@/components/map/BlaeuMap";
 import { ChapterCard, type CardAction } from "@/components/map/ChapterCard";
 import { SatchelSheet } from "@/components/map/SatchelSheet";
+import { SporenButton, SporenSheet } from "@/components/map/SporenSheet";
 import { Arrow, Satchel } from "@/components/ui/icons";
 import { satchelItems } from "@/data/satchel";
 
@@ -59,6 +60,7 @@ export function MapScreen() {
   const current = currentChapterId(completed);
   const [selectedId, setSelectedId] = useState(current);
   const [satchelOpen, setSatchelOpen] = useState(false);
+  const [sporenOpen, setSporenOpen] = useState(false);
   const [measuring, setMeasuring] = useState(false);
   const selected = chapterById(selectedId);
   const location = mode === "location";
@@ -134,19 +136,22 @@ export function MapScreen() {
               {SIDES.filter((s) => completed.includes(s.id)).length}/{SIDES.length} zijsporen
             </span>
           </div>
-          <button
-            type="button"
-            aria-label={`Koerierstas, ${items.length} stukken`}
-            onClick={press(() => setSatchelOpen(true))}
-            className="relative flex h-[46px] w-[46px] items-center justify-center border border-[#3a434b] bg-night/70"
-          >
-            <Satchel color="#ede6d6" />
-            {items.length > 0 && (
-              <span className="absolute -right-1.5 -top-1.5 h-[18px] min-w-[18px] bg-wax text-center font-label text-[length:calc(11px*var(--ts,1))] font-bold leading-[calc(18px*var(--ts,1))] text-[#f3d6c4]">
-                {items.length}
-              </span>
-            )}
-          </button>
+          <div className="flex gap-2">
+            <SporenButton onPress={press(() => setSporenOpen(true))} />
+            <button
+              type="button"
+              aria-label={`Koerierstas, ${items.length} stukken`}
+              onClick={press(() => setSatchelOpen(true))}
+              className="relative flex h-[46px] w-[46px] items-center justify-center border border-[#3a434b] bg-night/70"
+            >
+              <Satchel color="#ede6d6" />
+              {items.length > 0 && (
+                <span className="absolute -right-1.5 -top-1.5 h-[18px] min-w-[18px] bg-wax text-center font-label text-[length:calc(11px*var(--ts,1))] font-bold leading-[calc(18px*var(--ts,1))] text-[#f3d6c4]">
+                  {items.length}
+                </span>
+              )}
+            </button>
+          </div>
         </header>
 
         <Timeline at={selected.timeline} year={selected.date} />
@@ -176,6 +181,7 @@ export function MapScreen() {
       </AnimatePresence>
 
       <AnimatePresence>{satchelOpen && <SatchelSheet onClose={() => setSatchelOpen(false)} />}</AnimatePresence>
+      <AnimatePresence>{sporenOpen && <SporenSheet onClose={() => setSporenOpen(false)} />}</AnimatePresence>
     </div>
   );
 }

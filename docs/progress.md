@@ -222,6 +222,15 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   De klas heeft geen kaart van Nederland meer (Flevoland bestond nog niet); een schoolplaat en een
   globe in plaats daarvan. Beelden in `public/img/weeshuis/*.webp`, gemaakt met Higgsfield.
 
+- **Sporen (nieuwe laag op de kaart):** een oog-knop naast de koerierstas opent het blad "Sporen",
+  plekken in het centrum waar de oorlog nog te zien is, zonder score of tijd. Eerste twee, aansluitend
+  op bestaande avonden: het Bevrijdingsglas in de Sint-Jan (Hoofdstuk 1) en de bominslagen in de
+  stalen balken bij perron 3 en 5 (Hoofdstuk 5). Elk spoor heeft een kijkopdracht, feiten uit het
+  register (alle `verified: false`, dus zichtbaar gemarkeerd in dev) en "Ik heb het gezien"
+  (`seen` in de opslag, blijft op het apparaat). Data in `src/data/sporen.ts`, scherm in
+  `components/map/SporenSheet.tsx`. Nog te doen ter plekke: of de inslagen na de renovatie van 2022
+  zichtbaar zijn, en de aantallen bij het stationsbombardement.
+
 ## Half af
 - Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).
 - De tekst van hoofdstuk 3 is een voorstel: laat die lezen door iemand van het Joods Monument
