@@ -98,7 +98,7 @@ export const FACTS = {
   "liberation.gouda": {
     claim: "In mei 1945 werd Gouda bevrijd.",
     source: UNSOURCED,
-    todo: "datum en verloop van de bevrijding van Gouda",
+    todo: "datum en verloop van de bevrijding van Gouda: op 5 mei droeg de Ortskommandant de macht in De Zalm over aan de Binnenlandse Strijdkrachten en kwam burgemeester James terug (Canon van Gouda; Wikipedia), maar de eerste bevrijders kwamen pas op 7 mei (RAF) en 8 mei (Canadezen); Erik Kooistra (boek ‘80 jaar in dienst van de vrijheid’, 2025) corrigeert het verhaal dat Gouda op 5 mei werd bevrijd; gebruik dus niet ‘eerste stad’ of ‘bevrijd op 5 mei’ zonder die bron",
     verified: false,
   },
   "curfew.hours": {
