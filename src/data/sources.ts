@@ -231,9 +231,9 @@ export const FACTS = {
     verified: false,
   },
   "spoor.glas.beeld": {
-    claim: "Bovenin het glas hangen donkere wolken met de ruiters uit Openbaringen 6, die dood en verderf zaaien. In het midden trekt een kleurrijke stoet voorbij, de vreugde van de bevrijding. Aan de zijkanten zie je de beproevingen van de oorlog.",
-    source: "Wim Denslagen, ‘De gebrandschilderde glazen in de Sint Janskerk, Gouda’ (DBNL)",
-    todo: "ter plekke vergelijken met het glas; welke delen zijn goed te zien vanaf de vloer",
+    claim: "Bovenin het glas hangen donkere wolken met de ruiters uit Openbaringen 6, die dood en verderf zaaien. In het midden trekt een kleurrijke stoet voorbij, de vreugde van de bevrijding. Op de zijpanelen zie je de beproevingen van de oorlog, onder meer verdronken land, een brandende toren, een razzia en uitgehongerde mensen in de kampen.",
+    source: "Wim Denslagen, ‘De gebrandschilderde glazen in de Sint Janskerk, Gouda’ (DBNL); Nationaal Comité 4 en 5 mei, ‘Gouda, Bevrijdingsglas’",
+    todo: "twee bronnen stemmen overeen over de zijpanelen, maar ter plekke bevestigen; het razzia-paneel toont niet per se de nacht van 10 op 11 november 1944 in de kerk, zeg dat dus niet; dichtregel: Denslagen noemt Yge Foppema, 4en5mei de bundel ‘Oude en Nieuwe Geuzenliederen’",
     verified: false,
   },
   "spoor.station.inslagen": {
