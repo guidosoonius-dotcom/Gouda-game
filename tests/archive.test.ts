@@ -11,7 +11,10 @@ const DIR = path.join(__dirname, "..", "public", "img", "archive");
 /** Every archive slot of the game: then/now pairs, mirror scans and memorial photos. */
 function slots(c: Chapter) {
   const out = [];
-  for (const p of c.pages) if (p.kind === "then-now") out.push(p.then, p.now);
+  for (const p of c.pages) {
+    if (p.kind === "then-now") out.push(p.then, p.now);
+    if (p.kind === "scene" && p.photo) out.push({ label: p.photo.alt, credit: p.photo.credit, image: p.photo });
+  }
   if (c.mirror) out.push(c.mirror.scan);
   if (c.memorial) out.push(c.memorial.photo);
   return out;
@@ -22,7 +25,11 @@ describe("archive photographs", () => {
     for (const [name, img] of Object.entries(ARCHIVE)) {
       expect(img.credit.length, name).toBeGreaterThan(10);
       expect(img.alt.length, name).toBeGreaterThan(20);
-      expect(img.source, name).toMatch(/^https:\/\/commons\.wikimedia\.org\/wiki\/File:/);
+      // a Commons page, or an anonymous old postcard the maker supplied (public domain, art. 38 Auteurswet)
+      if (img.source.startsWith("Prentbriefkaart")) {
+        expect(img.licence, name).toBe("Publiek domein");
+        expect(img.credit, name).toMatch(/maker onbekend/);
+      } else expect(img.source, name).toMatch(/^https:\/\/commons\.wikimedia\.org\/wiki\/File:/);
       expect(["Publiek domein", "CC BY-SA 4.0"], name).toContain(img.licence);
       // a share-alike licence needs the licence named in the credit
       if (img.licence === "CC BY-SA 4.0") expect(img.credit, name).toContain("CC BY-SA 4.0");

@@ -40,7 +40,8 @@ export interface ArchiveSlot {
 }
 
 export type DossierPage =
-  | { kind: "scene"; image: string; lines: string[]; quote?: string }
+  /** `photo`: a real photograph instead of an illustration, shown with its credit. */
+  | { kind: "scene"; image: string; lines: string[]; quote?: string; photo?: ArchiveImage }
   | { kind: "then-now"; image: string; intro: string; then: ArchiveSlot; now: ArchiveSlot; anchor: string }
   | { kind: "task"; image: string; title: string; brief: string; cta: string }
   | { kind: "dilemma"; image: string; lines: string[]; quote: string; choice: ChoiceId };
@@ -296,6 +297,8 @@ export const CHAPTERS: Chapter[] = [
       {
         kind: "scene",
         image: "",
+        // the only picture in this chapter: the place itself, on a real postcard (no illustrations here)
+        photo: shown(ARCHIVE.oosthaven),
         lines: [
           "Voorjaar 1943, tegen de avond. Johanna vraagt of je meeloopt naar de Oosthaven.",
           "Ze draagt een tas met brood en zegt onderweg bijna niets.",

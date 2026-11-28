@@ -293,6 +293,14 @@ weggelaten (CLAUDE.md regel 7 aangepast). Artikelen zijn spannend geschreven maa
 feiten uit het register en zinnen zonder bewering (vragen, overgangen); de test weigert cijfers in
 die eigen zinnen.
 
+## Oosthaven 31: alleen de plek, op een echte prentbriefkaart (72)
+Ingetogen gegenereerde beelden (gracht, lege stoelen, brood, envelop) zijn als concept gemaakt en
+afgewezen: de maker wil op deze plek alleen een echte afbeelding van de plek zelf. Een anonieme
+prentbriefkaart van vóór 1955 is in Nederland publiek domein (art. 38 Auteurswet); de archieftest
+staat zo'n kaart toe naast Commons-bronnen, mits de maker onbekend is en de licentie publiek
+domein. De kaart staat alleen op de openingsscène, met bron; de gedenkpagina blijft zonder
+gegenereerd beeld.
+
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.
 - Blaeu-kaart: pin-posities zijn op het oog geplaatst. Georefereren met controlepunten in M8.

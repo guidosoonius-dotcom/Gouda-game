@@ -22,6 +22,9 @@ const FILES = {
   "synagoge-plaquette": "Plaquette_door_Ralph_Prins_op_de_deur_voormalige_synagoge_Gouda.jpg",
 };
 
+// Committed as webp, not downloaded (a postcard the maker supplied): kept in the list as they are.
+const LOCAL = ["oosthaven-prentbriefkaart"];
+
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function download(name, file) {
@@ -71,7 +74,7 @@ async function convert(name) {
   }
   for (const name of Object.keys(FILES)) if (fs.existsSync(path.join(ORIGINALS, `${name}.jpg`))) await convert(name);
   // the game shows a photograph only when its file is listed here (src/data/archive.ts, `shown`)
-  const made = Object.keys(FILES).map((n) => `${n}.webp`).filter((f) => fs.existsSync(path.join(OUT, f)));
+  const made = [...Object.keys(FILES), ...LOCAL].map((n) => `${n}.webp`).filter((f) => fs.existsSync(path.join(OUT, f)));
   fs.writeFileSync(path.join(__dirname, "..", "src", "data", "archive-files.json"), JSON.stringify(made, null, 2) + "\n");
   console.log(`  ${made.length} photographs available to the game`);
   if (missing.length) {

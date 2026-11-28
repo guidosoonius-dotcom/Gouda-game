@@ -40,12 +40,16 @@ export function DossierScreen() {
     nextPage();
   };
 
+  // a real photograph (with its credit) instead of an illustration, where a page has one
+  const photo = page.kind === "scene" ? page.photo : undefined;
+  const backdrop = photo ? `/img/archive/${photo.file}` : page.image;
+
   return (
     <div className="absolute inset-0 overflow-hidden bg-dusk text-parchment">
       <div className="absolute inset-x-0 top-0 h-[58%] overflow-hidden">
         <AnimatePresence>
           <motion.div
-            key={page.image || "none"}
+            key={backdrop || "none"}
             className="absolute inset-0"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -54,11 +58,18 @@ export function DossierScreen() {
           >
             <div
               className="anim-kenburns absolute inset-0 bg-cover"
-              style={{ backgroundImage: page.image ? `url(${page.image})` : undefined, backgroundPosition: "50% 38%" }}
+              style={{ backgroundImage: backdrop ? `url(${backdrop})` : undefined, backgroundPosition: photo?.focus ?? "50% 38%" }}
+              role={photo ? "img" : undefined}
+              aria-label={photo?.alt}
             />
           </motion.div>
         </AnimatePresence>
         <Grain id="dossier-grain" />
+        {photo && (
+          <span className="absolute bottom-[34%] right-3 max-w-[70%] bg-dusk/70 px-1.5 py-0.5 text-right font-label text-[length:calc(11px*var(--ts,1))] leading-snug text-bone">
+            {photo.credit}
+          </span>
+        )}
         <div
           className="absolute inset-0"
           style={{

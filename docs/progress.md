@@ -252,6 +252,11 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   stro (1940), De Vrije Gedachte in de grafkelder, Vrij Nederland bij Verzijl, de bommen van 1941 en
   het draailicht, de bom voor de kaarsenfabriek, 6 november 1944, kinderen naar het oosten.
 
+- **Oosthaven 31: één echt beeld van de plek.** De openingsscène toont een oude prentbriefkaart
+  van de Oosthaven (aangeleverd door de maker, anoniem en van vóór 1955, dus publiek domein), met
+  bronvermelding. Verder geen beelden in dit hoofdstuk; gegenereerde beelden blijven hier verboden
+  (test). Herkomst en uitgever van de kaart nog na te gaan.
+
 ## Half af
 - Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).
 - De tekst van hoofdstuk 3 is een voorstel: laat die lezen door iemand van het Joods Monument

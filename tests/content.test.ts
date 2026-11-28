@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { existsSync } from "node:fs";
 import { CHAPTERS } from "@/data/chapters";
 import { FACTS } from "@/data/sources";
+import { ARCHIVE } from "@/data/archive";
 import { PAPERS, paperFacts } from "@/data/newspapers";
 import { CHOICES, OUTCOMES } from "@/game/choices";
 import { LEVELS, canPlace, initPieces, isPacked, dims } from "@/components/packing/levels";
@@ -42,8 +43,12 @@ describe("history rules", () => {
     expect(ch3.memorial).toBeDefined();
     expect(CHOICES.some((c) => (c.chapter as number) === 3)).toBe(false);
     expect(Object.keys(OUTCOMES).some((id) => id.startsWith("ch3"))).toBe(false);
-    // no generated imagery at this place: the pages carry no scene illustration
+    // no generated imagery at this place: no illustrations, only the place itself on a real
+    // photograph with its credit, and only on the opening page
     expect(ch3.pages.every((p) => p.image === "")).toBe(true);
+    const photos = ch3.pages.filter((p) => p.kind === "scene" && p.photo);
+    expect(photos.length).toBeLessThanOrEqual(1);
+    for (const p of photos) if (p.kind === "scene") expect(Object.values(ARCHIVE).map((a) => a.file)).toContain(p.photo!.file);
     // names of victims are never invented: the list stays empty until they are verified
     for (const id of ch3.memorial!.facts) expect(FACTS[id]).toBeDefined();
     if (ch3.memorial!.facts.some((id) => !FACTS[id].verified)) expect(ch3.memorial!.names).toEqual([]);
