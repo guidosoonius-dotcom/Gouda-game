@@ -255,7 +255,7 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
 - **Oosthaven 31: één echt beeld van de plek.** De openingsscène toont een oude prentbriefkaart
   van de Oosthaven (aangeleverd door de maker, anoniem en van vóór 1955, dus publiek domein), met
   bronvermelding. Verder geen beelden in dit hoofdstuk; gegenereerde beelden blijven hier verboden
-  (test). Herkomst en uitgever van de kaart nog na te gaan.
+  (test). De kaart is uit 1916, uitgever onbekend.
 
 ## Half af
 - Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).

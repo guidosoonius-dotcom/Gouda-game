@@ -28,7 +28,7 @@ describe("archive photographs", () => {
       // a Commons page, or an anonymous old postcard the maker supplied (public domain, art. 38 Auteurswet)
       if (img.source.startsWith("Prentbriefkaart")) {
         expect(img.licence, name).toBe("Publiek domein");
-        expect(img.credit, name).toMatch(/maker onbekend/);
+        expect(img.credit, name).toMatch(/(maker|uitgever) onbekend/);
       } else expect(img.source, name).toMatch(/^https:\/\/commons\.wikimedia\.org\/wiki\/File:/);
       expect(["Publiek domein", "CC BY-SA 4.0"], name).toContain(img.licence);
       // a share-alike licence needs the licence named in the credit

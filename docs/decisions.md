@@ -297,7 +297,7 @@ die eigen zinnen.
 Ingetogen gegenereerde beelden (gracht, lege stoelen, brood, envelop) zijn als concept gemaakt en
 afgewezen: de maker wil op deze plek alleen een echte afbeelding van de plek zelf. Een anonieme
 prentbriefkaart van vóór 1955 is in Nederland publiek domein (art. 38 Auteurswet); de archieftest
-staat zo'n kaart toe naast Commons-bronnen, mits de maker onbekend is en de licentie publiek
+staat zo'n kaart toe naast Commons-bronnen, mits de maker of uitgever onbekend is en de licentie publiek
 domein. De kaart staat alleen op de openingsscène, met bron; de gedenkpagina blijft zonder
 gegenereerd beeld.
 

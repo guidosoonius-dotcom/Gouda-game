@@ -47,14 +47,14 @@ export const ARCHIVE = {
     licence: "Publiek domein",
     source: `${COMMONS}Plaquette_door_Ralph_Prins_op_de_deur_voormalige_synagoge_Gouda.jpg`,
   },
-  // A postcard the maker supplied (not on Commons): anonymous, published long before 1955, so in the
-  // public domain under Dutch law (art. 38 Auteurswet). Publisher still to be read off the back.
+  // A postcard the maker supplied (not on Commons): 1916, publisher and photographer unknown, so in the
+  // public domain under Dutch law (art. 38 Auteurswet, anonymous work published before 1955).
   oosthaven: {
     file: "oosthaven-prentbriefkaart.webp",
-    alt: "Prentbriefkaart van de Oosthaven in Gouda, begin twintigste eeuw: kale bomen langs de gracht, winkels en woonhuizen aan de kade, in de verte de toren van de Sint-Jan.",
-    credit: "Prentbriefkaart ‘Gouda, Oost Haven’, begin 20e eeuw, maker onbekend",
+    alt: "Prentbriefkaart van de Oosthaven in Gouda, 1916: kale bomen langs de gracht, winkels en woonhuizen aan de kade, in de verte de toren van de Sint-Jan.",
+    credit: "Prentbriefkaart ‘Gouda, Oost Haven’, 1916, uitgever onbekend",
     licence: "Publiek domein",
-    source: "Prentbriefkaart (collectie van de maker van dit spel); uitgever nog na te gaan",
+    source: "Prentbriefkaart uit 1916, uitgever onbekend; aangeleverd door de maker van dit spel",
     focus: "62% 50%",
   },
 } as const satisfies Record<string, ArchiveImage>;

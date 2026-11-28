@@ -66,7 +66,7 @@ export function DossierScreen() {
         </AnimatePresence>
         <Grain id="dossier-grain" />
         {photo && (
-          <span className="absolute bottom-[34%] right-3 max-w-[70%] bg-dusk/70 px-1.5 py-0.5 text-right font-label text-[length:calc(11px*var(--ts,1))] leading-snug text-bone">
+          <span className="absolute bottom-3 right-4 z-10 max-w-[80%] text-right font-label text-[length:calc(11px*var(--ts,1))] leading-snug text-ash">
             {photo.credit}
           </span>
         )}
