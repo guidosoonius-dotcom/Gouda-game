@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
+import { existsSync } from "node:fs";
 import { CHAPTERS } from "@/data/chapters";
 import { FACTS } from "@/data/sources";
+import { PAPERS, paperFacts } from "@/data/newspapers";
 import { CHOICES, OUTCOMES } from "@/game/choices";
 import { LEVELS, canPlace, initPieces, isPacked, dims } from "@/components/packing/levels";
 
@@ -8,7 +10,21 @@ describe("history rules", () => {
   it("every fact shown in a mirror exists in the sources register", () => {
     for (const ch of CHAPTERS) {
       if (!ch.mirror) continue;
-      for (const id of [...ch.mirror.facts, ch.mirror.notice.fact]) expect(FACTS[id], id).toBeDefined();
+      expect(PAPERS[ch.id]?.length, ch.title).toBeGreaterThan(0);
+      for (const id of [...paperFacts(ch.id), ch.mirror.notice.fact]) expect(FACTS[id], id).toBeDefined();
+    }
+  });
+
+  it("a newspaper's own lines claim nothing: no years or numbers outside the facts", () => {
+    for (const [id, articles] of Object.entries(PAPERS)) {
+      for (const a of articles) {
+        const own = [a.headline, a.deck ?? "", ...a.paras.map((p) => (typeof p === "string" ? "" : p.say))].join(" ");
+        expect(/\d/.test(own), `${id}: ${a.headline}`).toBe(false);
+        if (a.drawing) {
+          expect(a.drawing.alt.startsWith("Tekening"), a.headline).toBe(true);
+          expect(existsSync(`public${a.drawing.src}`), a.drawing.src).toBe(true);
+        }
+      }
     }
   });
 

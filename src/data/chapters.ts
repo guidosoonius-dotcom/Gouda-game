@@ -55,8 +55,7 @@ export interface Mirror {
   dateline: string;
   /** Fiction: the player's own night, written from their flags. */
   story: (flags: Flags) => MirrorStory;
-  factsTitle: string;
-  facts: FactId[];
+  /** The articles ("Wat echt gebeurde") live in `newspapers.ts`, by chapter id. */
   scan: ArchiveSlot;
   notice: { title: string; fact: FactId; body: string };
   reward: string;
@@ -187,8 +186,6 @@ export const CHAPTERS: Chapter[] = [
               : "Het doorgangsbewijs bleef bij de kisten. De student knikte en reed de steeg uit. Je hebt nooit gehoord of hij de kust haalde."),
         };
       },
-      factsTitle: "De glazen gingen ondergronds",
-      facts: ["glazen.what", "glazen.removed", "glazen.stored", "glazen.returned"],
       scan: {
         label: "FOTO · uitneming van de glazen uit de Sint-Jan",
         credit: "Bron volgt: Streekarchief Midden-Holland, inv.nr.",
@@ -269,8 +266,6 @@ export const CHAPTERS: Chapter[] = [
               : "Je ging alleen. Kees zat thuis bij het raam en heeft je niet gegroet."),
         };
       },
-      factsTitle: "Gouda drukte door",
-      facts: ["press.gouda"],
       scan: {
         label: "SCAN · illegale uitgave uit Gouda",
         credit: "Bron volgt: Streekarchief Midden-Holland, inv.nr.",
@@ -421,8 +416,6 @@ export const CHAPTERS: Chapter[] = [
               : "Jaap bleef op de kade staan. Marie heeft niet meer omgekeken."),
         };
       },
-      factsTitle: "Water rond Gouda",
-      facts: ["locks.route"],
       scan: {
         label: "KAART · sluizen en plassen rond Gouda, 1944",
         credit: "Bron volgt: Streekarchief Midden-Holland, inv.nr.",
@@ -496,8 +489,6 @@ export const CHAPTERS: Chapter[] = [
               : "Je bracht de groep eerst. De man bij het ingestorte huis heb je niet meer gezien."),
         };
       },
-      factsTitle: "Bommen op het spoor",
-      facts: ["station.raid"],
       scan: {
         label: "FOTO · omgeving van het station na 26 november 1944",
         credit: "Bron volgt: Streekarchief Midden-Holland, inv.nr.",

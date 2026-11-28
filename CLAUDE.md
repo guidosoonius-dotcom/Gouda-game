@@ -40,8 +40,8 @@ Read only the section you need; do not load whole documents by default.
 5. All movement and damping is frame-rate independent (`1 - Math.exp(-k * dt)`), never per-frame factors.
 6. Gameplay numbers live in `src/game/tuning.ts`, never inline.
 7. History: never present fiction as fact. Every factual claim and real name lives in
-   `src/data/sources.ts` with a source and a `verified: boolean`. Unverified facts render as
-   visible placeholders in dev builds. No generated "archive photos": use `ArchivePlaceholder`
+   `src/data/sources.ts` with a source and a `verified: boolean`. Unverified facts are shown in
+   every build, visibly marked (dotted line and ?) with their source one tap away. No generated "archive photos": use `ArchivePlaceholder`
    until a licensed scan exists.
 8. Chapter 3 (Oosthaven 31) has no score, timer, failure state or modifiers.
 9. No game over: failing a minigame changes the story outcome, it never blocks progress.

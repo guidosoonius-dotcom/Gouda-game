@@ -285,6 +285,14 @@ op 5 mei 1945 al bevrijd was (Scheygrond 1985, Van Dam 1995, Kooistra 2025). Ref
 gaan nu rechtstreeks naar Higgsfield (host `upload.higgsfield.ai` toegestaan in de omgeving), zodat
 gebouwen natuurgetrouw geschilderd worden in plaats van naar een beschrijving.
 
+## De krant als illegaal blad, en ongecontroleerde feiten zichtbaar (71)
+De Koerier lijkt nu op een gestencild verzetsblad: zo'n blad bestond op 14 mei 1940 nog niet, dus de
+kop zegt wat verzonnen is en wat uit de archieven komt. Op verzoek van de maker staan ongecontroleerde
+feiten ook in productie in beeld, met een potloodstreep en de bron één tik verder, in plaats van
+weggelaten (CLAUDE.md regel 7 aangepast). Artikelen zijn spannend geschreven maar bestaan alleen uit
+feiten uit het register en zinnen zonder bewering (vragen, overgangen); de test weigert cijfers in
+die eigen zinnen.
+
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.
 - Blaeu-kaart: pin-posities zijn op het oog geplaatst. Georefereren met controlepunten in M8.

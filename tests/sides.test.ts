@@ -4,6 +4,7 @@ import { CHAPTERS } from "@/data/chapters";
 import { PLACES, openSides } from "@/data/places";
 import { FACTS } from "@/data/sources";
 import { satchelItems } from "@/data/satchel";
+import { paperFacts } from "@/data/newspapers";
 
 describe("side stories (zijsporen)", () => {
   it("are four, with ids that do not clash with the evenings, at least the town hall and the orphanage", () => {
@@ -19,7 +20,7 @@ describe("side stories (zijsporen)", () => {
     for (const s of SIDES) {
       expect(s.task, s.title).toBe("puzzle");
       expect(s.puzzle, s.title).toBeDefined();
-      const facts = s.mirror ? [...s.mirror.facts, s.mirror.notice.fact] : s.memorial!.facts;
+      const facts = s.mirror ? [...paperFacts(s.id), s.mirror.notice.fact] : s.memorial!.facts;
       expect(facts.length, s.title).toBeGreaterThan(0);
       for (const id of facts) expect(FACTS[id], id).toBeDefined();
     }

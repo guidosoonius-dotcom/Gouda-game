@@ -83,8 +83,6 @@ export const SIDES: Chapter[] = [
         headline: "Bedden het weeshuis in; Max leert ‘brood’ en ‘vriend’",
         body: "Je droeg dekens tot je armen trilden. Max wees naar alles wat hij zag en vroeg hoe het heette. Tegen de avond zei hij ‘dank je’ zonder accent, en lachte er zelf om.",
       }),
-      factsTitle: "Een veilige haven, voor even",
-      facts: ["weeshuis.arrival", "weeshuis.care", "weeshuis.help", "weeshuis.end"],
       scan: { label: "SCAN · vluchtelingenkinderen in het Goudse weeshuis, 1939", credit: "Bron volgt: Streekarchief Midden-Holland" },
       notice: {
         title: "Max",
@@ -178,8 +176,6 @@ export const SIDES: Chapter[] = [
                 headline: "Bekendmaking op de deur; op het stadhuis gaat alles heel traag",
                 body: "Een bevel met een datum die niet bestaat, een adres dat niet klopt: het stadhuis stuurde ze keurig terug. Niemand verdenkt de saaie bode. Op de deur staat ‘houd moed’, voor wie het ziet.",
               },
-      factsTitle: "Een burgemeester die weigerde",
-      facts: ["stadhuis.refuse", "stadhuis.aanwijzingen", "stadhuis.arrest", "stadhuis.liera", "stadhuis.return"],
       scan: { label: "FOTO · werkkamer van de burgemeester, 1940", credit: "Bron volgt: Streekarchief Midden-Holland", image: shown(ARCHIVE.stadhuisWerkkamer) },
       notice: {
         title: "Wat hij zei",
@@ -310,8 +306,6 @@ export const SIDES: Chapter[] = [
                 headline: "Bonkaart klopt; wit brood mee naar huis",
                 body: "Je liep langzaam terug, met het brood onder je jas zodat het warm bleef. Thuis sneed je moeder het in dunne plakken, zo dun als het kon. Niemand zei iets tot alles op was.",
               },
-      factsTitle: "Brood uit Zweden",
-      facts: ["brood.ships", "brood.gouda", "markt.hunger"],
       scan: { label: "SCAN · personeel van Albert Heijn aan de Markt deelt Zweeds brood uit, 1945", credit: "Bron volgt: Streekarchief Midden-Holland" },
       notice: {
         title: "Hoe het smaakte",

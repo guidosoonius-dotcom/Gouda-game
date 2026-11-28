@@ -26,21 +26,21 @@ export const FACTS = {
   },
   "glazen.what": {
     claim:
-      "De Sint-Janskerk bezit een reeks gebrandschilderde ramen uit de zestiende en het begin van de zeventiende eeuw: de Goudse Glazen.",
+      "De oudste hangen er al sinds de zestiende eeuw: de Goudse Glazen, de gebrandschilderde ramen van de Sint-Janskerk.",
     source: "NGV, ‘The Interior of St Janskerk at Gouda’ (schenkingen tot 1603); Wikipedia, ‘Gebrandschilderde glazen in de Grote of Sint-Janskerk in Gouda’",
     todo: "aantal glazen",
     verified: false,
   },
   "glazen.removed": {
     claim:
-      "Direct na het mobilisatiebevel van 28 augustus 1939 zijn de glazen paneel voor paneel uit de sponningen genomen, in 201 houten kisten verpakt en vervangen door dubbeldik vensterglas.",
+      "Dan komt 28 augustus 1939. Nederland mobiliseert, en direct daarna beginnen de werklieden. Paneel voor paneel lichten ze de ramen uit hun sponningen. Het glas verdwijnt in 201 houten kisten; in de sponningen komt dubbeldik vensterglas.",
     source: "Wikipedia, ‘Sint-Janskerk (Gouda)’; Canon van Nederland, ‘Goudse glazen in WOII’ (plan van 4 april 1939)",
     todo: "uitvoerende glazenier; andere bron noemt september tot december 1939",
     verified: false,
   },
   "glazen.stored": {
     claim:
-      "De kisten zijn op verschillende plaatsen in veiligheid gebracht: in bankkluizen, in kelders van boerderijen rond Gouda en in het weeshuis van Moordrecht. In 1943 gingen alle glazen naar de rijkskluizen bij Vogelenzang.",
+      "Gouda spreidt de kisten. In bankkluizen. In de kelders van boerderijen rond de stad. In het weeshuis van Moordrecht. En in 1943 gaan alle glazen naar de rijkskluizen bij Vogelenzang.",
     source: "Wikipedia, ‘Sint-Janskerk (Gouda)’; Canon van Nederland, ‘Goudse glazen in WOII’",
     todo: "welke bankkluizen (in de stad?) en data van de transporten",
     verified: false,
@@ -52,7 +52,8 @@ export const FACTS = {
     verified: false,
   },
   "rotterdam.bombing": {
-    claim: "Op 14 mei 1940 werd de binnenstad van Rotterdam gebombardeerd.",
+    claim:
+      "Dinsdag 14 mei 1940. De binnenstad van Rotterdam wordt gebombardeerd.",
     source: "nog te bepalen (NIOD / Stadsarchief Rotterdam)",
     todo: "tijdstip; of de rook vanuit Gouda zichtbaar was",
     verified: false,
@@ -65,7 +66,8 @@ export const FACTS = {
     verified: false,
   },
   "press.gouda": {
-    claim: "In Gouda verschenen tijdens de bezetting illegale bladen, onder andere De Flitspuit (1941–1943) en De Vrije Gedachte, en koeriers brachten ze rond.",
+    claim:
+      "Ook Gouda heeft zijn illegale bladen. De Flitspuit verschijnt van 1941 tot 1943, later komt De Vrije Gedachte. Koeriers brengen ze rond, van hand tot hand.",
     source: "‘De Ondergrondse Pers 1940–1945’ (De Flitspuit); Canon van Gouda, ‘Tweede Wereldoorlog’ (De Vrije Gedachte); Streekarchief Midden-Holland, collectie 0196",
     todo: "drukkers en adressen; de Flitspuit werd gestencild, niet gedrukt",
     verified: false,
@@ -110,7 +112,7 @@ export const FACTS = {
   },
   "locks.route": {
     claim:
-      "In 1943 werden polders ten westen van Gouda onder water gezet, de Vordere Wasserstellung; daardoor kwam de voedselproductie in gevaar.",
+      "In 1943 gaan polders ten westen van Gouda onder water: de Vordere Wasserstellung, een verdedigingslinie van water. De voedselproductie komt daardoor in gevaar.",
     source: "Canon van Gouda, ‘Tweede Wereldoorlog’",
     todo: "bron voor mensen of voedsel over water via de Goudse sluizen in 1944–45 (niet gevonden)",
     verified: false,
@@ -118,19 +120,20 @@ export const FACTS = {
   // ---------- zijsporen (research Nov 2026; sources found, not yet checked by a historian) ----------
   "weeshuis.arrival": {
     claim:
-      "Op 3 april 1939 kwamen veertig Joodse jongens, op de vlucht uit nazi-Duitsland, uit het quarantainekamp in Rotterdam naar het weeshuis aan de Spieringstraat.",
+      "3 april 1939. Veertig Joodse jongens komen aan bij het weeshuis aan de Spieringstraat. Ze zijn gevlucht uit nazi-Duitsland en komen uit het quarantainekamp in Rotterdam.",
     source: "joodserfgoedrotterdam.nl/gouda; NIW, ‘Wandelen in de mediene: Gouda’s glorie’",
     todo: "datum en aantal nalezen in het archief van het vluchtelingencomité (Streekarchief Midden-Holland)",
     verified: false,
   },
   "weeshuis.care": {
-    claim: "De keuken werd koosjer gemaakt en de jongens kregen les, ook in het Nederlands.",
+    claim:
+      "De keuken wordt koosjer gemaakt. Er komt les, ook in het Nederlands.",
     source: "joodserfgoedrotterdam.nl/gouda",
     verified: false,
   },
   "weeshuis.help": {
     claim:
-      "Gouwenaren hielpen als vrijwilliger bij de verbouwing, de Goudsche Stoombleekerij deed gratis de was, en het personeel van de Garenspinnerij stond drie maanden lang 1 procent van het loon af.",
+      "En Gouda helpt. Vrijwilligers verbouwen mee, de Goudsche Stoombleekerij doet gratis de was, en het personeel van de Garenspinnerij staat drie maanden lang 1 procent van het loon af.",
     source: "NIW, ‘Wandelen in de mediene: Gouda’s glorie’ (citaat Dekker)",
     todo: "originele bron van het citaat zoeken",
     verified: false,
@@ -144,7 +147,7 @@ export const FACTS = {
   },
   "stadhuis.refuse": {
     claim:
-      "Burgemeester K.F.O. James beriep zich in 1940 op het Landoorlogreglement en weigerde mee te werken aan het sturen van arbeiders voor het herstel van vliegveld Ypenburg.",
+      "1940. De bezetter wil arbeiders uit Gouda om vliegveld Ypenburg te herstellen. Burgemeester K.F.O. James weigert mee te werken. Hij beroept zich op het Landoorlogreglement.",
     source: "Die Goude, ‘Gouda 1901–1965, Kroniek van Gouda’; L. de Jong, Het Koninkrijk der Nederlanden in de Tweede Wereldoorlog, deel 4",
     verified: false,
   },
@@ -161,7 +164,8 @@ export const FACTS = {
     verified: false,
   },
   "stadhuis.liera": {
-    claim: "De NSB’er E.A.A. Liera werd burgemeester van Gouda. Uit de toren van de Sint-Jan en uit het stadhuis werden klokken weggehaald.",
+    claim:
+      "Later wordt de NSB’er E.A.A. Liera burgemeester van Gouda. Uit de toren van de Sint-Jan en uit het stadhuis worden de klokken weggehaald.",
     source: "Canon van Gouda, ‘Tweede Wereldoorlog’ (canonvannederland.nl)",
     todo: "datum van de benoeming en van het weghalen van de klokken",
     verified: false,
@@ -202,12 +206,13 @@ export const FACTS = {
   },
   "brood.ships": {
     claim:
-      "Het ‘Zweedse wittebrood’ werd niet uit vliegtuigen gegooid. Het werd in Nederlandse bakkerijen gebakken van meel dat het Zweedse Rode Kruis per schip aanvoerde; de eerste schepen kwamen op 28 januari 1945 in Delfzijl aan. In de steden werd het brood vanaf eind februari en in maart 1945 verdeeld: 800 gram brood en 125 gram margarine per persoon.",
+      "Het ‘Zweedse wittebrood’ valt niet uit de lucht. Het wordt in Nederlandse bakkerijen gebakken, van meel dat het Zweedse Rode Kruis per schip aanvoert; de eerste schepen komen op 28 januari 1945 in Delfzijl aan. Vanaf eind februari en in maart 1945 wordt het in de steden verdeeld: 800 gram brood en 125 gram margarine per persoon.",
     source: "Andere Tijden, ‘Geschenk uit de hemel: de mythe van het Zweeds wittebrood’; Wikipedia, ‘Zweeds wittebrood’",
     verified: false,
   },
   "brood.gouda": {
-    claim: "In Gouda werd het brood onder meer uitgedeeld bij Albert Heijn aan de Markt.",
+    claim:
+      "In Gouda gaat het brood onder meer over de toonbank bij Albert Heijn aan de Markt.",
     source: "Canon van Gouda, ‘Tweede Wereldoorlog’; Geschiedenislokaal Midden-Holland, ‘Zweedse wittebrood in Gouda (1945)’ (foto)",
     todo: "adres van de winkel in 1945",
     verified: false,
@@ -306,6 +311,59 @@ export const FACTS = {
     claim: "Het Streekarchief Midden-Holland bewaart het gastenboek van het Duitse soldatentehuis in Gouda, 1942 tot 1944. Op de laatste bladzijde staat een aantekening van de commandant van de Binnenlandse Strijdkrachten, van 9 mei 1945.",
     source: "Streekarchief Midden-Holland, archief van de Ortskommandantur Gouda 1940–1945 (toegang 198), inv.nr. 20",
     todo: "het stuk inzien: waar stond het soldatentehuis, wat staat er in de aantekening",
+    verified: false,
+  },
+  // Newspapers (De Koerier): facts that only the articles use
+  "kerk.soldaten": {
+    claim: "In de meidagen van 1940 trekken ongeveer 1.200 Nederlandse militairen, wielrijders, zich vanuit Rotterdam terug naar Gouda. Ze belanden in de Sint-Jan. Dagenlang slapen ze op stro. Er is één wc voor allemaal; water wordt in gamellen aangesleept.",
+    source: "Wikipedia, ‘Sint-Janskerk (Gouda)’ (tijdlijn: 1940, opvang van 1200 Nederlandse militairen)",
+    todo: "nalezen in M.J. van Dam, ‘Gouda in de Tweede Wereldoorlog’ (2006); welke dagen precies",
+    verified: false,
+  },
+  "press.grafkelder": {
+    claim: "De redactie van De Vrije Gedachte vindt onderdak op een onverwachte plek: een lege grafkelder op de rooms-katholieke begraafplaats aan de Graaf Florisweg.",
+    source: "Canon van Gouda, ‘Tweede Wereldoorlog’; L.E. Winkel, ‘De Ondergrondse Pers 1940–1945’ (De Vrije Gedachte)",
+    todo: "vanaf wanneer (volgens Winkel vanaf voorjaar 1944)",
+    verified: false,
+  },
+  "press.verzijl": {
+    claim: "Tussen najaar 1944 en mei 1945 wordt Vrij Nederland in Gouda een paar keer nagedrukt, bij drukkerij B.A. Verzijl.",
+    source: "L.E. Winkel, ‘De Ondergrondse Pers 1940–1945’, nr. 972 (Vrij Nederland, Gouda)",
+    todo: "adres van de drukkerij",
+    verified: false,
+  },
+  "bommen.1941": {
+    claim: "In 1941 wordt Gouda door minstens twintig luchtaanvallen getroffen. De eerste bommen vallen in februari, op de Fluwelensingel.",
+    source: "Canon van Gouda, ‘Tweede Wereldoorlog’; M.J. van Dam, ‘Gouda in de Tweede Wereldoorlog’ (2006), hoofdstuk ‘Bommen op Gouda’ (25 februari 1941: Fluwelensingel)",
+    verified: false,
+  },
+  "bommen.baken": {
+    claim: "De oorzaak staat aan de overkant van de IJssel: een draailicht, een baken voor Duitse vliegtuigen op weg naar Engeland. Het is geen nepvliegveld, zoals lang werd gedacht. Eind 1941 wordt het weggehaald.",
+    source: "Historische Vereniging Die Goude, ‘Bommen op Gouda’ (lezing Erik Kooistra, 2018); E. Kooistra, ‘Bommen op Gouda’ (2021); Canon van Gouda (lichtbaken aan de zuidkant van Gouda)",
+    verified: false,
+  },
+  "kaarsen.bom": {
+    claim: "Op 18 september 1944 valt er een bom in de Nobelstraat. Hij is bedoeld voor de kaarsenfabriek, waar de Duitsers goederen hebben opgeslagen.",
+    source: "Historische Vereniging Die Goude, ‘Bommen op Gouda’ (lezing Erik Kooistra, 2018); M.J. van Dam (2006), ‘18 september 1944: Nobelstraat’",
+    todo: "slachtoffers en schade",
+    verified: false,
+  },
+  "kaarsen.beslag": {
+    claim: "Eind 1944 nemen de Duitsers de kaarsenfabriek in beslag. Tot november 1945 ligt de productie stil.",
+    source: "Gouda Kaarsen, ‘Historie’",
+    todo: "tweede bron (Streekarchief)",
+    verified: false,
+  },
+  "raid.6nov": {
+    claim: "Maandag 6 november 1944, rond acht uur ’s ochtends: zes bommen vallen tussen de Ridder van Catsweg en de nieuwe verbindingsweg. Later die ochtend volgt een tweede aanval. Acht Gouwenaars komen die dag om.",
+    source: "M.J. van Dam, ‘Gouda in de Tweede Wereldoorlog’ (2006), p. 224; Werkgroep Goudse oorlogsslachtoffers (gouda4045.nl)",
+    todo: "aantal toestellen en bommen van de tweede aanval",
+    verified: false,
+  },
+  "kinderen.ikb": {
+    claim: "In 1945 worden via het Interkerkelijk Bureau 125 Goudse kinderen naar het oosten van het land gestuurd, waar nog eten is. Dat is ongeveer één op de honderd kinderen in de stad.",
+    source: "I.J.J. de Zwarte, ‘The Hunger Winter’ (proefschrift UvA, 2019), tabel 7.1",
+    todo: "andere uitzendingen vanuit Gouda (UNO, ds. Ten Brink) los daarvan",
     verified: false,
   },
 } as const satisfies Record<string, Fact>;

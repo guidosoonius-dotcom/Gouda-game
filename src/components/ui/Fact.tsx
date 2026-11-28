@@ -1,15 +1,17 @@
-import { FACTS, SHOW_UNVERIFIED, type Fact, type FactId } from "@/data/sources";
+import { FACTS, type Fact, type FactId } from "@/data/sources";
 
 /**
- * Renders one factual claim from the sources register.
- * Verified: plain text. Unverified: visibly marked in dev/preview, withheld in production.
+ * Renders factual claims from the sources register (CLAUDE.md #7).
+ * Verified: plain text. Unverified: shown in every build, but visibly marked (dotted line and a
+ * question mark) with what is still being checked in its title, so a player never takes it for a
+ * checked fact.
  */
-/** Legend for the dotted markers; only rendered while unverified facts are visible. */
+/** Legend for the dotted markers; only rendered while one of the facts is unverified. */
 export function FactLegend({ ids, dark = false }: { ids: FactId[]; dark?: boolean }) {
-  if (!SHOW_UNVERIFIED || ids.every((id) => FACTS[id].verified)) return null;
+  if (ids.every((id) => FACTS[id].verified)) return null;
   return (
     <span className={`font-label text-[length:calc(11px*var(--ts,1))] font-semibold tracking-wide ${dark ? "text-[#f0b5aa]" : "text-wax-dark"}`}>
-      [?] ROOD GESTIPPELD = NOG NIET GEVERIFIEERD, BRON VOLGT
+      [?] GESTIPPELD = NOG NIET GECONTROLEERD, BRON BEKEND
     </span>
   );
 }
@@ -17,36 +19,23 @@ export function FactLegend({ ids, dark = false }: { ids: FactId[]; dark?: boolea
 export function FactText({ id, dark = false }: { id: FactId; dark?: boolean }) {
   const fact: Fact = FACTS[id];
   if (fact.verified) return <>{fact.claim}</>;
-  if (!SHOW_UNVERIFIED) {
-    return <span className={dark ? "tbc-dark" : "tbc"}>[Dit feit wordt nog gecontroleerd.]</span>;
-  }
   return (
-    <span className={dark ? "tbc-dark" : "tbc"} title={`Te verifiëren: ${fact.todo ?? fact.source}`}>
+    <span className={dark ? "tbc-dark" : "tbc"} title={`Nog te controleren: ${fact.todo ?? fact.source}`}>
       {fact.claim}
       <sup className="ml-0.5 font-label text-[length:calc(11px*var(--ts,1))] font-bold">[?]</sup>
     </span>
   );
 }
 
-/**
- * A run of facts as one paragraph. In production, unverified claims are withheld and replaced by
- * a single honest note instead of a row of gaps.
- */
+/** A run of facts as one paragraph. */
 export function FactBlock({ ids, dark = false }: { ids: FactId[]; dark?: boolean }) {
-  const hidden = SHOW_UNVERIFIED ? [] : ids.filter((id) => !FACTS[id].verified);
-  const shown = ids.filter((id) => !hidden.includes(id));
   return (
     <>
-      {shown.map((id) => (
+      {ids.map((id) => (
         <span key={id}>
           <FactText id={id} dark={dark} />{" "}
         </span>
       ))}
-      {hidden.length > 0 && (
-        <span className={dark ? "tbc-dark" : "tbc"}>
-          [{hidden.length === 1 ? "Eén feit wordt" : `${hidden.length} feiten worden`} hier nog gecontroleerd door een historicus.]
-        </span>
-      )}
     </>
   );
 }

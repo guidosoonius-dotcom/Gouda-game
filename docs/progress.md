@@ -242,6 +242,16 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   speler als referentie: `img/sporen/*.webp` en de weeshuisbeelden (poort, binnenplaats,
   slaapzaal, zalen, afscheid) opnieuw.
 
+- **De Koerier als illegaal blad (design: canvas "De Koerier als illegaal blad"):** de krant na
+  elk hoofdstuk en zijspoor is nu een gestencild blaadje op dun papier (`img/krant/papier.webp`),
+  kop in stencilletters, tekst in typemachineletter. Jouw verhaal blijft FICTIE; daaronder
+  uitgeschreven artikelen (`src/data/newspapers.ts`): per krant een hoofdartikel met een
+  tekening (Higgsfield, gemarkeerd als tekening, geen foto) en kleinere stukken. Elke alinea is een
+  feit uit het register of een zin die niets beweert (test). Tik op een stuk tekst voor de bron;
+  ongecontroleerde feiten staan er in elke build, met potloodstreep en ?. Nieuwe feiten: soldaten op
+  stro (1940), De Vrije Gedachte in de grafkelder, Vrij Nederland bij Verzijl, de bommen van 1941 en
+  het draailicht, de bom voor de kaarsenfabriek, 6 november 1944, kinderen naar het oosten.
+
 ## Half af
 - Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).
 - De tekst van hoofdstuk 3 is een voorstel: laat die lezen door iemand van het Joods Monument
