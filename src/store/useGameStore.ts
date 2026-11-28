@@ -7,7 +7,7 @@ import { CHAPTERS } from "@/data/chapters";
 import { chapterById, dossierPages } from "@/data/places";
 import type { Progress } from "@/game/save";
 
-export type View = "title" | "map" | "dossier" | "task" | "mirror" | "epilogue";
+export type View = "title" | "map" | "dossier" | "task" | "mirror" | "epilogue" | "walk" | "walkstop";
 export type Mode = "location" | "home";
 export interface Settings {
   assist: boolean;
@@ -25,7 +25,7 @@ function roomy() {
 export const DEFAULT_SETTINGS: Settings = { assist: false, oneButton: false, still: false, ambience: true, hifi: roomy() };
 
 /** Where a reload brings the player back: a minigame restarts from its dossier page. */
-const RESUME: Record<View, View> = { title: "title", map: "map", dossier: "dossier", task: "dossier", mirror: "mirror", epilogue: "epilogue" };
+const RESUME: Record<View, View> = { title: "title", map: "map", dossier: "dossier", task: "dossier", mirror: "mirror", epilogue: "epilogue", walk: "walk", walkstop: "walkstop" };
 
 interface GameState {
   view: View;
@@ -49,6 +49,11 @@ interface GameState {
   rereading: boolean;
   /** Sporen (things to look at on location) the player says they have seen. Stays on this device. */
   seen: string[];
+  /** The city walk (no games): the stop that is open (index in `ROUTE`), the places visited, and
+   *  whether the newspaper was opened from the walk. Separate from the game's progress. */
+  walkStop: number;
+  walkSeen: number[];
+  walkReading: boolean;
 
   start: (mode: Mode) => void;
   setMode: (mode: Mode) => void;
@@ -71,6 +76,9 @@ interface GameState {
   setTextScale: (scale: number) => void;
   setSetting: <K extends keyof Settings>(key: K, value: Settings[K]) => void;
   markSeen: (id: string) => void;
+  startWalk: () => void;
+  openStop: (index: number, place: number) => void;
+  readPaper: (id: number) => void;
   restore: (p: Progress) => void;
   reset: () => void;
 }
@@ -95,6 +103,9 @@ export const useGameStore = create<GameState>()(
       letter: "",
       rereading: false,
       seen: [],
+      walkStop: 0,
+      walkSeen: [],
+      walkReading: false,
 
       start: (mode) => set({ mode, view: "map" }),
       setMode: (mode) => set({ mode }),
@@ -114,7 +125,8 @@ export const useGameStore = create<GameState>()(
       decide: (id, option) => set((s) => ({ flags: applyChoice(s.flags, id, option) })),
       finishTask: (id, value) => set((s) => ({ flags: applyOutcome(s.flags, id, value) })),
       completeChapter: () => {
-        const { chapter, completed, rereading } = get();
+        const { chapter, completed, rereading, walkReading } = get();
+        if (walkReading) return set({ view: "walkstop", rereading: false, walkReading: false });
         if (rereading) return set({ view: "map", rereading: false });
         set({
           completed: completed.includes(chapter) ? completed : [...completed, chapter].sort((a, b) => a - b),
@@ -126,7 +138,8 @@ export const useGameStore = create<GameState>()(
       rereadMirror: (id) => set({ chapter: id, view: "mirror", rereading: true }),
       back: () => {
         const { view, page } = get();
-        if (view === "map") return set({ view: "title" });
+        if (view === "map" || view === "walk") return set({ view: "title" });
+        if (view === "walkstop") return set({ view: "walk" });
         if (view === "dossier") return set(page > 0 ? { page: page - 1 } : { view: "map" });
         // leaving the newspaper counts as reading it, as the button at its foot does
         if (view === "mirror") return get().completeChapter();
@@ -135,9 +148,12 @@ export const useGameStore = create<GameState>()(
       toggleMute: () => set((s) => ({ muted: !s.muted })),
       setTextScale: (textScale) => set({ textScale }),
       setSetting: (key, value) => set((s) => ({ settings: { ...s.settings, [key]: value } })),
+      startWalk: () => set({ view: "walk", walkReading: false }),
+      openStop: (index, place) => set((s) => ({ view: "walkstop", walkStop: index, walkSeen: s.walkSeen.includes(place) ? s.walkSeen : [...s.walkSeen, place] })),
+      readPaper: (id) => set({ chapter: id, view: "mirror", rereading: true, walkReading: true }),
       markSeen: (id) => set((s) => (s.seen.includes(id) ? s : { seen: [...s.seen, id] })),
       restore: (p) => set({ completed: p.completed, flags: p.flags, view: "map" }),
-      reset: () => set({ completed: [], flags: {}, seen: [], letter: "", chapter: 1, page: 0, view: "title", rereading: false }),
+      reset: () => set({ completed: [], flags: {}, seen: [], walkSeen: [], walkStop: 0, letter: "", chapter: 1, page: 0, view: "title", rereading: false }),
     }),
     {
       name: "koerier-aan-de-gouwe",
@@ -162,6 +178,9 @@ export const useGameStore = create<GameState>()(
         settings: s.settings,
         letter: s.letter,
         seen: s.seen,
+        walkStop: s.walkStop,
+        walkSeen: s.walkSeen,
+        walkReading: s.walkReading,
         view: RESUME[s.view],
         chapter: s.chapter,
         page: s.page,

@@ -257,6 +257,14 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   bronvermelding. Verder geen beelden in dit hoofdstuk; gegenereerde beelden blijven hier verboden
   (test). De kaart is uit 1916, uitgever onbekend.
 
+- **Stadswandeling zonder spellen.** Derde knop op het beginscherm. Een vaste route langs alle
+  negen plekken (`src/data/route.ts`: station, synagoge, Markt, Waag, stadhuis, Sint-Jan, weeshuis,
+  Oosthaven 31, Havensluis; ongeveer 1,3 km in rechte lijn) op de oude kaart, met afstand per stuk.
+  Per stop: de beelden (echte foto met bron, of "illustratie, geen foto"), de eerste feiten van het
+  hoofdartikel, de krant zonder "Jouw verhaal", herstelcode of beloning, en de sporen. "Hoe ver is
+  het?" meet de afstand alleen als je erom vraagt. Wat je zag (`walkSeen`) staat los van de
+  hoofdstukken; die blijven open om later te spelen. Tests: `tests/route.test.ts`.
+
 ## Half af
 - Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).
 - De tekst van hoofdstuk 3 is een voorstel: laat die lezen door iemand van het Joods Monument

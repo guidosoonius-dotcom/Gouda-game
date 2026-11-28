@@ -28,7 +28,7 @@ const TS = {
  * ones are underlined in pencil.
  */
 export function MirrorScreen() {
-  const { chapter: chapterId, flags, rereading, completeChapter, completed } = useGameStore();
+  const { chapter: chapterId, flags, rereading, completeChapter, completed, walkReading } = useGameStore();
   const chapter = chapterById(chapterId);
   const mirror = chapter.mirror!;
   const story = mirror.story(flags);
@@ -62,10 +62,13 @@ export function MirrorScreen() {
               <span>Extra</span>
             </div>
             <p className={`m-0 mt-0.5 ${TS[12]} leading-[1.45] text-[#3a3935]`}>
-              Jouw verhaal is verzonnen. De rest komt uit de archieven: tik op een stuk tekst voor de bron.
+              {walkReading ? "Alles in deze krant komt uit de archieven: tik op een stuk tekst voor de bron." : "Jouw verhaal is verzonnen. De rest komt uit de archieven: tik op een stuk tekst voor de bron."}
             </p>
           </header>
 
+          {/* on the city walk nothing was played: no story of yours, only what really happened */}
+          {!walkReading && (
+          <>
           <section className="relative flex flex-col gap-2 border-[1.5px] border-[#1c1c1a] bg-white/20 px-3.5 pb-4 pt-3.5">
             <span className={`${TS[11]} tracking-[0.14em]`}>JOUW VERHAAL</span>
             <h1 className="anim-print m-0 pr-16 font-stamp text-[length:calc(22px*var(--ts,1))] font-bold uppercase leading-[1.1]">{story.headline}</h1>
@@ -78,6 +81,8 @@ export function MirrorScreen() {
           <div aria-hidden="true" className={`text-center ${TS[13]} tracking-[0.5em]`}>
             * * *
           </div>
+          </>
+          )}
 
           {lead && <ArticleView article={lead} lead onPick={setSource} />}
 
@@ -109,7 +114,7 @@ export function MirrorScreen() {
               <span className={notice.verified ? "" : "underline decoration-[#6e6c66] decoration-dotted decoration-[1.5px] underline-offset-[3px]"}>{notice.claim}</span>
               {!notice.verified && <sup className={`ml-0.5 font-label ${TS[11]} font-bold`}>?</sup>}
             </button>
-            <span className={`${TS[13]} leading-[1.5] text-[#3a3935]`}>{mirror.notice.body}</span>
+            {!walkReading && <span className={`${TS[13]} leading-[1.5] text-[#3a3935]`}>{mirror.notice.body}</span>}
           </aside>
 
           {teasers.map((t) => (
@@ -129,7 +134,7 @@ export function MirrorScreen() {
         </div>
 
         <div className="flex flex-none flex-col gap-3 px-[22px] pb-[calc(22px+env(safe-area-inset-bottom))] pt-1 [text-shadow:none]">
-          <div className="flex items-center gap-3 border-t-[3px] border-double border-[#1c1c1a] pt-3">
+          <div className={`flex items-center gap-3 border-t-[3px] border-double border-[#1c1c1a] pt-3 ${walkReading ? "hidden" : ""}`}>
             <Satchel color="#1c1c1a" size={30} />
             <span className="flex flex-1 flex-col gap-px">
               <span className={`${TS[11]} tracking-[0.14em] text-wax`}>{rereading ? "UIT JE KOERIERSTAS" : "NIEUW IN JE KOERIERSTAS"}</span>
@@ -141,7 +146,7 @@ export function MirrorScreen() {
             onClick={() => (sfx.paper(), completeChapter())}
             className="flex h-[54px] flex-none items-center justify-between bg-[#1c1c1a] px-[18px] font-label text-[length:calc(14px*var(--ts,1))] font-bold tracking-[0.17em] text-paper transition-transform active:translate-x-1"
           >
-            {rereading ? "TERUG NAAR DE KAART" : "VOLGEND ADRES"}
+            {walkReading ? "TERUG NAAR DE WANDELING" : rereading ? "TERUG NAAR DE KAART" : "VOLGEND ADRES"}
             <Arrow color="#e2a93a" />
           </button>
         </div>

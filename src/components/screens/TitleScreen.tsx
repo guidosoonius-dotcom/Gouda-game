@@ -15,11 +15,14 @@ function ModeButton({
   title,
   sub,
   primary,
+  onPress,
 }: {
-  mode: Mode;
+  mode?: Mode;
   title: string;
   sub: string;
   primary?: boolean;
+  /** Instead of starting a game mode (the city walk). */
+  onPress?: () => void;
 }) {
   const start = useGameStore((s) => s.start);
   return (
@@ -28,7 +31,8 @@ function ModeButton({
       onClick={() => {
         unlockAudio();
         sfx.paper();
-        start(mode);
+        if (onPress) onPress();
+        else if (mode) start(mode);
       }}
       className={`flex min-h-16 items-center justify-between px-[18px] text-left transition-transform active:translate-x-1 ${
         primary ? "bg-ochre text-slate" : "border border-parchment/45 bg-night/35 text-parchment"
@@ -54,6 +58,8 @@ export function TitleScreen() {
   const next = CHAPTERS.find((c) => !completed.includes(c.id));
   const resume = next ? `Verder met: ${next.title}` : completed.includes(6) ? "Alles gelezen. Lees terug in je koerierstas." : "Verder met: de epiloog op de Markt";
   const mode = useGameStore((s) => s.mode);
+  const startWalk = useGameStore((s) => s.startWalk);
+  const walked = useGameStore((s) => s.walkSeen.length > 0);
   const [about, setAbout] = useState(false);
   const [settings, setSettings] = useState(false);
 
@@ -104,13 +110,18 @@ export function TitleScreen() {
           <ModeButton
             mode="location"
             title={hasProgress && mode === "location" ? "Ga verder op locatie" : "Speel op locatie"}
-            sub={hasProgress && mode === "location" ? resume : "Een wandeling door de binnenstad van Gouda"}
+            sub={hasProgress && mode === "location" ? resume : "Speel het verhaal ter plekke in de binnenstad"}
             primary
           />
           <ModeButton
             mode="home"
             title={hasProgress && mode === "home" ? "Ga verder thuis" : "Speel thuis"}
             sub={hasProgress && mode === "home" ? resume : "Met de kaart, de beelden en een koptelefoon"}
+          />
+          <ModeButton
+            title={walked ? "Ga verder met de wandeling" : "Stadswandeling"}
+            sub="Zonder spellen: de plekken, de beelden en de krant"
+            onPress={startWalk}
           />
         </div>
 

@@ -17,6 +17,8 @@ import { MemorialScreen, WitnessScreen } from "./screens/WitnessScreen";
 import { PackingGame } from "./packing/PackingGame";
 import { PuzzleScreen } from "./puzzles/PuzzleScreen";
 import { WalkGuard } from "./ui/WalkGuard";
+import { WalkScreen } from "./walk/WalkScreen";
+import { WalkStopScreen } from "./walk/WalkStopScreen";
 import { useServiceWorker } from "./ui/PwaSetup";
 import { useWalkWatcher } from "@/lib/walk";
 
@@ -88,6 +90,8 @@ const SCREENS: Record<View, () => React.ReactNode> = {
   task: () => <Task />,
   mirror: () => <Mirror />,
   epilogue: () => <EpilogueScreen />,
+  walk: () => <WalkScreen />,
+  walkstop: () => <WalkStopScreen />,
 };
 
 /**

@@ -301,6 +301,14 @@ staat zo'n kaart toe naast Commons-bronnen, mits de maker of uitgever onbekend i
 domein. De kaart staat alleen op de openingsscène, met bron; de gedenkpagina blijft zonder
 gegenereerd beeld.
 
+## Stadswandeling naast het spel (73)
+Niet iedereen wil spelen; wie Gouda alleen wil leren kennen, krijgt een eigen ingang met een vaste
+route (vanaf het station, waar de meeste bezoekers aankomen). De wandeling hergebruikt alles wat al
+bestaat (beelden, feitenregister, kranten, sporen) en voegt geen nieuwe beweringen toe. In de krant
+vallen de verzonnen delen weg, omdat er niets is gespeeld. De voortgang staat los van de
+hoofdstukken, zodat je na de wandeling het verhaal nog onbevangen kunt spelen. Een stop toont maar
+drie feiten; de rest staat in de krant, anders herhaalt de stop het blad.
+
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.
 - Blaeu-kaart: pin-posities zijn op het oog geplaatst. Georefereren met controlepunten in M8.
