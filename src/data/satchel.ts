@@ -61,6 +61,16 @@ export function satchelItems(completed: number[], flags: Flags): SatchelItem[] {
       fiction: true,
     });
   }
+  // after the epilogue: a real archive piece, with where to find it
+  if (completed.includes(6)) {
+    items.push({
+      id: "gastenboek",
+      kind: "bron",
+      title: "Gastenboek van het Wehrmachtheim",
+      note: "Streekarchief Midden-Holland, archief van de Ortskommandantur Gouda, inv.nr. 20. Op te vragen in de studiezaal.",
+      fiction: false,
+    });
+  }
   const nextChapter = Math.max(0, ...completed.filter((c) => c <= 6)) + 1;
   for (const e of ECHOES) {
     if (e.slot === "satchel" && e.chapter <= nextChapter && completed.includes(e.chapter) && flags[e.when.flag] === e.when.is) {

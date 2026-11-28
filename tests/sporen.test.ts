@@ -29,4 +29,20 @@ describe("sporen (things to look at on location)", () => {
   it("make no claims of their own: no digits (years, counts) outside the facts", () => {
     for (const s of SPOREN) expect(/\d{3,}/.test(s.intro + s.look), s.id).toBe(false);
   });
+
+  it("group by place, and a dispute names at least two sources and what is settled", async () => {
+    const { DISPUTES } = await import("@/data/disputes");
+    const { sporenByPlace } = await import("@/data/sporen");
+    expect(sporenByPlace().reduce((n, g) => n + g.items.length, 0)).toBe(SPOREN.length);
+    for (const s of SPOREN) if (s.dispute) expect(DISPUTES[s.dispute], s.id).toBeDefined();
+    for (const [id, d] of Object.entries(DISPUTES)) {
+      expect(d.voices.length, id).toBeGreaterThanOrEqual(2);
+      expect(new Set(d.voices.map((v) => v.who)).size, id).toBe(d.voices.length);
+      for (const f of d.settled) expect(FACTS[f], `${id}: ${f}`).toBeDefined();
+    }
+  });
+
+  it("a teaser under a newspaper makes no claims of its own", () => {
+    for (const s of SPOREN) if (s.teaser) expect(/\d{3,}/.test(s.teaser.text + s.teaser.label), s.id).toBe(false);
+  });
 });

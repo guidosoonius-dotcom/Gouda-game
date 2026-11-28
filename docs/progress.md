@@ -231,6 +231,17 @@ Kies "Speel thuis". Alle vijf hoofdstukken en de epiloog zijn speelbaar.
   `components/map/SporenSheet.tsx`. Nog te doen ter plekke: of de inslagen na de renovatie van 2022
   zichtbaar zijn, en de aantallen bij het stationsbombardement.
 
+- **Sporen, ronde 2 (design: canvas "Sporen — De nacht in de kerk en De Zalm"):** vier sporen,
+  gegroepeerd per plek. Nieuw: "De nacht in de kerk" (Rotterdamse razzia, 10–11 november 1944, de
+  mannen sliepen in de Sint-Jan) en "Waar het begon en eindigde" (De Zalm, mei 1940 en 5 mei 1945).
+  Nieuw onderdeel "Bronnen verschillen" (`data/disputes.ts`, `ui/DisputeCard.tsx`): Scheygrond,
+  Van Dam en Kooistra naast elkaar over 5 mei, plus wat vaststaat. Onder de krant van Hoofdstuk 1
+  een kaart naar het nieuwe spoor (`SpoorTeaser`); de epiloog heeft "Drie dagen in mei" en de open
+  vraag over de vrouwen in de BS-parade; na de epiloog ligt het gastenboek van het Wehrmachtheim
+  (Streekarchief, inv.nr. 20) in de koerierstas. Beelden met Higgsfield, nu met de foto's van de
+  speler als referentie: `img/sporen/*.webp` en de weeshuisbeelden (poort, binnenplaats,
+  slaapzaal, zalen, afscheid) opnieuw.
+
 ## Half af
 - Nachtvaart is nog niet op een echte iPhone gespeeld (fps, duimbereik, moeilijkheid).
 - De tekst van hoofdstuk 3 is een voorstel: laat die lezen door iemand van het Joods Monument

@@ -278,6 +278,13 @@ het register; de intro en de kijkopdracht beweren niets zelf (test in `tests/spo
 stolpersteine-route is bewust niet meegenomen: de teksten zijn van Soesja Citroen en de Stichting
 Gouds Metaheerhuis, daarvoor eerst toestemming vragen.
 
+## Bronnen verschillen (70)
+Waar historici elkaar tegenspreken, kiest het spel niet: het laat de bronnen naast elkaar zien,
+met jaartal en naam, en daaronder wat vaststaat (feiten uit het register). Eerste geval: of Gouda
+op 5 mei 1945 al bevrijd was (Scheygrond 1985, Van Dam 1995, Kooistra 2025). Referentiefoto's
+gaan nu rechtstreeks naar Higgsfield (host `upload.higgsfield.ai` toegestaan in de omgeving), zodat
+gebouwen natuurgetrouw geschilderd worden in plaats van naar een beschrijving.
+
 ## Open vragen
 - Tijdsdruk in hoofdstuk 1: nu 3 schokgolven × 30 s. Te krap of te ruim voor 12-jarigen? Speeltest.
 - Blaeu-kaart: pin-posities zijn op het oog geplaatst. Georefereren met controlepunten in M8.

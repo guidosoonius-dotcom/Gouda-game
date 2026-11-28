@@ -6,7 +6,15 @@ import { useGameStore } from "@/store/useGameStore";
 import { sfx } from "@/lib/sound";
 import { Arrow, Back } from "@/components/ui/icons";
 import { FactBlock, FactLegend } from "@/components/ui/Fact";
+import type { FactId } from "@/data/sources";
 import { PaperTexture } from "@/components/ui/Grain";
+import { DisputeButton } from "@/components/ui/DisputeCard";
+
+/** The days in May, each only through facts from the register (the dispute is shown, not decided). */
+const DAYS: { date: string; facts: FactId[] }[] = [
+  { date: "5 MEI", facts: ["spoor.zalm.1945", "stadhuis.return"] },
+  { date: "7 MEI", facts: ["liberation.may"] },
+];
 
 /**
  * May 1945, the Markt. No task: who is standing there depends on the five evenings, and the
@@ -35,9 +43,22 @@ export function EpilogueScreen() {
           Voor het eerst in vijf jaar staan mensen stil zonder om te kijken. Iemand heeft een vlag uit een kussensloop genaaid. Je loopt
           tussen hen door met een lege tas.
         </p>
-        <p className="m-0 border-l-2 border-press/50 pl-3 text-[length:calc(14.5px*var(--ts,1))] leading-[1.5]">
-          <FactBlock ids={["liberation.gouda"]} />
-        </p>
+        <img src="/img/sporen/markt-1945.webp" alt="De Markt in mei 1945: de Waag en hotel De Zalm, mensen van achteren" className="-mx-6 h-[170px] max-w-none object-cover" style={{ width: "calc(100% + 3rem)" }} />
+        <section className="flex flex-col gap-2.5">
+          <span className="label text-[length:calc(11px*var(--ts,1))] text-wax">Drie dagen in mei</span>
+          {DAYS.map((d) => (
+            <div key={d.date} className="grid grid-cols-[62px_minmax(0,1fr)] gap-2.5">
+              <span className="font-type text-[length:calc(15px*var(--ts,1))] leading-[1.35] text-wax">{d.date}</span>
+              <p className="m-0 text-[length:calc(14.5px*var(--ts,1))] leading-[1.45]">
+                <FactBlock ids={d.facts} />
+              </p>
+            </div>
+          ))}
+          <DisputeButton id="bevrijding" light />
+          <p className="m-0 border-t border-press/30 pt-2.5 text-[length:calc(14px*var(--ts,1))] italic leading-[1.45] text-[#3c3b37]">
+            <FactBlock ids={["bs.vrouwen"]} />
+          </p>
+        </section>
 
         {present.length > 0 && (
           <section className="flex flex-col gap-2.5">
@@ -86,7 +107,7 @@ export function EpilogueScreen() {
             className="select-text resize-none border border-press/60 bg-[#f4efe3] p-3 font-type text-[length:calc(15px*var(--ts,1))] leading-[1.55] text-ink placeholder:text-[#8a857a]"
           />
         </section>
-        <FactLegend ids={["liberation.gouda"]} />
+        <FactLegend ids={["liberation.gouda", ...DAYS.flatMap((d) => d.facts), "bs.vrouwen"]} />
 
         <button
           type="button"

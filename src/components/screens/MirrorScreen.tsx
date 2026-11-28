@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { AnimatePresence } from "motion/react";
 import { chapterById } from "@/data/places";
 import { useGameStore } from "@/store/useGameStore";
 import { sfx } from "@/lib/sound";
@@ -10,6 +11,9 @@ import { FactBlock, FactLegend } from "@/components/ui/Fact";
 import { ArchivePlaceholder } from "@/components/ui/ArchivePlaceholder";
 import { SHOW_UNVERIFIED } from "@/data/sources";
 import { encodeSave } from "@/game/save";
+import { SPOREN } from "@/data/sporen";
+import { SpoorTeaser } from "@/components/map/SpoorTeaser";
+import { SporenSheet } from "@/components/map/SporenSheet";
 
 /** De Historische Spiegel: the player's fiction, stamped as fiction, next to what really happened. */
 export function MirrorScreen() {
@@ -19,6 +23,8 @@ export function MirrorScreen() {
   const story = mirror.story(flags);
   // a placeholder for a missing scan is a note for us, not for players: only in dev and preview builds
   const showScan = !!mirror.scan.image || SHOW_UNVERIFIED;
+  const teasers = SPOREN.filter((s) => s.chapter === chapter.id && s.teaser);
+  const [spoor, setSpoor] = useState<string | null>(null);
 
   useEffect(() => {
     const id = window.setTimeout(() => sfx.stamp(), 950);
@@ -83,6 +89,9 @@ export function MirrorScreen() {
           <span className="text-[length:calc(12.5px*var(--ts,1))] italic leading-[1.4] text-[#3c3b37]">{mirror.notice.body}</span>
         </aside>
         <FactLegend ids={[...mirror.facts, mirror.notice.fact]} />
+        {teasers.map((t) => (
+          <SpoorTeaser key={t.id} spoor={t} onOpen={() => setSpoor(t.id)} />
+        ))}
         {!rereading && (
           // iOS can wipe a site's storage: the code (with this chapter in it) brings the game back
           <p className="m-0 border border-dashed border-press/50 px-3 py-2 text-[length:calc(13px*var(--ts,1))] leading-snug text-[#3c3b37]">
@@ -111,6 +120,7 @@ export function MirrorScreen() {
         </button>
       </div>
       </div>
+      <AnimatePresence>{spoor && <SporenSheet initial={spoor} onClose={() => setSpoor(null)} />}</AnimatePresence>
     </div>
   );
 }

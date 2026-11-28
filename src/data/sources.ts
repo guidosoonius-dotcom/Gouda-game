@@ -254,6 +254,60 @@ export const FACTS = {
     todo: "actuele situatie bij de gemeente of Omgevingsdienst",
     verified: false,
   },
+  "spoor.kerk.razzia": {
+    claim: "Op 10 en 11 november 1944 hielden de Duitsers in Rotterdam en Schiedam een razzia op mannen van 17 tot 40 jaar.",
+    source: "Stadsarchief Rotterdam, ‘De razzia’; B.A. Sijes, ‘De razzia van Rotterdam’ (RIOD, 1951)",
+    todo: "aantal weggevoerden: ongeveer 52.000 (Stadsarchief) of 51.000 (Wikipedia)",
+    verified: false,
+  },
+  "spoor.kerk.nacht": {
+    claim: "Ongeveer 2.400 van hen moesten te voet naar Gouda en brachten de nacht door in de Sint-Jan. Het was er stikdonker, op een paar kaarsvlammetjes na. Ze lagen op stro op de stenen vloer, in hun natte jassen.",
+    source: "B.A. Sijes, ‘De razzia van Rotterdam’ (RIOD, 1951), getuigenissen over de Grote Kerk in Gouda; M.J. van Dam, ‘Gouda in de Tweede Wereldoorlog’ (2006), p. 222; Wikipedia, ‘Sint-Janskerk (Gouda)’",
+    todo: "aantal (2.400, in twee groepen, de tweede van ongeveer 1.200 om 23.00 uur) in Van Dam nalezen; een deel ging via Waddinxveen",
+    verified: false,
+  },
+  "spoor.kerk.ochtend": {
+    claim: "In de duisternis wisten sommigen zich te verstoppen of te vluchten. ’s Ochtends kregen de mannen brood en kaas en liepen ze verder naar Utrecht.",
+    source: "Wikipedia, ‘Sint-Janskerk (Gouda)’ (naar Van Dam); B.A. Sijes (1951)",
+    todo: "vertrektijd: om vijf uur (Wikipedia) of het bevel om zeven uur (getuige bij Sijes)",
+    verified: false,
+  },
+  "spoor.zalm.1940": {
+    claim: "Op 15 mei 1940 trokken Duitse troepen Gouda binnen. De commandant en zijn staf namen eerst hun intrek in hotel De Zalm; op 19 mei verhuisden ze naar een groot huis aan de Kattensingel.",
+    source: "Canon van Gouda, ‘Tweede Wereldoorlog’",
+    todo: "tweede bron (Van Dam 2006, hoofdstuk 1)",
+    verified: false,
+  },
+  "spoor.zalm.1945": {
+    claim: "Op 5 mei 1945 droeg de Duitse Ortskommandant in De Zalm de macht over de stad over aan de Binnenlandse Strijdkrachten.",
+    source: "A. Scheygrond, ‘Hotel de Zalm’, Tidinge van Die Goude 1985 nr. 2 (via Wikipedia, ‘De Zalm (Gouda)’)",
+    todo: "onafhankelijke tweede bron zoeken; de huidige uitbater noemt 7 mei; verschil met ‘bevrijd’: zie het geschil ‘bevrijding’",
+    verified: false,
+  },
+  "spoor.zalm.gevelsteen": {
+    claim: "Een gevelsteen uit 1670, ‘Niet te hooch niet te laech van passe’, herinnert eraan dat de nieuwe herberg niet hoger mocht worden dan de Waag ernaast.",
+    source: "Theo de Jong, ‘Goudse gevelstenen’ (2004), via Wikipedia, ‘De Zalm (Gouda)’; Gouds Dagblad, ‘Voormalig hotel de Zalm in de steigers’",
+    todo: "ter plekke: waar de steen zit",
+    verified: false,
+  },
+  "liberation.may": {
+    claim: "Op 7 mei 1945, tegen zeven uur ’s avonds, reden vrachtauto’s van de RAF de Markt op: de eerste bevrijders in Gouda. Een dag later kwamen de Canadezen.",
+    source: "Canon van Gouda, ‘Tweede Wereldoorlog’; Oorlogsbronnen, ‘Bevrijding Gouda’; E. Kooistra, ‘De aankomst van de bevrijders in Gouda’, Tidinge 2016 nr. 2",
+    todo: "Wikipedia noemt 8 mei rond 18.45 uur voor de RAF; artikel van Kooistra nalezen",
+    verified: false,
+  },
+  "bs.vrouwen": {
+    claim: "Op 16 juni 1945 liepen in Gouda ook vrouwen mee in een parade van de Binnenlandse Strijdkrachten. Wie zij waren, wordt nog uitgezocht.",
+    source: "Historische Vereniging Die Goude, Nieuwsbrief 140 (oktober 2024), foto uit de collectie-Daems; AD, 1 mei 2024",
+    todo: "geen namen gebruiken zonder overleg met Die Goude",
+    verified: false,
+  },
+  "tas.gastenboek": {
+    claim: "Het Streekarchief Midden-Holland bewaart het gastenboek van het Duitse soldatentehuis in Gouda, 1942 tot 1944. Op de laatste bladzijde staat een aantekening van de commandant van de Binnenlandse Strijdkrachten, van 9 mei 1945.",
+    source: "Streekarchief Midden-Holland, archief van de Ortskommandantur Gouda 1940–1945 (toegang 198), inv.nr. 20",
+    todo: "het stuk inzien: waar stond het soldatentehuis, wat staat er in de aantekening",
+    verified: false,
+  },
 } as const satisfies Record<string, Fact>;
 
 export type FactId = keyof typeof FACTS;
